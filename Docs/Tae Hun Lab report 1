@@ -1,1 +1,13 @@
+ # program_counter.sv generates the instruction address for the next instruction to be fetched from instruction memory.
+
+
+- The PC increments by 4 because standard 32-bit RISC-V instructions are 4 bytes long and memory is byte-addressed (each addressable location is 1 byte).
+- A 32-bit instruction occupies 4 memory locations, so the next instruction begins at PC + 4. 
+
+
+
+initial value test - just checked if the first PC value was 0
+normal incrementing test - just checked if the PC incremented by 4 when PCsrc = 0
+Wrap around test - checked if the PC is at its last addressable memory location, it starts counting from 0 again.
+Jump and branch test - checked that if PCsrc = 1, the PC added the arbitrary value 5 to the PC instead of incrementing by 4 as usual
 
