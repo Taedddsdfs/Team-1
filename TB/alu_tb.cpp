@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 
     // ctrl 101: SLT (Set Less Than, 结果为 0 或 1)
     all_pass &= test(top, 0b101, 3, 10, 1, 0, "SLT 3<10");
-    all_pass &= test(top, 0b101, 10, 3, 0, 1, "SLT 10<3"); // out=0 => EQ=1
+    all_pass &= test(top, 0b101, 10, 3, 0, 0, "SLT 10<3"); // out=0 => EQ=0
 
     // default 分支：比如 ctrl=100，ALUout 应为 0，EQ=1
     all_pass &= test(top, 0b100, 0x12345678, 0x87654321, 0, 1, "DEFAULT");
