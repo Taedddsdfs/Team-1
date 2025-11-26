@@ -21,6 +21,7 @@ always_comb begin
             3'b101:     ALUout = (ALUop1 < ALUop2) ? 1 : 0; // SLT (Set Less Than)
             default: ALUout = 32'b0;    
         endcase
-        EQ = (ALUout == 0'b0) ? 1 : 0; 
+        
+        EQ = (ALUop1 == ALUop2) ? 1 : 0; 
     end
 endmodule
