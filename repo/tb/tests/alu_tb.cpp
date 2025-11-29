@@ -37,7 +37,7 @@ TEST_F(ALUTestbench, ADDTest)
     top->eval();
 
     EXPECT_EQ(top->ALUout, op1 + op2);
-    EXPECT_EQ(top->EQ, (op1 == op2) ? 1 : 0);
+    EXPECT_EQ(top->EQ, 0);
 }
 
 TEST_F(ALUTestbench, SUBTest)
@@ -52,7 +52,7 @@ TEST_F(ALUTestbench, SUBTest)
     top->eval();
 
     EXPECT_EQ(top->ALUout, op1 - op2);
-    EXPECT_EQ(top->EQ, (op1 == op2) ? 1 : 0);
+    EXPECT_EQ(top->EQ, 1);
 }
 
 TEST_F(ALUTestbench, ANDTest)
@@ -67,7 +67,7 @@ TEST_F(ALUTestbench, ANDTest)
     top->eval();
 
     EXPECT_EQ(top->ALUout, op1 & op2);
-    EXPECT_EQ(top->EQ, (op1== op2) ? 1 : 0);
+    EXPECT_EQ(top->EQ, 0);
 }
 
 TEST_F(ALUTestbench, ORTest)
@@ -82,7 +82,7 @@ TEST_F(ALUTestbench, ORTest)
     top->eval();
 
     EXPECT_EQ(top->ALUout, op1 | op2);
-    EXPECT_EQ(top->EQ, (op1== op2) ? 1 : 0);
+    EXPECT_EQ(top->EQ, 0);
 }
 
 TEST_F(ALUTestbench, SetIfLessThanTest)
@@ -96,8 +96,8 @@ TEST_F(ALUTestbench, SetIfLessThanTest)
 
     top->eval();
 
-    EXPECT_EQ(top->ALUout, (op1 < op2) ? 1 : 0);
-    EXPECT_EQ(top->EQ, (op1== op2) ? 1 : 0);
+    EXPECT_EQ(top->ALUout, 1);
+    EXPECT_EQ(top->EQ, 0);
 }
 
 // int main(int argc, char **argv)
