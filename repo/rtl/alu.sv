@@ -12,13 +12,10 @@ always_comb begin
 
         case (ALUctrl)
             3'b000: ALUout = ALUop1 + ALUop2; // ADD
-            3'b001: begin                     // SUB
-                ALUout = ALUop1 - ALUop2;
-                EQ = (ALUout == 0);           // Set EQ flag if ALUop1 == ALUop2
-            end
-            3'b010:     ALUout = ALUop1 & ALUop2; //AND
-            3'b011:     ALUout = ALUop1 | ALUop2; //OR
-            3'b101:     ALUout = (ALUop1 < ALUop2) ? 1 : 0; // SLT (Set Less Than)
+            3'b001: ALUout = ALUop1 - ALUop2; // SUB (Set EQ flag if ALUop1 == ALUop2)
+            3'b010: ALUout = ALUop1 & ALUop2; //AND
+            3'b011: ALUout = ALUop1 | ALUop2; //OR
+            3'b101: ALUout = (ALUop1 < ALUop2) ? 1 : 0; // SLT (Set Less Than)
             default: ALUout = 32'b0;    
         endcase
         

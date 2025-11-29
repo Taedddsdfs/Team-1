@@ -7,13 +7,13 @@ module registerfile #(
     input logic   [ADDRESS_WIDTH-1:0]  AD1,
     input logic   [ADDRESS_WIDTH-1:0]  AD2,
     input logic   [ADDRESS_WIDTH-1:0]  AD3,
-    input logic  [DATA_WIDTH:0]  WD3,
-    output logic [DATA_WIDTH:0]  RD1,
-    output logic [DATA_WIDTH:0]  RD2,
-    output logic [DATA_WIDTH:0]  a0
+    input logic  [DATA_WIDTH-1:0]  WD3,
+    output logic [DATA_WIDTH-1:0]  RD1,
+    output logic [DATA_WIDTH-1:0]  RD2,
+    output logic [DATA_WIDTH-1:0]  a0
 );
 
-logic [DATA_WIDTH:0] registers [2**ADDRESS_WIDTH-1:0];
+logic [DATA_WIDTH-1:0] registers [2**ADDRESS_WIDTH-1:0];
 
 assign registers[0] = 0;
 
@@ -24,6 +24,6 @@ always_comb begin
 end
 
 always_ff @(posedge clk)
-            if (WE3 && (AD3 != 5'd0))       registers[AD3] <= WD3;
+    if (WE3 && (AD3 != 5'd0))       registers[AD3] <= WD3;
 
 endmodule
