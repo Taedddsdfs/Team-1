@@ -8,6 +8,8 @@ CID:  02575253
 ---
 
 ### ALU
+<img width="347" height="273" alt="截屏2025-11-30 20 08 33" src="https://github.com/user-attachments/assets/cb21ff2e-cd1f-4ca9-bd3f-1103e876b551" />
+
 The ALU unit takes two operands and ALUctrl as inputs to make arithmetic operations to them, according to the table below:
 | ALUCtrl | Command |
 |------|--------|
@@ -40,6 +42,8 @@ EQ = (ALUop1 == ALUop2) ? 1 : 0;
 
 ---
 ### Register File
+<img width="218" height="405" alt="截屏2025-11-30 20 09 00" src="https://github.com/user-attachments/assets/88bb6a26-5817-437d-8240-f545a43357a2" />
+
 The register file is mainly used for reading and writing data to registers.
 
 In the register file, we have a total of 32 registers, each store a 32-bit value, defined as follow:
@@ -77,3 +81,6 @@ Specification:
 |------|--------|
 | Address | 5 bits |
 | Data | 32 bits |
+
+---
+### Data Memory
