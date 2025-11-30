@@ -44,14 +44,11 @@ The register file is mainly used for reading and writing data to registers.
 
 In the register file, we have a total of 32 registers, each store a 32-bit value, defined as follow:
 ```
-parameter ADDRESS_WIDTH = 5,
-              DATA_WIDTH = 32
-
 logic [DATA_WIDTH-1:0] registers [2**ADDRESS_WIDTH-1:0];
 ```
 
 Two important notices are:
-1. register[0](x0) cannot be modified, stay constant 0:
+1. register[0] (x0) cannot be modified, stay constant 0:
 ```
 assign registers[0] = 0;
 ```
@@ -61,3 +58,22 @@ assign registers[0] = 0;
 a0 = registers[10];
 ```
 
+RD1 and RD2 get values from register file with AD1 and AD2, as follow:
+```
+RD1 = registers[AD1];
+RD2 = registers[AD2];
+```
+
+When the write_enable signal is high, data WD3 should be written to register[AD3]:
+```
+always_ff @(posedge clk)
+    if (WE3 && (AD3 != 5'd0))       registers[AD3] <= WD3;
+```
+
+CAREFUL!! x0 must not be written!
+
+Specification:
+| Item | WIDTH |
+|------|--------|
+| Address | 5 bits |
+| Data | 32 bits |
