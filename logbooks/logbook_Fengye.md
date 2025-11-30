@@ -84,3 +84,42 @@ Specification:
 
 ---
 ### Data Memory
+<img width="290" height="76" alt="截屏2025-11-30 20 22 26" src="https://github.com/user-attachments/assets/98c563fa-e08e-4e6b-a166-2177f2d372d4" />
+
+The data memory is one of the two memories in the RISC-V CPU. It is in charge of storing data and loading data back to registers. Given by project brief, the mapping can be defined as follow:
+```
+logic [BYTE_WIDTH-1:0] mem [2**ADDRESS_WIDTH-1:0]; // Data memory from 0x00010000 to 0x0001FFFF
+logic [ADDRESS_WIDTH-1:0] addr;
+```
+
+In this case, since the address we actually used are 0x00001000 and 0x00001001, the memory space width is defined as:
+| Item | WIDTH |
+|------|--------|
+| Address | 16 bits |
+| Data | 32 bits |
+| BYTE | 8 bits |
+
+that is, having an array with addresses ranging from 0 to 2^16-1, with a data width of 32 bits.
+
+address is taken from the lower 16 bits of A(ALUout)
+```
+assign addr = A[ADDRESS_WIDTH-1:0];
+```
+
+Two instructions executed are:
+
+#### LBU
+```
+if ((A >= 32'h0000_1000) && (A <= 32'h0001_FFFF)) //if not in the interval, return 0
+        RD = {24'b0, mem[addr]};
+    else
+        RD = 32'h0;
+```
+
+#### SB
+```
+if (WE && (A >= 32'h0000_1000) && (A <= 32'h0001_FFFF))
+        mem[addr] <= WD[7:0];
+```
+notice that wrting only occurs when there is a rising edge in clk.
+
