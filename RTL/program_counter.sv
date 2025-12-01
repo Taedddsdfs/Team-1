@@ -1,22 +1,14 @@
-module program_counter #(
-    parameter WIDTH = 32
-)(
-    input  logic                 clk,
-    input  logic                 rst,
-    input  logic                 PCsrc,
-    input  logic [31:0]          ImmOp,
-    output logic [WIDTH-1:0]     PC
+module program_counter (
+    input  logic        clk_i,
+    input  logic        rst_ni,
+    input  logic [31:0] next_pc_i,
+    output logic [31:0] pc_o
 );
-
-    always_ff @(posedge clk) begin
-        if (rst) begin
-            PC <= 32'h0;
+    always_ff @(posedge clk_i or negedge rst_ni) begin
+        if (!rst_ni) begin
+            pc_o <= 32'b0;
         end else begin
-            if (PCsrc)
-                PC <= PC + ImmOp;  // Branch/Jump
-            else
-                PC <= PC + 32'd4;  // Normal increment
+            pc_o <= next_pc_i;
         end
     end
-
 endmodule
