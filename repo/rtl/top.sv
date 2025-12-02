@@ -32,7 +32,7 @@ module top #(
 
     // Instruction Memory
     instruction_memory #(
-        .ADDRESS_WIDTH(32),
+        .DATA_WIDTH(32),
         .BYTE_WIDTH(8)
     ) InstructionMemory (
         .addr(PC),
@@ -83,7 +83,7 @@ module top #(
     );
 
     // Result Mux
-    mux Result (
+    mux ResultMux (
         .in0(ALUResult),
         .in1(ReadData),
         .sel(ResultSrc),
@@ -103,7 +103,7 @@ module top #(
         .ALUop1(SrcA),
         .ALUop2(SrcB),
         .ALUControl(ALUControl),
-        .Result(ALUResult),
+        .ALUout(ALUResult),
         .EQ(EQ)
     );
 endmodule
