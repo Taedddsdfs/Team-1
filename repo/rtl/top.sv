@@ -1,5 +1,5 @@
 module top #(
-    DATA_WIDTH = 32
+    parameter DATA_WIDTH = 32
 ) (
     input   logic clk,
     input   logic rst,
@@ -7,17 +7,17 @@ module top #(
 );
     logic [31:0] PC;
     logic [31:0] ImmExt;                  // Sign-extended immediate value
-    logic [31:0] Instr;                   // InstrctionMemory output
-    logic [31:0] RD2;                     // DataMemory output
+    logic [31:0] instr;                   // InstrctionMemory output
+    logic [31:0] RD2;                     // DataMemory input
     logic [31:0] SrcA, SrcB, ALUResult;   // ALU input & output
-    logic [31:0] WriteData, ReadData;     // DataMemory input & output
+    logic [31:0] ReadData;                // DataMemory output
     logic [31:0] Result;                  // result of output mux
     logic [1:0] PCSrc;                    // PC mux controls signal
     logic [1:0] ImmSrc;                   // 2-bit Immediate source signal
     logic [2:0] ALUControl;               // ALU control signal
     logic ResultSrc;                      // result mux control signal
     logic EQ;                             // Equality output from ALU
-    logic RegWrite, ALUsrc;               // Control signals
+    logic RegWrite, ALUSrc;               // Control signals
     logic MemWrite;                       // DataMemory WE
 
     // Program Counter
@@ -48,7 +48,7 @@ module top #(
         .AD3(instr[11:7]),
         .WD3(Result),
         .RD1(SrcA),
-        .RD2(WriteData),
+        .RD2(RD2),
         .a0(a0)
     );
 
@@ -59,7 +59,7 @@ module top #(
         .funct7_5(instr[30]),
         .Zero(EQ),
         .RegWrite(RegWrite),
-        .ALUsrc(ALUsrc),
+        .ALUSrc(ALUSrc),
         .ImmSrc(ImmSrc),
         .PCSrc(PCSrc),
         .ALUControl(ALUControl),
@@ -71,7 +71,8 @@ module top #(
     data_mem DataMemory (
         .clk(clk),
         .A(ALUResult),
-        .WD(WriteData),
+        .WE(MemWrite),
+        .WD(RD2),
         .RD(ReadData)
     );
 
