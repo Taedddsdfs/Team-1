@@ -21,7 +21,7 @@ protected:
     {
         top->ALUop1 = 0;
         top->ALUop2 = 0;
-        top->ALUctrl = 0;
+        top->ALUControl = 0;
     }
 };
 
@@ -32,7 +32,7 @@ TEST_F(ALUTestbench, ADDTest)
 
     top->ALUop1 = op1;
     top->ALUop2 = op2;
-    top->ALUctrl = OPCODE_ADD;
+    top->ALUControl = OPCODE_ADD;
 
     top->eval();
 
@@ -47,7 +47,7 @@ TEST_F(ALUTestbench, SUBTest)
 
     top->ALUop1 = op1;
     top->ALUop2 = op2;
-    top->ALUctrl = OPCODE_SUB;
+    top->ALUControl = OPCODE_SUB;
 
     top->eval();
 
@@ -62,7 +62,7 @@ TEST_F(ALUTestbench, ANDTest)
 
     top->ALUop1 = op1;
     top->ALUop2 = op2;
-    top->ALUctrl = OPCODE_AND;
+    top->ALUControl = OPCODE_AND;
 
     top->eval();
 
@@ -77,7 +77,7 @@ TEST_F(ALUTestbench, ORTest)
 
     top->ALUop1 = op1;
     top->ALUop2 = op2;
-    top->ALUctrl = OPCODE_OR;
+    top->ALUControl = OPCODE_OR;
 
     top->eval();
 
@@ -92,7 +92,7 @@ TEST_F(ALUTestbench, SetIfLessThanTest)
 
     top->ALUop1 = op1;
     top->ALUop2 = op2;
-    top->ALUctrl = OPCODE_SLT;
+    top->ALUControl = OPCODE_SLT;
 
     top->eval();
 
