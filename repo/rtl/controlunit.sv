@@ -37,10 +37,14 @@ module controlunit (
     );
 
     logic is_beq, is_bne;
+    logic branch_taken;
     assign is_beq = (op == 7'b1100011) && (funct3 == 3'b000);
     assign is_bne = (op == 7'b1100011) && (funct3 == 3'b001);
-
-    assign PCSrc = (Branch & ((is_beq &  Zero) | (is_bne & ~Zero)))
-                 | Jump;
+    assign branch_taken = Branch & ((is_beq & Zero) | (is_bne & ~Zero));
+    always_comb begin
+        if (op == 7'b1100111) begin // JALR Opcode
+            PCSrc = 2'b10; 
+        end else if (Jump || branch_taken) begin // JAL or Successful Branch
+            PCSrc = 2'b01;
 
 endmodule
