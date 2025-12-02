@@ -24,7 +24,7 @@ module top #(
     program_counter #(.WIDTH(32)) PC_Reg (
         .clk(clk),
         .rst(rst),
-        .PCsrc(PCsrc),
+        .PCSrc(PCSrc),
         .ImmOp(ImmExt),
         .ALUResult(ALUResult),
         .PC(PC)
@@ -102,7 +102,7 @@ module top #(
     alu ArithmeticLogicUnit (
         .ALUop1(SrcA),
         .ALUop2(SrcB),
-        .ALUctrl(ALUControl),
+        .ALUControl(ALUControl),
         .Result(ALUResult),
         .EQ(EQ)
     );
