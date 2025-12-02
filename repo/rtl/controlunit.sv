@@ -5,7 +5,11 @@ module controlunit (
     input  logic       Zero,
 
     output logic [1:0] PCSrc,
+<<<<<<< HEAD
     output logic       ResultSrc,
+=======
+    output logic [1:0] ResultSrc,
+>>>>>>> c23c45b (partially completed top)
     output logic       MemWrite,
     output logic [2:0] ALUControl,
     output logic       ALUSrc,

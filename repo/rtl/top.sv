@@ -12,12 +12,12 @@ module top #(
     logic [31:0] SrcA, SrcB, ALUResult;   // ALU input & output
     logic [31:0] WriteData, ReadData;     // DataMemory input & output
     logic [31:0] Result;                  // result of output mux
+    logic [1:0] PCsrc;                    // PC mux controls signal
     logic [1:0] ImmSrc;                   // 2-bit Immediate source signal
     logic [2:0] ALUControl;               // ALU control signal
     logic ResultSrc;                      // result mux control signal
     logic EQ;                             // Equality output from ALU
     logic RegWrite, ALUsrc;               // Control signals
-    logic PCsrc;                          // PC mux controls signal
     logic MemWrite;                       // DataMemory WE
 
     // Program Counter
@@ -26,6 +26,7 @@ module top #(
         .rst(rst),
         .PCsrc(PCsrc),
         .ImmOp(ImmExt),
+        .ALUResult(ALUResult),
         .PC(PC)
     );
 
@@ -53,16 +54,17 @@ module top #(
 
     // Control Unit
     controlunit controlunit (
-        .instr(instr),
-        .EQ(EQ),
+        .op(instr[6:0]),
+        .funct3(instr[7:5]),
+        .funct7_5(instr[30]),
+        .Zero(EQ),
         .RegWrite(RegWrite),
         .ALUsrc(ALUsrc),
         .ImmSrc(ImmSrc),
         .PCsrc(PCsrc),
-        .ALUctrl(ALUctrl),
-        .AddrMode(AddrMode),
+        .ALUControl(ALUControl),
         .ResultSrc(ResultSrc),
-        .WD3Src(WD3Src)
+        .MemWrite(MemWrite),
     );
 
     //Data memory
@@ -96,8 +98,12 @@ module top #(
         .out(SrcB)
     );
 
-
-
-
-
+    // ALU
+    alu ArithmeticLogicUnit (
+        .ALUop1(SrcA),
+        .ALUop2(SrcB),
+        .ALUctrl(ALUControl),
+        .Result(ALUResult),
+        .EQ(EQ)
+    );
 endmodule
