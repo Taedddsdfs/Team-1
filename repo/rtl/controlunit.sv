@@ -48,5 +48,6 @@ module controlunit (
             PCSrc = 2'b01;
         end else begin
             PCSrc = 2'b00
+        end
     end
 endmodule
