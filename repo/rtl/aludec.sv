@@ -26,7 +26,7 @@ module aludec (
             2'b10: begin
                 unique case (funct3)
                     3'b000: begin
-                        // ADD / SUB / ADDI
+                        // ADD / SUB 
                         if (funct7_5)
                             ALUControl = ALUCTRL_SUB;
                         else
