@@ -1,7 +1,7 @@
 module alu #(
     parameter DATA_WIDTH = 32;
 )(
-    input logic  [2:0]   ALUctrl,
+    input logic  [2:0]   ALUControl,
     input logic  [DATA_WIDTH-1:0]  ALUop1,
     input logic  [DATA_WIDTH-1:0]  ALUop2,
     output logic [DATA_WIDTH-1:0]  ALUout,
