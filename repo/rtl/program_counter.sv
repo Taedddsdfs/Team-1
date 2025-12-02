@@ -5,7 +5,7 @@ module program_counter #(
     input  logic             rst,
     
     // three states
-    input  logic [1:0]       PCsrc,      
+    input  logic [1:0]       PCSrc,      
     
     // JAL (PC + Imm)
     input  logic [31:0]      ImmOp,      
@@ -20,7 +20,7 @@ module program_counter #(
         if (rst) begin
             PC <= 32'h0;
         end else begin
-            case (PCsrc)
+            case (PCSrc)
                 2'b00: PC <= PC + 32'd4;      // Normal (Next Instr)
                 2'b01: PC <= PC + ImmOp;      // Branch / JAL (PC + Imm)
                 2'b10: PC <= ALUResult;       // JALR (Rs1 + Imm) 
