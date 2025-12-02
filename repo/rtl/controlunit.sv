@@ -47,7 +47,7 @@ module controlunit (
         end else if (Jump || branch_taken) begin // JAL or Successful Branch
             PCSrc = 2'b01;
         end else begin
-            PCSrc = 2'b00
+            PCSrc = 2'b00;
         end
     end
 endmodule

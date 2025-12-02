@@ -27,7 +27,7 @@ TEST_F(ProgramCounterTestbench, initialTest)
 
 TEST_F(ProgramCounterTestbench, NormalIncrementingTest){
 
-    top->PCsrc = 0;
+    top->PCSrc = 0;
     top->rst = 0;
 
     for(int i = 0; i < 32; i++){
@@ -39,7 +39,7 @@ TEST_F(ProgramCounterTestbench, NormalIncrementingTest){
 
 TEST_F(ProgramCounterTestbench, WrapAroundTest){
     top->rst = 0;
-    top->PCsrc = 0;
+    top->PCSrc = 0;
 
     top->PC = 4294967292;
     runSimulation(1);
@@ -48,7 +48,7 @@ TEST_F(ProgramCounterTestbench, WrapAroundTest){
 
 TEST_F(ProgramCounterTestbench, BranchTest){
     top->rst = 0;
-    top->PCsrc = 1;
+    top->PCSrc = 1;
     top->ImmOp = 5; //set to PC relative addressing branch of +5 to PC
 
     runSimulation(1);
