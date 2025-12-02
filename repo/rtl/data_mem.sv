@@ -1,7 +1,7 @@
 module data_mem #(
-    parameter DATA_WIDTH = 32;
-              ADDRESS_WIDTH = 16;
-              BYTE_WIDTH = 8;
+    parameter DATA_WIDTH = 32,
+              ADDRESS_WIDTH = 16,
+              BYTE_WIDTH = 8
 )(
     input logic                  clk,
     input logic                  WE,

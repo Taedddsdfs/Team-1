@@ -64,7 +64,7 @@ module top #(
         .PCSrc(PCSrc),
         .ALUControl(ALUControl),
         .ResultSrc(ResultSrc),
-        .MemWrite(MemWrite),
+        .MemWrite(MemWrite)
     );
 
     //Data memory
