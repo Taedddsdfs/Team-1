@@ -55,7 +55,7 @@ module top #(
     // Control Unit
     controlunit controlunit (
         .op(instr[6:0]),
-        .funct3(instr[7:5]),
+        .funct3(instr[14:12]),
         .funct7_5(instr[30]),
         .Zero(EQ),
         .RegWrite(RegWrite),
