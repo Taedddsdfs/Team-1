@@ -41,7 +41,6 @@ module top #(
 
     registerfile RegFile (
         .clk(clk),
-        .rst(rst),
         .WE3(RegWrite),
         .AD1(instr[19:15]),
         .AD2(instr[24:20]),
