@@ -4,8 +4,8 @@ module controlunit (
     input  logic       funct7_5,
     input  logic       Zero,
 
-    output logic       PCSrc,
-    output logic [1:0] ResultSrc,
+    output logic [1:0] PCSrc,
+    output logic       ResultSrc,
     output logic       MemWrite,
     output logic [2:0] ALUControl,
     output logic       ALUSrc,
