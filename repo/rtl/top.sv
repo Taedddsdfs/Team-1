@@ -33,7 +33,7 @@ module top #(
     // Instruction Memory
     instruction_memory #(
         .ADDRESS_WIDTH(32),
-        .BYTE_WIDTH(8),
+        .BYTE_WIDTH(8)
     ) InstructionMemory (
         .addr(PC),
         .dout(instr)

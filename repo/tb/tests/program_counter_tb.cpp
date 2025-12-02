@@ -1,4 +1,4 @@
-#include "sync_testbench.h"
+#include "testbench.h"
 #include <verilated_cov.h>
 #include <vector>
 #include <bitset>
@@ -7,7 +7,7 @@
 
 //This test bench will test
 
-class ProgramCounterTestbench : public SyncTestbench
+class ProgramCounterTestbench : public Testbench
 {
 protected:
     //this is ran within the SetUp() inside the base test bench, which is ran before each test.
