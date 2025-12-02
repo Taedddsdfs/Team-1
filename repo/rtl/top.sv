@@ -61,7 +61,7 @@ module top #(
         .RegWrite(RegWrite),
         .ALUsrc(ALUsrc),
         .ImmSrc(ImmSrc),
-        .PCsrc(PCsrc),
+        .PCSrc(PCSrc),
         .ALUControl(ALUControl),
         .ResultSrc(ResultSrc),
         .MemWrite(MemWrite),
