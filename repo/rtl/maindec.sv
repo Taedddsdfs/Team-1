@@ -2,7 +2,7 @@
 module maindec (
     input  logic [6:0] op,
 
-    output logic       ResultSrc, 
+    output logic [1:0] ResultSrc, 
     output logic       MemWrite,
     output logic       Branch,
     output logic       ALUSrc,
