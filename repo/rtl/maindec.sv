@@ -19,7 +19,6 @@ module maindec (
     localparam OPCODE_STORE   = 7'b0100011; // Stores
     localparam OPCODE_BRANCH  = 7'b1100011; // Branches 
     localparam OPCODE_JAL     = 7'b1101111; // JAL
-    localparam OPCODE_JALR    = 7'b1100111; // JALR
     localparam OPCODE_LUI     = 7'b0110111; // LUI
     localparam OPCODE_AUIPC   = 7'b0010111; // AUIPC
 
@@ -91,17 +90,6 @@ module maindec (
                 ResultSrc = 2'b10;      // write back PC+4
                 ImmSrc    = 2'b11;      // J-type imm
                 ALUOp     = 2'b00;      // don't care
-            end
-
-            // JALR: rs1 + imm, rd = PC+4
-            OPCODE_JALR: begin
-                RegWrite  = 1'b1;
-                Jump      = 1'b1;
-                MemWrite  = 1'b0;
-                ALUSrc    = 1'b1;    
-                ResultSrc = 2'b10;      // PC+4
-                ImmSrc    = 2'b00;     
-                ALUOp     = 2'b00;      // ADD
             end
 
             // LUI: rd = imm << 12 
