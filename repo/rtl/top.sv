@@ -12,7 +12,7 @@ module top #(
     logic [31:0] SrcA, SrcB, ALUResult;   // ALU input & output
     logic [31:0] WriteData, ReadData;     // DataMemory input & output
     logic [31:0] Result;                  // result of output mux
-    logic [1:0] PCsrc;                    // PC mux controls signal
+    logic [1:0] PCSrc;                    // PC mux controls signal
     logic [1:0] ImmSrc;                   // 2-bit Immediate source signal
     logic [2:0] ALUControl;               // ALU control signal
     logic ResultSrc;                      // result mux control signal
