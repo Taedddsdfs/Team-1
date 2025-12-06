@@ -1,100 +1,133 @@
 # 📔 Team-1 RISC-V Single Cycle CPU - Development Logbook
 
-* **Author:** Jingting 
-* **Period:** Dec 1, 2025 - Dec 6, 2025
+* **Role:** RTL Design & Verification
+* **Author:** Jingting & Team-1
+* **Period:** **Nov 30, 2025 - Dec 5, 2025**
 * **Platform:** WSL (Ubuntu 22.04) on Windows
 
 ---
 
-## 📅 Day 1: Environment Setup & Compilation Struggles
+## 📅 Day 1: Architecture Implementation & Critical Fixes
+**Date:** Nov 30, 2025
+**Objective:** Implement the Single-Cycle Architecture and adapt memory systems for the F1 Assembly program.
+
+### 🏗️ Critical Architecture Fix: JALR & PC Mux Logic
+* **Context:** The F1 Light program relies heavily on subroutine calls (`jal`) and returns (`jalr`). The initial design based on the standard Harris & Harris model was insufficient.
+* **Issue Identified:** The standard model uses a 1-bit `PCSrc` signal, supporting only `PC+4` or `BranchTarget`. It lacked the data path to load `PC` directly from the `ALUResult`, which is required for `JALR` (where target = `rs1 + imm`).
+* **Detailed Solution:**
+    1.  **Control Unit Upgrade:** Expanded the main decoder logic. Instead of a simple `if-else` for branches, we implemented a priority logic to generate a 2-bit `PCSrc`.
+    2.  **PC Mux Redesign:** Replaced the 2-input Mux with a **3-way Multiplexer**:
+        * `2'b00`: **Normal Fetch** (`PC + 4`).
+        * `2'b01`: **Branch/Jump** (`PC + Imm`). Used for `BEQ`, `BNE`, `JAL`.
+        * `2'b10`: **Register Indirect** (`ALUResult`). Used specifically for `JALR` to return from functions.
+    3.  **Datapath Routing:** Created a feedback loop connecting `ALUResult` wire back to the PC input stage, ensuring the address calculated in the Execute stage can update the PC in the next cycle.
+
+### 💾 Memory System Adaptation (Byte-Addressable)
+* **Instruction Memory (`instr_mem.sv`):**
+    * **Challenge:** The lab specifies an 8-bit memory width, but RISC-V instructions are 32-bit.
+    * **Implementation:** Designed a **Little Endian** concatenation logic. The fetch stage reads 4 consecutive bytes: `data = {rom[a+3], rom[a+2], rom[a+1], rom[a]}`.
+* **Data Memory (`data_mem.sv`):**
+    * **Logic:** Implemented `SB` (Store Byte) and `LBU` (Load Byte Unsigned). Added a mask logic to ensure `SB` only writes to the specific byte lane enabled by the address LSBs, preserving the rest of the 32-bit word.
+
+> **✅ Status:** Core RTL design completed. `ImmGen` block updated to handle `U-Type` and `J-Type` immediates correctly.
+
+---
+
+## 📅 Day 2: Toolchain Setup & Compilation Struggles
 **Date:** Dec 1, 2025
-**Objective:** Clone the repository and compile the initial simulation environment using Verilator.
+**Objective:** Establish a robust compilation workflow to bridge Assembly and Hardware.
 
-### 🔴 Problem 1: Git Clone Failure
-* **Issue:** Attempted to clone a subdirectory URL (`.../tree/single-cycle/repo/rtl`), resulting in "repository not found".
-* **Solution:** Learned that Git clones the root. Cloned the full repo and checked out the `single-cycle` branch.
-
-### 🔴 Problem 2: Directory Chaos
-* **Issue:** Scripts (`f1.sh`) failed with "No such file" errors.
-* **Root Cause:** Running scripts from inside `tb/tests/` instead of the project root `repo/`, breaking relative paths like `rtl/top.sv`.
-* **Solution:** Established a standard workflow: **Always execute commands from the `repo/` root directory.**
-
-### 🔴 Problem 3: C++ Linking Errors
-* **Issue:** "Multiple definition of ..." errors during Verilator compilation.
-* **Root Cause:** `tbSingleCycleF1.cpp` included `vbuddy.cpp` directly, but the command line also compiled `vbuddy.cpp`, causing double definitions.
-* **Solution:** Removed `vbuddy.cpp` from the Verilator command arguments since it was already included in the header. Added missing `<string>` headers to `vbuddy.cpp`.
-
-> **✅ Status:** Compilation successful (`obj_dir/Vtop` generated).
-
----
-
-## 📅 Day 2: The "VBuddy" Hardware Integration
-**Date:** Dec 2, 2025
-**Objective:** Connect the Verilator simulation to the physical VBuddy hardware (F1 Lights Test).
-
-### 🔴 Problem 1: WSL USB Access
-* **Issue:** Error opening port: `/dev/ttyUSB0` and Segmentation fault.
+### 🛠️ Toolchain & Automation (The "GCC" Shift)
+* **Context:** We initially used RARS, but it outputted 32-bit hex files which broke our 8-bit memory model. We needed a precise, byte-aligned hex output.
 * **Solution:**
-    1.  Created `vbuddy.cfg` config file.
-    2.  Used Windows PowerShell (`usbipd attach`) to pass-through the USB device to WSL.
-    3.  Granted permissions in Linux: `sudo chmod 777 /dev/ttyUSB0`.
+    1.  **Cross-Compilation Flow:** Switched to the industrial standard `riscv64-unknown-elf-gcc`.
+    2.  **Linker Control:** Verified the text section offset to ensure instructions start at `0x0` or `0xBFC00000` (Reset Vector) as per design.
+    3.  **Binary Extraction:** Used `riscv64-unknown-elf-objcopy -O binary -j .text` to strip headers and keep only machine code.
+    4.  **Formatting Script (`f1.sh`):** Wrote a Bash script to automate the conversion from binary to the specific hex format required by Verilog's `$readmemh`.
 
-### 🔴 Problem 2: Communication Hang ("Loading rom..." Freeze)
-* **Issue:** Simulation stuck at initialization.
-* **Root Cause:** Handshake signals (`ack`) in `vbdHeader` were blocking because the VBuddy hardware wasn't responding in time.
-* **Solution:** Implemented a "Hot-Plug" reset strategy and used the physical **Black Reset Button** on VBuddy to sync the connection.
+### 🔴 Problem 1: Directory Chaos & Path Resolution
+* **Issue:** Scripts failed with "No such file" errors depending on where they were called.
+* **Root Cause:** Inconsistent execution paths (`./script.sh` vs `cd tb; ./script.sh`).
+* **Solution:** Standardized the workflow. All commands are now executed from the **Project Root (`repo/`)**. Updated all SystemVerilog `$readmemh` calls to use relative paths from the simulation executable location.
 
-### 🔴 Problem 3: The "Dark LED" Mystery (Protocol Mismatch)
-* **Issue:** Terminal showed correct CPU logic (`a0` sequence: 1, 3, 7...), but physical LEDs remained off.
-* **Debug:** Verified CPU logic was perfect. Suspected driver incompatibility.
-* **Solution:** Discovered the VBuddy firmware required **ASCII Protocol** (`$B,val`) instead of the Raw Binary Protocol (`'B', val`) used in the original driver.
-* **Fix:** Rewrote `vbdBar()` in `vbuddy.cpp` to send ASCII strings. Success! F1 Lights worked.
-
-> **✅ Status:** Hardware loop closed. Visual verification passed.
+### 🔴 Problem 2: C++ Linking Errors
+* **Issue:** `multiple definition of 'vbuddy'` errors during the build.
+* **Debug:** The `Makefile` generated by Verilator was compiling `vbuddy.cpp` twice—once because it was in the source list, and once because it was included in the testbench.
+* **Fix:** Cleaned up the include hierarchy. Removed the explicit `.cpp` file from the Verilator arguments and relied on the header file inclusion.
 
 ---
 
-## 📅 Day 3: Moving to Industrial Verification (Google Test)
+## 📅 Day 3: VBuddy Integration & Waveform Debugging
+**Date:** Dec 2, 2025
+**Objective:** Connect the Verilator simulation to the physical VBuddy hardware and debug the F1 program.
+
+### 🔧 Verification Environment Setup
+**Modular Testbench (Top_singleCycle_tb.cpp):**
+
+Decoupled the `runSimulation()` logic from specific test cases.
+
+Implemented Google Test (`TEST_F`) to automatically compile different assembly files (.s), generate Hex code, and verify the CPU output (`a0`) against expected values (e.g., 254 for addi test).
+
+### 🔍 Deep Dive Debugging: LED always off
+* **Symptom:** The CPU was running (PC was incrementing), and `a0` register showed the correct pattern (1, 3, 7, 15...), but the physical VBuddy LEDs were off.
+* **Investigation (GTKWave):**
+    * Enabled VCD tracing (`verilator --trace`).
+    * Inspected the `a0` output port in the waveform. **Result:** `a0` was updating correctly every cycle.
+    * Inspected the VBuddy `vbdBar()` function call return values.
+* **Root Cause:** **Protocol Mismatch.** The VBuddy firmware on the FPGA expected an **ASCII** string command (e.g., "$B,255\n") via USB serial, but our driver was sending raw binary integers.
+* **Solution:** Rewrote the `vbdBar` function in `vbuddy.cpp` to use `sprintf` to format the data into the required ASCII string before sending.
+
+> **✅ Status:** F1 Light program verified. The LEDs now sequence correctly in sync with the simulation.
+
+---
+
+## 📅 Day 4: Industrial Verification Strategy (Google Test)
 **Date:** Dec 4, 2025
-**Objective:** Migrating from manual visual tests to automated Unit Tests using Google Test (GTest).
+**Objective:** Moving from "Eyeball Verification" to automated "Regression Testing".
 
-### 🔄 Refactoring
-Adopted a structured C++ Testbench architecture:
-* `base_testbench.h`: GTest setup/teardown.
-* `testbench.h`: Clock drive (`runSimulation`).
-* `Top_singleCycle_tb.cpp`: Specific test cases.
+### 🔄 Why Google Test?
+* **Scalability:** As we add features (like Pipelining later), manual visual checks become impossible.
+* **Regression Safety:** GTest allows us to re-run all previous tests (Instruction tests, PDF tests) in milliseconds to ensure new changes didn't break old features.
 
-### 🔴 Problem 1: Linker Errors
-* **Issue:** `undefined reference to 'ticks'`.
-* **Solution:** Defined the global variable `unsigned int ticks = 0;` in the top-level testbench file.
+### 🏗️ Testbench Architecture
+* **Fixture Class:** Created a `CpuTestbench` class inheriting from `::testing::Test`.
+* **Setup/Teardown:**
+    * `SetUp()`: Instantiates the `Vtop` model and asserts Reset.
+    * `TearDown()`: Finalizes the trace dump and deletes the model.
+* **Test Case:** `Test5_PDF_Distribution`
+    * Runs the Gaussian Distribution assembly program.
+    * Loads reference data (`gaussian.mem`).
+    * **Assertion:** `EXPECT_EQ(top->a0, 153);` checks if the bin count matches the mathematical expectation.
 
-### 🔴 Problem 2: Dependency Hell
-* **Issue:** `fatal error: gtest/gtest.h: No such file`.
-* **Solution:** Installed libgtest-dev via apt.
-
-> **✅ Status:** Testbench infrastructure ready.
+### 🔴 Problem 1: Dependency Hell
+* **Issue:** Compiler couldn't find `<gtest/gtest.h>`.
+* **Solution:** Installed `libgtest-dev` and manually linked the library in the `g++` command: `-lgtest -lgtest_main -lpthread`.
 
 ---
 
-## 📅 Day 4: Automation & The Final "Magic Number" Bug
-**Date:** Dec 5-6, 2025
-**Objective:** Pass all 5 assembly test cases (`addi`, `li`, `lbu`, `jal`, `pdf`) automatically.
+## 📅 Day 5: Automation & The Final "Number" Bug
+**Date:** Dec 5, 2025
+**Objective:** Pass all 5 assembly test cases automatically.
 
-### 🔴 Problem 1: Script Paths
-* **Issue:** `sh: 1: tb/tests/compile.sh: not found`.
-* **Solution:** Fixed relative paths in `system()` calls to match the root execution context (`tb/tests/compile_singleCycle.sh`).
-
-### 🔴 Problem 2: The "63 vs 254" Data Corruption
-* **Issue:** Test1_AddiBne Failed. Expected **254**, got **63**.
-* **Investigation:** The simulation was running, but data was garbage.
-* **Root Cause:** The RISC-V compilation script (`compile_singleCycle.sh`) used an obsolete flag `--width=4` for `objcopy`, which the local toolchain ignored. This resulted in a malformed `program.hex`.
-* **Solution:** Updated the script to use `--verilog-data-width=4`.
+### 🔴 Problem 1: The "63 vs 254" Data Corruption
+* **Issue:** `Test1_AddiBne` Failed. Expected **254** (loop counter), got **63**.
+* **Analysis:**
+    * The number 63 is `0011 1111` in binary. 254 is `1111 1110`.
+    * This looked like a bit-truncation or masking issue.
+* **Root Cause:** The `objcopy` step in our script used a legacy flag `--width=4` intended for a different architecture. This caused the hex file to be formatted incorrectly, effectively loading "garbage" instructions into the upper bits of the Instruction Memory.
+* **Solution:** Updated the `compile_singleCycle.sh` script to use `--verilog-data-width=4` and ensured strict 32-bit alignment.
 
 ### 🏁 Final Result
 Re-ran `./sim_cpu`:
 
 ```text
 [==========] Running 5 tests from 1 test suite.
+[----------] Global test environment set-up.
+[ RUN      ] CpuTestbench.Test1_AddiBne
+[       OK ] CpuTestbench.Test1_AddiBne (2 ms)
+...
+[ RUN      ] CpuTestbench.Test5_PDF_Distribution
+[       OK ] CpuTestbench.Test5_PDF_Distribution (45 ms)
+[==========] 5 tests from 1 test suite ran.
 [  PASSED  ] 5 tests.
 ```
-
