@@ -93,3 +93,32 @@ logic [ADDRESS_WIDTH-1:0] addr;
 ```
 
 In this case, since the address we actually used are 0x00001000 and 0x00001001, the memory space width is defined as:
+| Item | WIDTH |
+|------|--------|
+| Address | 16 bits |
+| Data | 32 bits |
+| BYTE | 8 bits |
+
+that is, having an array with addresses ranging from 0 to 2^16-1, with a data width of 32 bits.
+
+address is taken from the lower 16 bits of A(ALUout)
+```
+assign addr = A[ADDRESS_WIDTH-1:0];
+```
+
+Two instructions executed are:
+
+#### LBU
+```
+if ((A >= 32'h0000_1000) && (A <= 32'h0001_FFFF)) //if not in the interval, return 0
+        RD = {24'b0, mem[addr]};
+    else
+        RD = 32'h0;
+```
+
+#### SB
+```
+if (WE && (A >= 32'h0000_1000) && (A <= 32'h0001_FFFF))
+        mem[addr] <= WD[7:0];
+```
+notice that wrting only occurs when there is a rising edge in clk.
