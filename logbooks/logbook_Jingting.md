@@ -1,6 +1,6 @@
 # 📔 Team-1 RISC-V Single Cycle CPU - Development Logbook
 
-* **Author:** Jingting & Team-1
+* **Author:** Jingting 
 * **Period:** Dec 1, 2025 - Dec 6, 2025
 * **Platform:** WSL (Ubuntu 22.04) on Windows
 
