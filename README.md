@@ -1,4 +1,4 @@
-# 🚀 Team-1: Single Cycle RISC-V CPU  TESTBENCH workflow
+# 🚀 Team-1: Single Cycle RISC-V CPU  TESTBENCH Workflow
 
 ***--- Jingting&Team-1***
 
