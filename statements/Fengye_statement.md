@@ -63,3 +63,33 @@ a0 = registers[10];
 ```
 
 RD1 and RD2 get values from register file with AD1 and AD2, as follow:
+```
+RD1 = registers[AD1];
+RD2 = registers[AD2];
+```
+
+When the write_enable signal is high, data WD3 should be written to register[AD3]:
+```
+always_ff @(posedge clk)
+    if (WE3 && (AD3 != 5'd0))       registers[AD3] <= WD3;
+```
+
+CAREFUL!! x0 must not be written!
+
+Specification:
+| Item | WIDTH |
+|------|--------|
+| Address | 5 bits |
+| Data | 32 bits |
+
+---
+### Data Memory
+<img width="290" height="76" alt="截屏2025-11-30 20 22 26" src="https://github.com/user-attachments/assets/98c563fa-e08e-4e6b-a166-2177f2d372d4" />
+
+The data memory is one of the two memories in the RISC-V CPU. It is in charge of storing data and loading data back to registers. Given by project brief, the mapping can be defined as follow:
+```
+logic [BYTE_WIDTH-1:0] mem [2**ADDRESS_WIDTH-1:0]; // Data memory from 0x00010000 to 0x0001FFFF
+logic [ADDRESS_WIDTH-1:0] addr;
+```
+
+In this case, since the address we actually used are 0x00001000 and 0x00001001, the memory space width is defined as:
