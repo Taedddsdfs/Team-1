@@ -1,6 +1,6 @@
 # 🚀 Team-1: Single Cycle RISC-V CPU  TESTBENCH workflow
 
-* **--- Jingting&Team-1** *
+***--- Jingting&Team-1***
 
 Welcome to the Team-1 RISC-V Project. This repository contains the implementation and verification environment for a Single Cycle RISC-V CPU.
 
