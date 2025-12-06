@@ -1,133 +1,163 @@
-# 📔 Team-1 RISC-V Single Cycle CPU - Development Logbook
+# 📔 RISC-V Single Cycle CPU Dev Log | Nov 30 – Dec 6
 
-* **Role:** Testbench, Verification, debug
-* **Author:** Jingting
-* **Period:** **Nov 30, 2025 - Dec 5, 2025**
-* **Platform:** WSL (Ubuntu 22.04) on Windows
+> **Sprint Week Record:** From basic architecture setup to full functional verification via Gaussian distribution calculation.
 
----
+## Project Info
 
-## 📅 Day 1: Architecture Implementation & Critical Fixes
-**Date:** Nov 30, 2025
-**Objective:** Implement the Single-Cycle Architecture and adapt memory systems for the F1 Assembly program.
-
-### 🏗️ Critical Architecture Fix: JALR & PC Mux Logic
-* **Context:** The F1 Light program relies heavily on subroutine calls (`jal`) and returns (`jalr`). The initial design based on the standard Harris & Harris model was insufficient.
-* **Issue Identified:** The standard model uses a 1-bit `PCSrc` signal, supporting only `PC+4` or `BranchTarget`. It lacked the data path to load `PC` directly from the `ALUResult`, which is required for `JALR` (where target = `rs1 + imm`).
-* **Detailed Solution:**
-    1.  **Control Unit Upgrade:** Expanded the main decoder logic. Instead of a simple `if-else` for branches, we implemented a priority logic to generate a 2-bit `PCSrc`.
-    2.  **PC Mux Redesign:** Replaced the 2-input Mux with a **3-way Multiplexer**:
-        * `2'b00`: **Normal Fetch** (`PC + 4`).
-        * `2'b01`: **Branch/Jump** (`PC + Imm`). Used for `BEQ`, `BNE`, `JAL`.
-        * `2'b10`: **Register Indirect** (`ALUResult`). Used specifically for `JALR` to return from functions.
-    3.  **Datapath Routing:** Created a feedback loop connecting `ALUResult` wire back to the PC input stage, ensuring the address calculated in the Execute stage can update the PC in the next cycle.
-
-### 💾 Memory System Adaptation (Byte-Addressable)
-* **Instruction Memory (`instr_mem.sv`):**
-    * **Challenge:** The lab specifies an 8-bit memory width, but RISC-V instructions are 32-bit.
-    * **Implementation:** Designed a **Little Endian** concatenation logic. The fetch stage reads 4 consecutive bytes: `data = {rom[a+3], rom[a+2], rom[a+1], rom[a]}`.
-* **Data Memory (`data_mem.sv`):**
-    * **Logic:** Implemented `SB` (Store Byte) and `LBU` (Load Byte Unsigned). Added a mask logic to ensure `SB` only writes to the specific byte lane enabled by the address LSBs, preserving the rest of the 32-bit word.
-
-> **✅ Status:** Core RTL design completed. `ImmGen` block updated to handle `U-Type` and `J-Type` immediates correctly.
+| Category | Details |
+| :--- | :--- |
+| **Project Name** | Team-1 RISC-V Single Cycle CPU Design & Verification |
+| **Author** | Jingting |
+| **Role** | RTL Designer, Verification Engineer, Toolchain Manager |
+| **Platform** | WSL (Ubuntu 22.04) on Windows |
+| **Cycle** | Nov 30, 2025 – Dec 6, 2025 |
 
 ---
 
-## 📅 Day 2: Toolchain Setup & Compilation Struggles
-**Date:** Dec 1, 2025
-**Objective:** Establish a robust compilation workflow to bridge Assembly and Hardware.
+## 📖 Introduction
 
-### 🛠️ Toolchain & Automation (The "GCC" Shift)
-* **Context:** We initially used RARS, but it outputted 32-bit hex files which broke our 8-bit memory model. We needed a precise, byte-aligned hex output.
+This week was the critical sprint week for the RISC-V single-cycle processor development. The main goal was to transition from a basic instruction set implementation to a fully functional CPU capable of supporting complex assembly programs (such as Gaussian distribution calculation).
+
+**Evolution of Work Focus:**
+* **Early Phase:** Dedicated to establishing the basic datapath and JALR jump logic.
+* **Mid Phase:** Underwent a toolchain refactoring, shifting from manual compilation to an automated testing framework (GTest).
+* **Late Phase (Dec 6 Final Battle):** Focused on instruction set extension (Multiplication support), deep debugging of memory architecture (solving address aliasing), and fully passing 5 standard assembly test cases.
+
+---
+
+## 📅 Part 1: Early Work Review (Nov 30 – Dec 3)
+
+### 1.1 Architecture Implementation & Critical Path Fix (Nov 30)
+**Goal:** Implement the basic single-cycle architecture and adapt to the instruction requirements of the F1 Light program.
+
+In the early stages of the project, we coded the RTL based on the standard Harris & Harris single-cycle model. However, when testing the F1 start-up program, we discovered that the standard model could not support subroutine calls and returns, leading to the first major architectural refactoring.
+
+
+
+#### 🔧 JALR & PC Mux Logic Refactoring
+* **Problem Background:** The F1 program makes extensive use of `JAL` (Jump and Link) and `JALR` (Jump and Link Register). The standard model's `PCSrc` (1-bit) can only select between `PC+4` and `BranchTarget`. It lacks a path to write `ALUResult` directly back to the PC (required for `JALR`, where the target is `rs1 + imm`).
 * **Solution:**
-    1.  **Cross-Compilation Flow:** Switched to the industrial standard `riscv64-unknown-elf-gcc`.
-    2.  **Linker Control:** Verified the text section offset to ensure instructions start at `0x0` or `0xBFC00000` (Reset Vector) as per design.
-    3.  **Binary Extraction:** Used `riscv64-unknown-elf-objcopy -O binary -j .text` to strip headers and keep only machine code.
-    4.  **Formatting Script (`f1.sh`):** Wrote a Bash script to automate the conversion from binary to the specific hex format required by Verilog's `$readmemh`.
+    1.  **Control Unit Upgrade:** Expanded `PCSrc` to a 2-bit signal and introduced priority logic.
+    2.  **Datapath Modification:** Upgraded the PC Input Mux from 2-to-1 to 3-to-1:
+        * `2'b00`: Normal Fetch (`PC + 4`) —— Sequential execution.
+        * `2'b01`: Branch/Jump (`PC + Imm`) —— Used for `BEQ`, `BNE`, `JAL`.
+        * `2'b10`: Register Indirect (`ALUResult`) —— Dedicated to `JALR` (Function return).
+    3.  **Physical Connection:** Established a feedback path from the ALU output back to the Fetch Stage.
 
-### 🔴 Problem 1: Directory Chaos & Path Resolution
-* **Issue:** Scripts failed with "No such file" errors depending on where they were called.
-* **Root Cause:** Inconsistent execution paths (`./script.sh` vs `cd tb; ./script.sh`).
-* **Solution:** Standardized the workflow. All commands are now executed from the **Project Root (`repo/`)**. Updated all SystemVerilog `$readmemh` calls to use relative paths from the simulation executable location.
+### 1.2 Memory System Byte Addressing Adaptation (Dec 1)
+**Goal:** Resolve the conflict between the RISC-V 32-bit word length and the 8-bit memory width.
 
-### 🔴 Problem 2: C++ Linking Errors
-* **Issue:** `multiple definition of 'vbuddy'` errors during the build.
-* **Debug:** The `Makefile` generated by Verilator was compiling `vbuddy.cpp` twice—once because it was in the source list, and once because it was included in the testbench.
-* **Fix:** Cleaned up the include hierarchy. Removed the explicit `.cpp` file from the Verilator arguments and relied on the header file inclusion.
+**Instruction Memory (`instr_mem.sv`):**
+* **Challenge:** 8-bit wide ROM vs. 32-bit RISC-V instructions.
+* **Implementation:** Designed splicing logic based on Little Endian. It reads 4 consecutive byte addresses in a single cycle:
+    ```verilog
+    data = {rom[a+3], rom[a+2], rom[a+1], rom[a]};
+    ```
 
----
+**Data Memory (`data_mem.sv`):**
+* **Implementation:** Implemented support for `SB` (Store Byte) and `LBU` (Load Byte Unsigned). Introduced masking logic to ensure `SB` only writes to the specific byte channel selected by the lower two bits of the address, without destroying the other 24 bits in the word.
 
-## 📅 Day 3: VBuddy Integration & Waveform Debugging
-**Date:** Dec 2, 2025
-**Objective:** Connect the Verilator simulation to the physical VBuddy hardware and debug the F1 program.
+### 1.3 Toolchain Migration & Visual Debugging (Dec 2 – 3)
+**Goal:** Establish a reliable compilation flow and connect VBuddy for visual verification.
 
-### 🔧 Verification Environment Setup
-**Modular Testbench (Top_singleCycle_tb.cpp):**
+**Toolchain Migration (The GCC Shift):**
+* **Decision:** Abandoned RARS simulator; fully migrated to the industry-standard `riscv64-unknown-elf-gcc` toolchain.
+* **Flow:** `.s` (Assembly) → `.o` (Object) → `.bin` (Binary) → `.hex` (Formatted text for `$readmemh` alignment).
 
-Decoupled the `runSimulation()` logic from specific test cases.
-
-Implemented Google Test (`TEST_F`) to automatically compile different assembly files (.s), generate Hex code, and verify the CPU output (`a0`) against expected values (e.g., 254 for addi test).
-
-### 🔍 Deep Dive Debugging: LED always off
-* **Symptom:** The CPU was running (PC was incrementing), and `a0` register showed the correct pattern (1, 3, 7, 15...), but the physical VBuddy LEDs were off.
-* **Investigation (GTKWave):**
-    * Enabled VCD tracing (`verilator --trace`).
-    * Inspected the `a0` output port in the waveform. **Result:** `a0` was updating correctly every cycle.
-    * Inspected the VBuddy `vbdBar()` function call return values.
-* **Root Cause:** **Protocol Mismatch.** The VBuddy firmware on the FPGA expected an **ASCII** string command (e.g., "$B,255\n") via USB serial, but our driver was sending raw binary integers.
-* **Solution:** Rewrote the `vbdBar` function in `vbuddy.cpp` to use `sprintf` to format the data into the required ASCII string before sending.
-
-> **✅ Status:** F1 Light program verified. The LEDs now sequence correctly in sync with the simulation.
+**VBuddy Protocol Fix:**
+* **Phenomenon:** Simulation waveforms showed the CPU running correctly, but the physical VBuddy LEDs remained off.
+* **Root Cause:** The VBuddy firmware expects ASCII string commands (e.g., `"$B,255\n"`) via USB serial, whereas our testbench was sending raw binary integers.
+* **Fix:** Modified the driver code to use `sprintf` to format integers into the required ASCII strings. Verification passed on the physical device thereafter.
 
 ---
 
-## 📅 Day 4: Industrial Verification Strategy (Google Test)
-**Date:** Dec 4, 2025
-**Objective:** Moving from "Eyeball Verification" to automated "Regression Testing".
+## 📅 Part 2: Compile Environment Migration & Preliminary Debug (Dec 4 – Dec 5)
 
-### 🔄 Why Google Test?
-* **Scalability:** As we add features (like Pipelining later), manual visual checks become impossible.
-* **Regression Safety:** GTest allows us to re-run all previous tests (Instruction tests, PDF tests) in milliseconds to ensure new changes didn't break old features.
+### 2.1 Script Crisis & Standardized Build (Dec 4)
+**Issue:** Manually typing verilator commands became unmaintainable, and hardcoded paths caused "File Not Found" errors.
+**Decision:** Scrapped custom scripts and fully adapted to the instructor-provided build system (`doit.sh`) to leverage the GTest automation framework.
 
-### 🏗️ Testbench Architecture
-* **Fixture Class:** Created a `CpuTestbench` class inheriting from `::testing::Test`.
-* **Setup/Teardown:**
-    * `SetUp()`: Instantiates the `Vtop` model and asserts Reset.
-    * `TearDown()`: Finalizes the trace dump and deletes the model.
-* **Test Case:** `Test5_PDF_Distribution`
-    * Runs the Gaussian Distribution assembly program.
-    * Loads reference data (`gaussian.mem`).
-    * **Assertion:** `EXPECT_EQ(top->a0, 153);` checks if the bin count matches the mathematical expectation.
+### 2.2 Cross-Platform Adaptation (macOS to Linux) (Dec 5)
+**Goal:** Run scripts originally developed for macOS on a WSL (Ubuntu) environment.
 
-### 🔴 Problem 1: Dependency Hell
-* **Issue:** Compiler couldn't find `<gtest/gtest.h>`.
-* **Solution:** Installed `libgtest-dev` and manually linked the library in the `g++` command: `-lgtest -lgtest_main -lpthread`.
+| Error Type | Error Message | Solution |
+| :--- | :--- | :--- |
+| **GTest Path** | `GoogleTest not found` | Removed macOS hardcoded paths; switched to Linux standard linker flags `-lgtest -lgtest_main -lpthread`. |
+| **Module Definition** | `Filename 'top' does not match MODULE` | Verilator requires one module per file. Split `mux2` and `mux3` definitions from the bottom of `top.sv` into separate files `rtl/mux2.sv` and `rtl/mux3.sv`. |
+
+### 2.3 Hardware Adapter for Linker Script (Dec 5)
+**Goal:** Solve the issue where the program "runs away" (executes invalid instructions) after power-up.
+
+**CRITICAL INSIGHT:**
+The `compile.sh` linker script sets the code section base address to `0xBFC00000`, while the CPU hardware resets the PC to `0x0`. The CPU fetches from address 0, but the code actually resides 3GB away.
+
+**Hardware Fix (Co-design):**
+* **PC Reset:** Modified `program_counter.sv` logic to reset `PC <= 32'hBFC00000`.
+* **Address Mapping:** Implemented address masking in `instruction_memory.sv`, mapping the virtual high address to the physical ROM's low address space (`addr[11:0]`).
 
 ---
 
-## 📅 Day 5: Automation & The Final "Number" Bug
-**Date:** Dec 5, 2025
-**Objective:** Pass all 5 assembly test cases automatically.
+## 📅 Part 3: Deep Debug & Multi-File Testing (Dec 6 – Final Battle)
 
-### 🔴 Problem 1: The "63 vs 254" Data Corruption
-* **Issue:** `Test1_AddiBne` Failed. Expected **254** (loop counter), got **63**.
-* **Analysis:**
-    * The number 63 is `0011 1111` in binary. 254 is `1111 1110`.
-    * This looked like a bit-truncation or masking issue.
-* **Root Cause:** The `objcopy` step in our script used a legacy flag `--width=4` intended for a different architecture. This caused the hex file to be formatted incorrectly, effectively loading "garbage" instructions into the upper bits of the Instruction Memory.
-* **Solution:** Updated the `compile_singleCycle.sh` script to use `--verilog-data-width=4` and ensured strict 32-bit alignment.
+### 3.1 Overview
+Today's core task was **Debugging**. Through collaboration with AI, we systematically troubleshot issues ranging from simple arithmetic errors to complex memory aliasing, ultimately passing all 5 standard assembly test files.
 
-### 🏁 Final Result
-Re-ran `./sim_cpu`:
+### 3.2 Debug Record: The Road to Clearance
 
+#### ✅ Test 1: `1_addi_bne.s` (Basic Instructions)
+* **Status:** PASS
+* **Significance:** Proved that the basic fetch, decode, execute pipeline is clear, and BNE branch logic is correct.
+
+#### ✅ Test 2: `2_li_add.s` (Immediate Load & Addition)
+* **Failure:** Expected `a0 = 1000`, Got `a0 = -1000` (Addition became Subtraction).
+* **Root Cause:** The ALU Decoder relied solely on the 30th bit (`funct7[5]`) to distinguish ADD from SUB.
+* **Trap:** `ADDI` is an I-Type instruction, but its immediate value 1000 (`0x3E8`) happens to have a 1 at the 30th bit position. The decoder misidentified it as an R-Type SUB instruction.
+* **Fix:** Introduced the 5th bit of the Opcode (`opb5`) as an input.
+    ```verilog
+    if (opb5 && funct7_5) ALUControl = SUB; else ALUControl = ADD;
+    ```
+
+#### ✅ Test 3: `3_lbu_sb.s` (Byte Read/Write)
+* **Failure:** Result deviated massively.
+* **Root Cause:** Although named "Byte" operations, the logic was still performing "Word" (32-bit) operations. `SB` overwrote neighboring bytes, and `LBU` failed to zero-extend the high bits.
+* **Fix:**
+    1.  Passed the `funct3` signal all the way to `data_mem`.
+    2.  Implemented complete case logic: `SB` only writes to `mem[addr]` (8 bits), `LBU` reads `mem[addr]` and pads the upper 24 bits with zeros.
+
+#### ✅ Test 4: `4_jal_ret.s` (Function Call)
+* **Status:** PASS
+* **Significance:** Re-verified the correctness of the PC Mux `2'b10` path and the `JALR` logic loop.
+
+#### ✅ Test 5: `5_pdf.s` (Gaussian Distribution - Final BOSS)
+
+
+[Image of Gaussian distribution curve]
+
+Experienced three stages of failure and repair:
+
+**Stage 1: Missing Functionality ❌**
+* **Phenomenon:** Incorrect result.
+* **Analysis:** The PDF algorithm involves squaring, but `alu.sv` lacked `MUL` instruction support.
+* **Fix:** Added `*` operator in ALU and `funct7[0]` detection in Control Unit.
+
+**Stage 2: Missing Data (Result = 200) ❌**
+* **Analysis:** Result was equal to `max_count` (200), implying all data read from memory was 0.
+* **Fix:** Correctly loaded the `gaussian.mem` data file in the testbench.
+
+**Stage 3: Memory Aliasing ❌ -> ✅**
+* **Phenomenon:** Result became 808 or 952, and the program crashed midway.
+* **Root Cause (CRITICAL):**
+    * *Assembly Definition:* Data at `0x10000`, Variables at `0x100`.
+    * *Hardware Reality:* Data memory address width was only 16 bits (`0x10000` truncated to `0x0000`).
+    * *Consequence:* The Gaussian data was loaded at the beginning of memory (`0x0`). When the program initialized the variable area (`0x100`), it wiped out its own source data due to the overlap!
+* **Ultimate Fix:**
+    1.  **Expansion:** Extended data memory address width to 17 bits (128KB).
+    2.  **Offset Loading:** `$readmemh(..., mem, 17'h10000)` to physically isolate data and variables.
+    3.  **Cleaning:** Used `sed` to clean labels from the `.mem` file.
+    4.  **Timing:** Increased simulation cycles to 1,000,000.
+
+**Final Result:**
 ```text
-[==========] Running 5 tests from 1 test suite.
-[----------] Global test environment set-up.
-[ RUN      ] CpuTestbench.Test1_AddiBne
-[       OK ] CpuTestbench.Test1_AddiBne (2 ms)
-...
-[ RUN      ] CpuTestbench.Test5_PDF_Distribution
-[       OK ] CpuTestbench.Test5_PDF_Distribution (45 ms)
-[==========] 5 tests from 1 test suite ran.
+[ RUN      ] CpuTestbench.Test5_Pdf
+[       OK ] CpuTestbench.Test5_Pdf
 [  PASSED  ] 5 tests.
-```
