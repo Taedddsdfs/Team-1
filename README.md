@@ -104,6 +104,70 @@ If the simulation runs successfully, you should see the **Google Test** summary 
 [  PASSED  ] 5 tests.
 ```
 
+## 🏎️ Bonus: F1 Light Sequence (Visual Test)
+
+If you want to see the **F1 starting light sequence** running on the VBuddy (or simulation window), follow these specific steps. This uses a specialized testbench (`tbSingleCycleF1.cpp`) designed for visual output.
+
+### 1. Hardware Setup (WSL Users) 🔌
+
+If you are using a physical VBuddy with **WSL**, you must attach the USB device first:
+
+**Open Windows PowerShell (Admin):**
+
+```powershell
+usbipd list
+usbipd attach --wsl --busid <YOUR_BUSID>
+```
+
+In **WSL** Terminal, verify permissions:
+```Bash
+ls /dev/ttyUSB0
+sudo chmod 777 /dev/ttyUSB0
+```
+
+### 2. Compile and Run F1 Simulation 🚦
+
+This testbench uses a different compilation flow than the GTest suite above.
+
+#### Step A: Compile the Assembly
+
+Use the script to compile the F1 light logic into machine code (`program.hex`).
+
+```bash
+./tb/tests/compile_singleCycle.sh tb/tests/f1_light.s
+```
+
+#### Step B: Build the Simulation Clean the previous build and generate the executable for the F1 testbench.
+
+```
+Bash
+
+# 1. Clean previous build
+rm -rf obj_dir
+
+# 2. Generate C++ model (Note: We use Vtop here, not Vdut)
+verilator -Wall -Wno-fatal --cc --trace rtl/top.sv --exe tb/tests/tbSingleCycleF1.cpp -Irtl
+
+# 3. Build executable
+make -j -C obj_dir -f Vtop.mk Vtop
+```
+
+#### Step C: Run
+
+```
+Bash
+
+./obj_dir/Vtop
+```
+
+**💡 Pro Tip: If the simulation gets stuck at Loading rom... or Connected..., press the Black Reset Button on the VBuddy hardware to sync the handshake signal!**
+
+***Visual demo*** **@^_^@**
+
+
+![f1](https://github.com/user-attachments/assets/d05414e9-844d-4558-bd76-ae899fe05c2a)
+
+
 ## 🌊 Viewing Waveforms (Debugging)
 
 If you enabled tracing in the Verilator command (**Step 2**), a `.vcd` file (usually `waveform.vcd` or similar) will be generated after running the simulation. You can view it using **GTKWave**:
