@@ -128,7 +128,8 @@ Inspect the `a0` output signal. It should match the F1 sequence: `1` (001) $\to$
 
  -Via VBuddy (If connected):Ensure the USB device is attached. The LEDs on the VBuddy should increment and then turn off, matching the simulation logic.
  
-##3. Troubleshooting Guide
+## 3. Troubleshooting Guide
+
 **1. Test 5 Fails (Got a0 = 808 or 200)**
 -**Cause**: The rtl/gaussian.mem data file is missing, corrupted, or contains metadata tags (e.g., [source...]).
 -**Fix**: Ensure gaussian.mem contains only pure hexadecimal numbers and is located strictly in the repo/rtl/ directory.
