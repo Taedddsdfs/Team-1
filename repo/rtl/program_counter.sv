@@ -18,12 +18,12 @@ module program_counter #(
 
     always_ff @(posedge clk) begin
         if (rst) begin
-            PC <= 32'h0;
+            PC <= 32'hbfc00000;
         end else begin
             case (PCSrc)
                 2'b00: PC <= PC + 32'd4;      // Normal (Next Instr)
                 2'b01: PC <= PC + ImmOp;      // Branch / JAL (PC + Imm)
-                2'b10: PC <= ALUResult;       // JALR (Rs1 + Imm) 
+                2'b10: PC <= {ALUResult[31:1], 1'b0};       // JALR (Rs1 + Imm) 
                 default: PC <= PC + 32'd4;    
             endcase
         end

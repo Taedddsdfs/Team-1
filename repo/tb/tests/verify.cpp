@@ -15,7 +15,7 @@ protected:
     }
 };
 
-TEST_F(CpuTestbench, BaseProgramTest)
+TEST_F(CpuTestbench, BaseProgramTest1)
 {
     bool success = false;
     system("./compile.sh asm/program.S");
@@ -33,6 +33,94 @@ TEST_F(CpuTestbench, BaseProgramTest)
     if (!success)
     {
         FAIL() << "Counter did not reach 254";
+    }
+}
+
+TEST_F(CpuTestbench, BaseProgramTest2)
+{
+    bool success = false;
+    system("./compile.sh asm/2_li_add.s");
+
+    for (int i = 0; i < CYCLES; i++)
+    {
+        runSimulation(1);
+        if (top->a0 == 1000)
+        {
+            SUCCEED();
+            success = true;
+            break;
+        }
+    }
+    if (!success)
+    {
+        FAIL() << "Counter did not reach 1000";
+    }
+}
+
+TEST_F(CpuTestbench, BaseProgramTest3)
+{
+    bool success = false;
+    system("./compile.sh asm/3_lbu_sb.s");
+
+    for (int i = 0; i < CYCLES; i++)
+    {
+        runSimulation(1);
+        if (top->a0 == 300)
+        {
+            SUCCEED();
+            success = true;
+            break;
+        }
+    }
+    if (!success)
+    {
+        FAIL() << "Counter did not reach 300";
+    }
+}
+
+TEST_F(CpuTestbench, BaseProgramTest4)
+{
+    bool success = false;
+    system("./compile.sh asm/4_jal_ret.s");
+
+    for (int i = 0; i < CYCLES; i++)
+    {
+        runSimulation(1);
+        if (top->a0 == 53)
+        {
+            SUCCEED();
+            success = true;
+            break;
+        }
+    }
+    if (!success)
+    {
+        FAIL() << "Counter did not reach 53";
+    }
+}
+
+TEST_F(CpuTestbench, BaseProgramTest5)
+{
+    bool success = false;
+    system("./compile.sh asm/5_pdf.s");
+
+    for (int i = 0; i < CYCLES; i++)
+    {
+        runSimulation(1);
+
+        std::cout << "Cycle " << i 
+                  << "  a0 = " << top->a0 
+                  << std::endl;
+        if (top->a0 == 15363)
+        {
+            SUCCEED();
+            success = true;
+            break;
+        }
+    }
+    if (!success)
+    {
+        FAIL() << "Counter did not reach 15363";
     }
 }
 

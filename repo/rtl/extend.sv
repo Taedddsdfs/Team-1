@@ -24,13 +24,24 @@ module extend (
                           1'b0};
             end
             2'b11: begin
-                // J-type: JAL
-                ImmExt = {{11{instr[31]}},
-                          instr[31],
-                          instr[19:12],
-                          instr[20],
-                          instr[30:21],
-                          1'b0};
+                // J / U mixed
+                unique case (instr[6:0])
+                    7'b1101111: begin
+                    // JAL: J-type
+                    ImmExt = {{11{instr[31]}},
+                              instr[31],
+                              instr[19:12],
+                              instr[20],
+                              instr[30:21],
+                              1'b0};
+                    end
+                    7'b0110111,    // LUI
+                    7'b0010111: begin // AUIPC
+                    // U-type: imm[31:12] << 12
+                    ImmExt = {instr[31:12], 12'b0};
+                    end
+                    default: ImmExt = 32'b0;
+                endcase
             end
             default: ImmExt = 32'b0;
         endcase

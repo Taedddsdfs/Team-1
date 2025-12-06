@@ -49,7 +49,7 @@ module maindec (
                 ALUSrc    = 1'b1;
                 // ResultSrc = 00 (ALU)
                 ImmSrc    = 2'b00;   // I-type
-                ALUOp     = 2'b10;
+                ALUOp     = 2'b00;
             end
 
             // LOAD (LW/LBU...)
@@ -103,6 +103,7 @@ module maindec (
             // LUI
             OPCODE_LUI: begin
                 RegWrite  = 1'b1;
+                ALUSrc    = 1'b1;    // rs1(x0) + ImmExt(U-type) = Imm
                 ImmSrc    = 2'b11;   // U-type
                 ALUOp     = 2'b00;
             end
