@@ -1,6 +1,6 @@
 # 📔 Team-1 RISC-V Single Cycle CPU - Development Logbook
 
-* **Role:** Testbench, Verification, debug.
+* **Role:** Testbench, Verification, debug
 * **Author:** Jingting
 * **Period:** **Nov 30, 2025 - Dec 5, 2025**
 * **Platform:** WSL (Ubuntu 22.04) on Windows
