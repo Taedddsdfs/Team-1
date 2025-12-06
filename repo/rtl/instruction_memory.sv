@@ -9,8 +9,8 @@ module instruction_memory #(
     logic [BYTE_WIDTH-1:0] rom_array [4095:0];    //Memory map from 0xBFC00000 to 0xBFC00FFF
 
     initial begin
-        $display("Loading rom.");
-        $readmemh("./f1_pdf/f1.hex", rom_array);
+    $display("Loading rom from tests/f1.hex");
+    $readmemh("tests/f1.hex", rom_array);
     end
 
     always_comb begin

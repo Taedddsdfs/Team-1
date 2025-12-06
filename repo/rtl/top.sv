@@ -11,14 +11,18 @@ module top #(
     logic [31:0] RD2;                     // DataMemory input
     logic [31:0] SrcA, SrcB, ALUResult;   // ALU input & output
     logic [31:0] ReadData;                // DataMemory output
+    logic [31:0] Result_pre;              // previous result
+    logic [31:0] PCPlus4;
     logic [31:0] Result;                  // result of output mux
     logic [1:0] PCSrc;                    // PC mux controls signal
     logic [1:0] ImmSrc;                   // 2-bit Immediate source signal
     logic [2:0] ALUControl;               // ALU control signal
-    logic ResultSrc;                      // result mux control signal
+    logic [1:0] ResultSrc;                // result mux control signal
     logic EQ;                             // Equality output from ALU
     logic RegWrite, ALUSrc;               // Control signals
     logic MemWrite;                       // DataMemory WE
+
+    assign PCPlus4 = PC + 32'd4;
 
     // Program Counter
     program_counter #(.WIDTH(32)) PC_Reg (
@@ -82,11 +86,19 @@ module top #(
         .ImmExt(ImmExt)
     );
 
-    // Result Mux
-    mux ResultMux (
+    // level 1
+    mux ResultMux0 (
         .in0(ALUResult),
         .in1(ReadData),
-        .sel(ResultSrc),
+        .sel(ResultSrc[0]),
+        .out(Result_pre)
+    );
+
+    // level 2
+    mux ResultMux1 (
+        .in0(Result_pre),
+        .in1(PCPlus4),
+        .sel(ResultSrc[1]),
         .out(Result)
     );
 

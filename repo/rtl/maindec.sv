@@ -2,7 +2,7 @@
 module maindec (
     input  logic [6:0] op,
 
-    output logic       ResultSrc, // 0: ALU, 1: Data memory
+    output logic [1:0] ResultSrc, // 0: ALU, 1: Data memory
     output logic       MemWrite,
     output logic       Branch,
     output logic       ALUSrc,
@@ -24,7 +24,7 @@ module maindec (
     localparam OPCODE_AUIPC   = 7'b0010111; // AUIPC
 
     always_comb begin
-        ResultSrc = 1'b0;   // ALUResult
+        ResultSrc = 2'b00;   // ALUResult
         MemWrite  = 1'b0;
         Branch    = 1'b0;
         ALUSrc    = 1'b0;
@@ -38,7 +38,7 @@ module maindec (
             OPCODE_OP: begin
                 RegWrite  = 1'b1;
                 ALUSrc    = 1'b0;
-                // ResultSrc = 0 (ALU)
+                // ResultSrc = 00 (ALU)
                 ImmSrc    = 2'b00;
                 ALUOp     = 2'b10;
             end
@@ -47,7 +47,7 @@ module maindec (
             OPCODE_OP_IMM: begin
                 RegWrite  = 1'b1;
                 ALUSrc    = 1'b1;
-                // ResultSrc = 0 (ALU)
+                // ResultSrc = 00 (ALU)
                 ImmSrc    = 2'b00;   // I-type
                 ALUOp     = 2'b10;
             end
@@ -57,7 +57,7 @@ module maindec (
                 RegWrite  = 1'b1;
                 MemWrite  = 1'b0;
                 ALUSrc    = 1'b1;    // base + imm
-                ResultSrc = 1'b1;    // from data memory
+                ResultSrc = 2'b01;    // from data memory
                 ImmSrc    = 2'b00;   // I-type
                 ALUOp     = 2'b00;   // ADD address
             end
@@ -87,6 +87,7 @@ module maindec (
                 Jump      = 1'b1;
                 ImmSrc    = 2'b11;   // J-type
                 ALUOp     = 2'b00;
+                ResultSrc = 2'b10;   // PC + 4
             end
 
             // JALR: rd = PC+4, PC <- rs1 + imm
@@ -96,6 +97,7 @@ module maindec (
                 ALUSrc    = 1'b1;    // rs1 + imm
                 ImmSrc    = 2'b00;   // I-type
                 ALUOp     = 2'b00;   // ADD
+                ResultSrc = 2'b10;
             end
 
             // LUI
