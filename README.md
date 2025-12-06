@@ -119,7 +119,8 @@ Success! All 5 test(s) passed!
 ./doit.sh tbSingleCycleF1.cpp
 ```
 **Step 3: Verify Results**
--Via Waveform (GTKWave):**
+
+- Via Waveform (GTKWave):
 
 ```Bash
 gtkwave obj_dir/Vdut.vcd
