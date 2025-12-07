@@ -17,9 +17,13 @@
 
 ## Part 2: PC Module Architecture
 
-### 2.1 Design Decision: Integrated Next-PC Logic
+### 2.1 Design Decision: Integrated Next-PC Logic (Updated)
 **Goal:** Implement the Program Counter with built-in flow control.
-* **Implementation:** Integrated Next-PC logic directly into the `program_counter` module using a `case` statement, encapsulating fetch logic to reduce top-level wiring complexity.
+* **Evolution:** Initially planned to implement **PC, Mux, and Adder as separate modules (sv file)**.
+* **Issue:** Found that interconnecting these separate components at the top level created unnecessary wiring complexity and made debugging difficult.
+* **Decision & Implementation:** Merged them into a single `program_counter` module.
+    * Used a `case` statement to handle Next-PC logic (PC+4, Branch, JALR) internally.
+    * **Benefit:** Significantly reduced top-level structural complexity and improved code readability.
 
 ### 2.2 Synchronous Reset Implementation
 **Issue:** Initial designs using asynchronous reset caused undefined states (`X`) at simulation time zero.
