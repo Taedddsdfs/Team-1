@@ -62,10 +62,12 @@ repo/
 ├── rtl/                     # Hardware Source Code
 │   ├── top.sv
 │   ├── ... (other .sv files)
-│   └── gaussian.mem         # [CRITICAL] Data file for Test 5 must be here
+│          
 ├── tb/                      # Testbench & Tools
 │   ├── asm/                 # Assembly Source (1_addi.s ... 5_pdf.s, f1.s)
-│   ├── verify.cpp           # GTest Regression Testbench
+│   ├── tests/
+|       |── verify.cpp       # GTest Regression Testbench
+|       |── gaussian.mem     # [CRITICAL] Data file for Test 5 must be here   
 │   ├── doit.sh              # Build Automation Script
 │   └── compile.sh           # Assembly Compiler Script
 
