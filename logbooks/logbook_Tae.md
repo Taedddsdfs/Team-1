@@ -36,7 +36,20 @@
 **Issue:** Initial designs using asynchronous reset caused undefined states (`X`) at simulation time zero.
 **Fix:** Adopted strict **Synchronous Reset** (`if (rst)` inside `always_ff @(posedge clk)`).
 * **Result:** The PC reliably initializes to `32'h0` only on the rising clock edge, ensuring deterministic startup behavior essential for GTest verification.
+* 
+### 2.3 Verification Strategy (Unit Testing)
+**Goal:** Verify the PC module's logic in isolation before system integration.
 
+* **Testbench Architecture (`tb/tb.cpp`):**
+    * Adopted **Google Test (GTest)** framework to create a self-checking testbench.
+    * Implemented a `nextCycle()` helper function to simulate the clock edge (`posedge clk`).
+
+* **Test Scenarios:**
+    1.  **ResetTest:** Confirmed `PC` resets to `0` when `rst=1`.
+    2.  **SequentialLogic:** Verified `PC` increments by 4 when `PCSrc=00`.
+    3.  **BranchLogic:** Verified internal adder logic (`PC + ImmOp`) when `PCSrc=01`.
+    4.  **JALRLogic:** Verified absolute address jumping (`PC = ALUResult`) when `PCSrc=10`.
+        * *Note:* This was critical to ensure the `case` statement priority was correctly implemented in hardware.
 ---
 
 ## 📅 Part 3: Advanced Control Flow Verification (Dec 3 - Dec 5)
