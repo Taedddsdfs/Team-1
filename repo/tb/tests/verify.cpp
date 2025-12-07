@@ -1,7 +1,7 @@
 #include "testbench.h"
 #include <cstdlib>
 
-#define CYCLES 10000
+#define CYCLES 150000
 
 unsigned int ticks = 0;
 
@@ -107,10 +107,14 @@ TEST_F(CpuTestbench, BaseProgramTest5)
     for (int i = 0; i < CYCLES; i++)
     {
         runSimulation(1);
-
-        std::cout << "Cycle " << i 
-                  << "  a0 = " << top->a0 
-                  << std::endl;
+            std::cout << "Cycle " << i
+              << "  PC = 0x"  << std::hex << top->dbg_pc
+              << "  t1 = "    << std::dec << top->dbg_t1
+              << "  a4 = "    << top->dbg_a4
+              << "  ALUCtrl = " << std::hex << (int)top->dbg_alu_ctrl
+              << "  a0 = "    << std::dec << top->a0
+              << "  s1 = "    << std::dec << top->dbg_s1
+              << std::endl;
         if (top->a0 == 15363)
         {
             SUCCEED();

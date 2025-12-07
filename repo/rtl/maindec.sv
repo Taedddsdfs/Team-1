@@ -49,7 +49,7 @@ module maindec (
                 ALUSrc    = 1'b1;
                 // ResultSrc = 00 (ALU)
                 ImmSrc    = 2'b00;   // I-type
-                ALUOp     = 2'b00;
+                ALUOp     = 2'b11;
             end
 
             // LOAD (LW/LBU...)

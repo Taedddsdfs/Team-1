@@ -15,7 +15,7 @@ module instruction_memory #(
 
     always_comb begin
         // output is  asynchronous
-        dout = {rom_array[addr+3],rom_array[addr + 2],rom_array[addr + 1],rom_array[addr]};  //little endian
+        dout = {rom_array[addr+3],rom_array[addr+2],rom_array[addr+1],rom_array[addr]};  //little endian
     end
 
 endmodule

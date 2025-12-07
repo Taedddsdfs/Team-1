@@ -26,31 +26,27 @@ module aludec (
             2'b10: begin
                 unique case (funct3)
                     3'b000: begin
-                        // ADD / SUB 
+                        // R-type (ADD / SUB)
                         if (funct7_5)
                             ALUControl = ALUCTRL_SUB;
                         else
                             ALUControl = ALUCTRL_ADD;
                     end
+                    3'b111: ALUControl = ALUCTRL_AND; // AND
+                    3'b110: ALUControl = ALUCTRL_OR;  // OR
+                    3'b010: ALUControl = ALUCTRL_SLT; // SLT
+                    default: ALUControl = ALUCTRL_ADD;
+                endcase
+            end
 
-                    3'b111: begin
-                        // AND 
-                        ALUControl = ALUCTRL_AND;
-                    end
-
-                    3'b110: begin
-                        // OR 
-                        ALUControl = ALUCTRL_OR;
-                    end
-
-                    3'b010: begin
-                        // SLT 
-                        ALUControl = ALUCTRL_SLT;
-                    end
-
-                    default: begin
-                        ALUControl = ALUCTRL_ADD;
-                    end
+            2'b11: begin
+                // I-type
+                unique case (funct3)
+                    3'b000: ALUControl = ALUCTRL_ADD; // ADDI
+                    3'b111: ALUControl = ALUCTRL_AND; // ANDI
+                    3'b110: ALUControl = ALUCTRL_OR;  // ORI
+                    3'b010: ALUControl = ALUCTRL_SLT; // SLTI
+                    default: ALUControl = ALUCTRL_ADD;
                 endcase
             end
 
