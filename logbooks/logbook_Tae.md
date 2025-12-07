@@ -34,6 +34,7 @@
     2.  **Branch/JAL:** Verified relative jumping.
     3.  **JALR (Critical):** Verified absolute address jumping (`PC = ALUResult`).
 * **Outcome:** Passed all tests including corner cases (Warm-up cycles for reset).
+<img width="1621" height="280" alt="image" src="https://github.com/user-attachments/assets/91cd052b-0b3a-40cf-ae83-a3657b3f3d3b" />
 
 ---
 
