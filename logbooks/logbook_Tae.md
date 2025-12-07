@@ -2,7 +2,6 @@
 
 **Author:** Taehun
 **Role:** Core Module Lead (PC) & Verification Architect
-**Period:** Nov 30, 2025 – Dec 6, 2025
 **Module Focus:** Program Counter, Test Infrastructure, Control Flow Logic
 
 ---
