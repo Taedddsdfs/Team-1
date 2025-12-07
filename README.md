@@ -94,7 +94,7 @@ chmod +x doit.sh compile.sh
 
 ```Bash
 
-./doit.sh verify.cpp
+./doit.sh tests/verify.cpp
 ```
 
 ✅ Expected Output
