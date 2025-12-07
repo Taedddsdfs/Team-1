@@ -50,6 +50,8 @@
     3.  **BranchLogic:** Verified internal adder logic (`PC + ImmOp`) when `PCSrc=01`.
     4.  **JALRLogic:** Verified absolute address jumping (`PC = ALUResult`) when `PCSrc=10`.
         * *Note:* This was critical to ensure the `case` statement priority was correctly implemented in hardware.
+   ## Test Success
+![Test environment success](https://raw.githubusercontent.com/YourUsername/YourRepo/main/assets/image_9b0458.png)
 ---
 
 ## Part 3: Advanced Control Flow Verification (Dec 3 - Dec 5)
@@ -62,11 +64,3 @@
 **Observation:** The F1 light sequence relies heavily on `BNE` loops.
 **Debugging:** Verified that the `ImmOp` input correctly received the sign-extended immediate value, allowing the `PC <= PC + ImmOp` logic to jump backwards (negative offset) correctly.
 
----
-
-## Part 4: Final System Integration (Dec 6)
-
-### 4.1 Integration & Evidence
-**Goal:** Finalize deliverables.
-* **Outcome:** Successfully ran the Gaussian PDF reference program (`5_pdf.s`).
-* **Verification:** Validated that the PC correctly sequenced through 1,000,000+ cycles without drifting, proving the robustness of the reset and mux logic.
