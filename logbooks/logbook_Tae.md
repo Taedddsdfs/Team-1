@@ -1,4 +1,4 @@
-# 📔 Engineering Logbook: RISC-V Processor Design
+# Engineering Logbook: RISC-V Processor Design
 
 **Author:** Taehun
 **Role:** Core Module Lead (PC) & Verification Architect
@@ -6,7 +6,7 @@
 
 ---
 
-## 📅 Part 1: Infrastructure Setup (Nov 30)
+## Part 1: Infrastructure Setup (Nov 30)
 
 ### 1.1 Repository Structure & Automation
 **Goal:** Establish a clean workspace and automated build system.
@@ -16,7 +16,7 @@
 
 ---
 
-## 📅 Part 2: PC Module Architecture (Dec 1 - Dec 2)
+## Part 2: PC Module Architecture (Dec 1 - Dec 2)
 
 ### 2.1 Design Decision: Integrated Next-PC Logic
 **Goal:** Implement the Program Counter with built-in flow control.
@@ -52,7 +52,7 @@
         * *Note:* This was critical to ensure the `case` statement priority was correctly implemented in hardware.
 ---
 
-## 📅 Part 3: Advanced Control Flow Verification (Dec 3 - Dec 5)
+## Part 3: Advanced Control Flow Verification (Dec 3 - Dec 5)
 
 ### 3.1 Handling JALR (Jump and Link Register)
 **Challenge:** `JALR` requires jumping to an absolute address calculated by the ALU (`rs1 + imm`), unlike `JAL` which is relative.
@@ -64,7 +64,7 @@
 
 ---
 
-## 📅 Part 4: Final System Integration (Dec 6)
+## Part 4: Final System Integration (Dec 6)
 
 ### 4.1 Integration & Evidence
 **Goal:** Finalize deliverables.
