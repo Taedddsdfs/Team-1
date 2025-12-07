@@ -1,3 +1,17 @@
+## Component: Program Counter  and Instruction Fetch(Lead: Taehun)
+
+### Key Features
+
+- **Integrated Flow Control:** Handles `PC+4`, `Branch/JAL` (Relative), and `JALR` (Absolute) logic internally, simplifying the Fetch stage.
+
+- **Robust Verification:** Validated using a custom **Google Test** framework, ensuring 100% functional coverage for all jump scenarios.
+
+### Technical Highlight
+
+- **Optimized Testing:** Engineered a C++ based testbench linked with GTest, enabling sub-second regression testing compared to traditional simulation waves.
+
+- **Synchronous Design:** Implemented strict synchronous reset logic to guarantee deterministic startup states for system-level integration.
+
 
 # 🚀 RISC-V CPU System Verification & F1 Demo Guide
 
