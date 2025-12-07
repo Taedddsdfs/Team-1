@@ -31,6 +31,7 @@
 * **Testbench Architecture:** Used **Google Test (GTest)** for self-checking verification.
 * **Verified Scenarios:**
     1.  **ResetTest:** Confirmed `PC` resets to `0`.
+
     2.  **SequentialLogic:** Verified `PC` increments by 4.
     3.  **BranchLogic:** Verified relative jumping (`PC + ImmOp`).
     4.  **JALRLogic (Critical):** Verified absolute address jumping (`PC = ALUResult`).
@@ -42,4 +43,6 @@
 
 ### 3.1 Robustness Verification
 **Outcome:** Successfully verified all control flow paths (Sequential, Branch, JAL, JALR).
-**Evidence:** The testbench passed all scenarios with 100% assertions met.
+**Evidence:** The testbench passed all scenarios with 100% assertions met. 
+<img width="959" height="198" alt="image" src="https://github.com/user-attachments/assets/2e565e74-794e-412a-9fb1-0d430a80e1e7" />
+
