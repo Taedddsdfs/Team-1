@@ -50,9 +50,6 @@
     3.  **BranchLogic:** Verified internal adder logic (`PC + ImmOp`) when `PCSrc=01`.
     4.  **JALRLogic:** Verified absolute address jumping (`PC = ALUResult`) when `PCSrc=10`.
         * *Note:* This was critical to ensure the `case` statement priority was correctly implemented in hardware.
-   ## Test Success
-![Test environment success](https://raw.githubusercontent.com/YourUsername/YourRepo/main/assets/image_9b0458.png)
----
 
 ## Part 3: Advanced Control Flow Verification (Dec 3 - Dec 5)
 
