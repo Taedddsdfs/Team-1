@@ -39,4 +39,9 @@
 ---
 
 ## Part 3: Reflection
-**What I learned:** I gained deep insight into the importance of **synchronous design** for verification reliability. Integrating Google Test taught me how **Automated Regression Testing** saves significant debugging time compared to manual waveform inspection.
+**What I learned:**
+1.  **Architectural Trade-offs:** I initially attempted a fine-grained modular approach (separating PC, Adder, and Mux), but realized that the complex control paths required for instructions like `JALR` created excessive top-level wiring overhead. This taught me that **strategic encapsulation** often yields cleaner, more maintainable hardware than strict modularity.
+
+2.  **Verification Reliability:** I gained deep insight into the importance of **synchronous design**. Integrating Google Test demonstrated how **Automated Regression Testing** saves significant debugging time compared to manual waveform inspection.
+
+3.  **Process Efficiency (DevOps):** Setting up the build automation script (`doit.sh`) taught me that **investing in tooling upfront** drastically reduces iteration time. Enabling sub-second testing allowed me to fail fast and fix fast, which was critical for meeting the deadline.
