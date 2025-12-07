@@ -1,4 +1,4 @@
-## Component: Program Counter  and Instruction Fetch(Lead: Tae hun)
+## Component: Program Counter  and Instruction Fetch (Lead: Tae hun)
 
 ### Key Features
 
