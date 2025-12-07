@@ -37,16 +37,23 @@ TEST_F(ProgramCounterTestbench, NormalIncrementingTest){
     }
 }
 
-TEST_F(ProgramCounterTestbench, BranchTest){
+TEST_F(ProgramCounterTestbench, JALRTest){
     top->rst = 0;
+    top->PCSrc = 0; 
     
+
     runSimulation(1);
 
-    top->PCSrc = 1;     
-    top->ImmOp = 5;     
     
-    runSimulation(1);   
-    EXPECT_EQ(top->PC, 5); 
+    top->PCSrc = 2;          
+    top->ALUResult = 0x1000; 
+    top->ImmOp = 0;         
+    
+
+    runSimulation(1);
+    
+
+    EXPECT_EQ(top->PC, 0x1000); 
 }
 
 int main(int argc, char **argv)
