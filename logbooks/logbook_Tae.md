@@ -11,8 +11,8 @@
 ### 1.1 Repository Structure & Automation
 **Goal:** Establish a clean workspace and automated build system.
 
-* **Action:** Organized the repository into `rtl/` and `tb/` and developed **`build.sh`**.
-* **Impact:** The script automates Verilator and GTest compilation, linking standard flags (`-Wall -g -std=c++11`). This reduced the build/test iteration time from minutes to seconds.
+* **Action:** Organized the repository into `rtl/` and `tb/` and configured the **`doit.sh`** build script.
+* **Impact:** Adapted the instructor-provided build system to link **Google Test** libraries (`-lgtest`), reducing the build/test iteration time from minutes to seconds.
 
 ---
 
