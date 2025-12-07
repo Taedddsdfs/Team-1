@@ -1,4 +1,4 @@
-# Engineering Logbook & Personal Statement: RISC-V Processor Design
+Personal Statement: RISC-V Processor Design
 
 **Author:** Taehun
 **Role:** Core Module Lead (PC) & Verification Architect
