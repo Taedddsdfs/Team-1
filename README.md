@@ -124,7 +124,7 @@ Success! All 5 test(s) passed!
 
 ```Bash
 # Assuming you are still in the repo/tb/ directory
-./compile.sh asm/f1.s
+./compile.sh asm/f1_light.s
 ```
   ***System Action***: This command generates a program.hex file in the ../rtl/ directory. The CPU's Instruction Memory is hardwired to read this file upon reset.
 
