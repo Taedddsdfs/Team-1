@@ -1,0 +1,22 @@
+
+a.out.reloc:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <main>:
+   0:	03200313          	li	t1,50
+   4:	010000ef          	jal	ra,14 <add_one>
+   8:	00c000ef          	jal	ra,14 <add_one>
+   c:	008000ef          	jal	ra,14 <add_one>
+  10:	00c0006f          	j	1c <finish>
+
+00000014 <add_one>:
+  14:	00130313          	addi	t1,t1,1
+  18:	00008067          	ret
+
+0000001c <finish>:
+  1c:	00030513          	mv	a0,t1
+
+00000020 <_wait>:
+  20:	00051063          	bnez	a0,20 <_wait>

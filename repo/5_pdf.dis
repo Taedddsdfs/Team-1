@@ -1,0 +1,55 @@
+
+a.out.reloc:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <main>:
+   0:	010000ef          	jal	ra,10 <init>
+   4:	020000ef          	jal	ra,24 <build>
+   8:	050000ef          	jal	ra,58 <display>
+   c:	06c0006f          	j	78 <finish>
+
+00000010 <init>:
+  10:	10000593          	li	a1,256
+
+00000014 <_loop1>:
+  14:	fff58593          	addi	a1,a1,-1
+  18:	10058023          	sb	zero,256(a1)
+  1c:	fe059ce3          	bnez	a1,14 <_loop1>
+  20:	00008067          	ret
+
+00000024 <build>:
+  24:	000105b7          	lui	a1,0x10
+  28:	00000613          	li	a2,0
+  2c:	10000693          	li	a3,256
+  30:	0c800713          	li	a4,200
+
+00000034 <_loop2>:
+  34:	00c587b3          	add	a5,a1,a2
+  38:	0007c283          	lbu	t0,0(a5)
+  3c:	00d28833          	add	a6,t0,a3
+  40:	00084303          	lbu	t1,0(a6)
+  44:	00130313          	addi	t1,t1,1
+  48:	00680023          	sb	t1,0(a6)
+  4c:	00160613          	addi	a2,a2,1
+  50:	fee312e3          	bne	t1,a4,34 <_loop2>
+  54:	00008067          	ret
+
+00000058 <display>:
+  58:	00000493          	li	s1,0
+  5c:	00000593          	li	a1,0
+  60:	0ff00613          	li	a2,255
+
+00000064 <_loop3>:
+  64:	1005c503          	lbu	a0,256(a1) # 10100 <base_data+0x100>
+  68:	00a484b3          	add	s1,s1,a0
+  6c:	00158593          	addi	a1,a1,1
+  70:	fec59ae3          	bne	a1,a2,64 <_loop3>
+  74:	00008067          	ret
+
+00000078 <finish>:
+  78:	00048513          	mv	a0,s1
+
+0000007c <_wait>:
+  7c:	00051063          	bnez	a0,7c <_wait>

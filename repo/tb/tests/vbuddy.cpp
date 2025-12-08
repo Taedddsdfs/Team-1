@@ -1,3 +1,7 @@
+#include <string>
+#include <iostream>
+#include <string>
+#include <iostream>
 /*!
  \file    vbuddy.cpp
  \brief   additional C++ code included in DUT testbench file to communicate with Vbuddy
@@ -1180,4 +1184,10 @@ int vbdMicValue() {
   str.erase(istart,1);      // remove leading '$'
   str.erase(iend,1);        // remove trailing '*'
   return(stoi(str));
+}
+
+void vbdBar(int val) {
+    char msg[80];
+    sprintf(msg, "$B,%d\n", val); 
+    serial.writeString(msg); 
 }
