@@ -86,19 +86,12 @@ module top #(
         .ImmExt(ImmExt)
     );
 
-    // level 1
-    mux ResultMux0 (
+    mux4 ResultMux (
         .in0(ALUResult),
         .in1(ReadData),
-        .sel(ResultSrc[0]),
-        .out(Result_pre)
-    );
-
-    // level 2
-    mux ResultMux1 (
-        .in0(Result_pre),
-        .in1(PCPlus4),
-        .sel(ResultSrc[1]),
+        .in2(PCPlus4),
+        .in3(ImmExt),
+        .sel(ResultSrc),
         .out(Result)
     );
 
