@@ -24,8 +24,8 @@ module data_mem #(
         end
 
 
-        $display("Loading gaussian.mem to address 0x10000...");
-        $readmemh("tests/gaussian.mem", mem, 17'h10000); 
+      $display("Loading gaussian.mem to address 0x10000...");
+        $readmemh("reference/gaussian.mem", mem, 17'h10000); 
     end
 
 
