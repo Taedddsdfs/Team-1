@@ -268,14 +268,14 @@ module top #(
     // Data Memory 
     // Data Cache (2-way set-associative, write-through)
     // Backed by the original data_mem inside data_cache
+       // Data Cache (2-way set-associative, write-through)
     data_cache #(
-        .DATA_WIDTH (32),
-        .ADDR_WIDTH (17),   // matches data_mem ADDRESS_WIDTH
-        .BYTE_WIDTH (8),
-        .CACHE_BYTES(4096)
+        .DATA_WIDTH    (32),
+        .ADDRESS_WIDTH (17),   // 注意这里是 ADDRESS_WIDTH
+        .BYTE_WIDTH    (8)
+        // CACHE_BYTES 是 localparam，不在这里 override
     ) dcache (
         .clk   (clk),
-        .rst   (rst),
         .WE    (MemWriteM),
         .funct3(Funct3M),
         .A     (ALUResultM),
