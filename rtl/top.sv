@@ -1,3 +1,4 @@
+    /* verilator lint_off UNUSED */
 module top #(
     parameter DATA_WIDTH = 32
 ) (
@@ -265,14 +266,21 @@ module top #(
   
 
     // Data Memory 
-    //  data_mem 需要 funct3 来判断 LBU/SB 等
-    data_mem #(32, 17, 8) dmem (
-        .clk(clk),
-        .WE(MemWriteM),
-        .funct3(Funct3M), //  funct3
-        .A(ALUResultM),
-        .WD(WriteDataM),
-        .RD(ReadDataM)
+    // Data Cache (2-way set-associative, write-through)
+    // Backed by the original data_mem inside data_cache
+    data_cache #(
+        .DATA_WIDTH (32),
+        .ADDR_WIDTH (17),   // matches data_mem ADDRESS_WIDTH
+        .BYTE_WIDTH (8),
+        .CACHE_BYTES(4096)
+    ) dcache (
+        .clk   (clk),
+        .rst   (rst),
+        .WE    (MemWriteM),
+        .funct3(Funct3M),
+        .A     (ALUResultM),
+        .WD    (WriteDataM),
+        .RD    (ReadDataM)
     );
 
   
@@ -323,3 +331,4 @@ module top #(
     );
 
 endmodule
+    /* verilator lint_off UNUSED */

@@ -47,3 +47,4 @@ module controlunit (
     assign ALUSrcA = (op == 7'b1101111) ? 1'b1 : maindec_ALUSrcA;
 
 endmodule
+
