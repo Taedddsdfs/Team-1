@@ -10,6 +10,7 @@ module PRMW #(
     input  logic [DATA_WIDTH-1:0] aluresult_m,
     input  logic [4:0]            rd_m,        
     input  logic [DATA_WIDTH-1:0] pcplus4_m,
+    input  logic [31:0]           readdata_m,
 
     output logic                  regwrite_w,
     output logic [1:0]            resultsrc_w,
@@ -43,3 +44,4 @@ module PRMW #(
 
 
 endmodule
+
