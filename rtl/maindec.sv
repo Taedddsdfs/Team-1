@@ -106,7 +106,7 @@ module maindec (
                 ALUSrc    = 1'b1;
                 // ALUSrcA = 0 (Default) ->  ALU = 0(Rs1=x0) + Imm
                 ImmSrc    = 3'b100;  
-                ALUOp     = 2'b00;   
+                ALUOp     = 2'b11;     //change from 00 to 11 
             end
 
             // AUIPC

@@ -23,6 +23,7 @@ module alu #(
             4'b0101: ALUout = ALUop1 << ALUop2[4:0]; // SLL (Shift Left Logical)
             4'b0110: ALUout = ALUop1 >> ALUop2[4:0]; // SRL (Shift Right Logical)
             4'b0111: ALUout = $signed(ALUop1) >>> ALUop2[4:0]; // SRA (signed)
+            4'b1111: ALUout = ALUop2;
 
             //compare
             

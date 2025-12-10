@@ -17,6 +17,7 @@ module aludec (
     localparam ALUCTRL_SLT  = 4'b1000; 
     localparam ALUCTRL_SLTU = 4'b1001; 
     localparam ALUCTRL_MUL  = 4'b1010; 
+    localparam ALUCTRL_LUI  = 4'b1111;   //Special case for LUI
 
     always_comb begin
         unique case (ALUOp)
@@ -47,6 +48,7 @@ module aludec (
                         ALUControl = ALUCTRL_ADD;
                     end
                     end
+            
 
                     // SLL 
                     // 3'b001: ALUControl = ALUCTRL_SLL;
@@ -77,14 +79,25 @@ module aludec (
                         ALUControl = ALUCTRL_AND;
                     end
 
+
                     default: begin
                         ALUControl = ALUCTRL_ADD;
                     end
+            
+               
+               
                 endcase
             end
-            default: ALUControl = ALUCTRL_ADD;
-
+                 //Special case for LUI
+                 2'b11: begin
+                    ALUControl = ALUCTRL_LUI;
+                end
+            
+                default: begin
+                ALUControl = ALUCTRL_ADD;
+            end
         endcase
     end
 
 endmodule
+

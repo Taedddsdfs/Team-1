@@ -39,9 +39,9 @@ module controlunit (
         .ALUControl(ALUControl)
     );
 
-    // 【核心修复】
+    
     // JAL (Opcode 1101111) 需要 PC 作为基址。
-    // 如果 maindec 没有为 JAL 设置 ALUSrcA=1，我们在这里强制修正。
+    // 如果 maindec 没有为 JAL 设置 ALUSrcA=1，在这里强制修正。
     // JALR (Opcode 1100111) 使用 Rs1 (ALUSrcA=0)，保持默认。
     // AUIPC (0010111) 也需要 PC。
     assign ALUSrcA = (op == 7'b1101111) ? 1'b1 : maindec_ALUSrcA;
