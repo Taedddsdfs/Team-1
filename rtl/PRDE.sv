@@ -3,30 +3,27 @@ module PRDE #(
 )(
     input  logic                  clk,
     input  logic                  rst,
-    input  logic                  clr,      // FlushE: 用于Branch跳转时清除D阶段的指令
+    input  logic                  clr,     
 
-    // --- 控制信号输入 (来自 Control Unit) ---
-    input  logic                  regwrite_d,   // 写寄存器堆
-    input  logic [1:0]            resultsrc_d,  // 结果来源 (ALU/Mem/PC)
-    input  logic                  memwrite_d,   // 写内存
+    input  logic                  regwrite_d,   
+    input  logic [1:0]            resultsrc_d,  
+    input  logic                  memwrite_d,   
     input  logic                  jump_d,       // JAL/JALR
     input  logic                  branch_d,     // BEQ/BNE
-    input  logic [3:0]            alucontrol_d, // ALU 操作码
-    input  logic                  alusrc_d,     // ALU SrcB 选择 (Reg/Imm)
-    input  logic                  alusrca_d,    // ALU SrcA 选择 (Reg/PC) - 你的maindec特有 [cite: 18]
-    input  logic [2:0]            funct3_d,     // data_mem 需要用来做 SB/LB 判断 
+    input  logic [3:0]            alucontrol_d, 
+    input  logic                  alusrc_d,     
+    input  logic                  alusrca_d,   
+    input  logic [2:0]            funct3_d,     
 
-    // --- 数据信号输入 (来自 Register File 和 Extend) ---
-    input  logic [DATA_WIDTH-1:0] rd1_d,        // 寄存器读数据 1
-    input  logic [DATA_WIDTH-1:0] rd2_d,        // 寄存器读数据 2
-    input  logic [DATA_WIDTH-1:0] pcd,          // 当前 PC
-    input  logic [4:0]            rs1_d,        // 源寄存器 1 地址 (用于 Hazard 检测)
-    input  logic [4:0]            rs2_d,        // 源寄存器 2 地址 (用于 Hazard 检测)
-    input  logic [4:0]            rd_d,         // 目标寄存器地址
-    input  logic [DATA_WIDTH-1:0] immext_d,     // 立即数扩展结果
+    input  logic [DATA_WIDTH-1:0] rd1_d,        
+    input  logic [DATA_WIDTH-1:0] rd2_d,       
+    input  logic [DATA_WIDTH-1:0] pcd,          
+    input  logic [4:0]            rs1_d,       
+    input  logic [4:0]            rs2_d,        
+    input  logic [4:0]            rd_d,         
+    input  logic [DATA_WIDTH-1:0] immext_d,     
     input  logic [DATA_WIDTH-1:0] pcplus4_d,
 
-    // --- 输出到 Execute 阶段 (加 _e 后缀) ---
     output logic                  regwrite_e,
     output logic [1:0]            resultsrc_e,
     output logic                  memwrite_e,
@@ -49,7 +46,6 @@ module PRDE #(
 
     always_ff @(posedge clk) begin
         if (rst || clr) begin
-            // 发生 Flush 时，控制信号必须清零 (变成 NOP)，防止错误的写入内存或寄存器
             regwrite_e   <= 1'b0;
             resultsrc_e  <= 2'b0;
             memwrite_e   <= 1'b0;
@@ -60,7 +56,6 @@ module PRDE #(
             alusrca_e    <= 1'b0;
             funct3_e     <= 3'b0;
             
-            // 数据信号清零 (其实数据不清零也可以，只要控制信号是0就不会有副作用)
             rd1_e        <= '0;
             rd2_e        <= '0;
             pce          <= '0;
@@ -71,7 +66,6 @@ module PRDE #(
             pcplus4_e    <= '0;
         end
         else begin
-            // 正常传递
             regwrite_e   <= regwrite_d;
             resultsrc_e  <= resultsrc_d;
             memwrite_e   <= memwrite_d;
@@ -92,5 +86,6 @@ module PRDE #(
             pcplus4_e    <= pcplus4_d;
         end
     end
+
 
 endmodule
