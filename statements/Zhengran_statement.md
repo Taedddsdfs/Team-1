@@ -40,6 +40,64 @@ Which gives us 4 different pipeline registers:
 
 (ps: I did PREM and PRMW)
 
+---
+PRFD
+
+Transfer the instruction and PC from the Fetch stage to the Decode stage while handling reset, flush and stall correctly.
+I store three signals: the fetched instruction instr_f, the current PC pc_f, and pcplus4_f. The outputs instr_d, pc_d, and pcplus4_d are
+the registered versions that the Decode stage uses.
+
+``` systemverilog
+always_ff @(posedge clk) begin
+    if (rst) begin
+        instr_d   <= 32'b0;
+        pc_d      <= 32'b0;
+        pcplus4_d <= 32'b0;
+    end else if (clr) begin        // FlushD from hazard unit
+        instr_d   <= 32'b0;        // insert a bubble
+        pc_d      <= 32'b0;
+        pcplus4_d <= 32'b0;
+    end else if (en) begin         // ~StallD
+        instr_d   <= instr_f;
+        pc_d      <= pc_f;
+        pcplus4_d <= pcplus4_f;
+    end
+end
+``` 
+rst clears everything when we reset the CPU.
+en is disabled when we stall. In that case the outputs keep their old values, so the Decode stage “freezes” for one cycle.
+clr is driven by the hazard unit when we need to flush the decode stage 
+
+---
+PRMW
+
+Connects the Memory stage to the Writeback stage.
+PRMW stores both control and data signals:
+Control: regwrite_m, resultsrc_m → registered to regwrite_w, resultsrc_w.
+Data: aluresult_m, readdata_m, rd_m, pcplus4_m → registered to aluresult_w, readdata_w, rd_w, pcplus4_w.
+
+``` systemverilog
+always_ff @(posedge clk) begin
+    if (rst) begin
+        regwrite_w  <= 1'b0;
+        resultsrc_w <= 2'b0;
+        aluresult_w <= '0;
+        readdata_w  <= '0;
+        rd_w        <= '0;
+        pcplus4_w   <= '0;
+    end else begin
+        regwrite_w  <= regwrite_m;
+        resultsrc_w <= resultsrc_m;
+        aluresult_w <= aluresult_m;
+        readdata_w  <= readdata_m;
+        rd_w        <= rd_m;
+        pcplus4_w   <= pcplus4_m;
+    end
+end
+```
+
+
+
 
 ---
 
