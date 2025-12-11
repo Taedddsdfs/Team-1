@@ -28,7 +28,7 @@
 | | register file | | |v|o|
 | | alu |v| | |o|
 | | sign extension | |o| | |
-| | data memory |o| | | |
+| | data memory |v| | |o |
 | | control unit |v|o| | |
 | | top |v|v|v|o| 
 | | testbench and debug |v| |v|o|
