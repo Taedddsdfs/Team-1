@@ -1,3 +1,4 @@
+/* verilator lint_off BLKSEQ */
 /* verilator lint_off UNUSED */
 module data_cache #(
     parameter DATA_WIDTH    = 32,
