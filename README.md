@@ -37,9 +37,9 @@
 | | PRFD |v|o| | |
 | | PRMW |v|o| | |
 | | hazard unit |o| | | |
-| | top | |o| | |
+| | top |v|o|v|v|
 | | testbench and debug |v| | |o|
 | Cache | cache_mem | |o| | |
-| | top |o| | | |
+| | top |o|v|v|v|
 | | testbench and debug |v|o| | |
 
