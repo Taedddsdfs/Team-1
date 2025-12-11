@@ -88,11 +88,11 @@ repo
         └──gaussian.mem
 ```
 ## Directories
-1. [rtl](): holds all the .sv programs for the module designs
-2. [statements](): holds the personal statements
-3. [tb]():
-    1) [asm](): holds all the assembly code program .s
-    2) [test](): holds all the cpp testbench programs of the modules in rtl
+1. [rtl](https://github.com/Taedddsdfs/Team-1/tree/main/repo/rtl): holds all the .sv programs for the module designs
+2. [statements](https://github.com/Taedddsdfs/Team-1/tree/main/statements): holds the personal statements
+3. [tb](https://github.com/Taedddsdfs/Team-1/tree/main/repo/tb):
+    1) [asm](https://github.com/Taedddsdfs/Team-1/tree/main/repo/tb/asm): holds all the assembly code program .s
+    2) [tests](https://github.com/Taedddsdfs/Team-1/tree/main/repo/tb/tests): holds all the cpp testbench programs of the modules in rtl
     3) the shell scripts .sh files
 
 ## Evidence of tests passing
