@@ -59,6 +59,4 @@ module hazard_unit (
   
     assign flush_e = lwStall || pcsrc_e;
 
-
 endmodule
-

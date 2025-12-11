@@ -49,6 +49,4 @@ module PREM #(
             pcplus4_m    <= pcplus4_e;
         end
     end
-
-
 endmodule

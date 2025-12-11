@@ -11,7 +11,7 @@ module instruction_memory #(
     logic [BYTE_WIDTH-1:0] rom_array [4095:0]; 
 
     initial begin
-        $readmemh("program.hex", rom_array);
+        $readmemh("../rtl/program.hex", rom_array);
     end
 
     always_comb begin

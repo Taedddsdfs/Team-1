@@ -40,12 +40,14 @@ for file in "${files[@]}"; do
 
     # Translate Verilog -> C++ including testbench
     verilator   -Wall --trace \
-                -cc ${RTL_FOLDER}/${name}.sv \
-                --exe ${file} \
-                -y ${RTL_FOLDER} \
-                --prefix "Vdut" \
-                -o Vdut \
-                -LDFLAGS "-lgtest -lgtest_main -lpthread"
+            -cc ${RTL_FOLDER}/${name}.sv \
+            --exe ${file} \
+            -y ${RTL_FOLDER} \
+            --prefix "Vdut" \
+            -o Vdut \
+            --CFLAGS "-std=c++17" \
+            -LDFLAGS "-lgtest -lgtest_main -lpthread"
+
 
     # Build C++ project with automatically generated Makefile
     make -j -C obj_dir/ -f Vdut.mk

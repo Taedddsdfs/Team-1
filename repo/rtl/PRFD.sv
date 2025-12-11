@@ -32,6 +32,4 @@ module PRFD #(
             pcplus4_d <= pcplus4_f;
         end
     end
-
-
 endmodule

@@ -100,4 +100,3 @@ module aludec (
     end
 
 endmodule
-

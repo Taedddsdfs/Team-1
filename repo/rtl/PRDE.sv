@@ -86,6 +86,4 @@ module PRDE #(
             pcplus4_e    <= pcplus4_d;
         end
     end
-
-
 endmodule
