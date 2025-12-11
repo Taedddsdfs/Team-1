@@ -26,21 +26,21 @@
 | | program counter | | |o| |
 | | instruction memory |o| | | |
 | | register file | | | |o|
-| | alu | | | |o|
+| | alu |v| | |o|
 | | sign extension | |o| | |
 | | data memory |o| | | |
-| | control unit | |o| | |
-| | top | | | |o| 
-| | testbench and debug | | | |o|
-| Pipeline | PRDE |o| | | |
-| | PREM |o| | | |
-| | PRFD | |o| | |
-| | PRMW | |o| | |
+| | control unit |v|o| | |
+| | top |v| | |o| 
+| | testbench and debug |v| | |o|
+| Pipeline | PRDE |o|v| | |
+| | PREM |o|v| | |
+| | PRFD |v|o| | |
+| | PRMW |v|o| | |
 | | hazard unit |o| | | |
 | | top | |o| | |
-| | testbench and debug |o| | | |
+| | testbench and debug |v| | |o|
 | Cache | cache_mem | |o| | |
 | | top |o| | | |
-| | testbench and debug | |o| | |
+| | testbench and debug |v|o| | |
 ---
 (Note: o = Main contributor, v = co-author)
