@@ -9,12 +9,12 @@ module top #(
 );
 
 
-    // --- Fetch Stage (F) ---
+    //Fetch Stage (F)
     logic [DATA_WIDTH-1:0] PCF, PCNextF, PCPlus4F;
     logic [DATA_WIDTH-1:0] InstrF;
     logic StallF; //  Hazard Unit
 
-    // --- Decode Stage (D) ---
+    //Decode Stage (D)
     // Right of PRFD
     logic [DATA_WIDTH-1:0] InstrD, PCD, PCPlus4D;
     
@@ -33,7 +33,7 @@ module top #(
     logic [4:0] Rs1D, Rs2D, RdD;
     logic StallD, FlushD; // Hazard Unit
 
-    // --- Execute Stage (E) ---
+    //Execute Stage (E)
     // Right of PRDE
     logic       RegWriteE, MemWriteE, JumpE, BranchE;
     logic [1:0] ResultSrcE;
@@ -55,7 +55,7 @@ module top #(
     logic       FlushE; //  Hazard Unit
     logic [1:0] ForwardAE, ForwardBE; // Hazard Unit
 
-    // --- Memory Stage (M) ---
+    // Memory Stage (M)
     // Right of PREM
     logic       RegWriteM, MemWriteM;
     logic [1:0] ResultSrcM;
@@ -65,7 +65,7 @@ module top #(
     logic [DATA_WIDTH-1:0] ReadDataM;
     logic [4:0] RdM;
 
-    // --- Writeback Stage (W) ---
+    //Writeback Stage (W)
     // Right of PRMW
     logic       RegWriteW;
     logic [1:0] ResultSrcW;
@@ -74,14 +74,7 @@ module top #(
     logic [DATA_WIDTH-1:0] ResultW; 
     logic [4:0] RdW;
 
-
-  
-
-   
-    // Fetch Stage
-
-    
-    
+// Fetch Stage
    // PC Mux 
     mux2 #(32) pcmux (
         .d0(PCPlus4F),
@@ -262,9 +255,7 @@ module top #(
 
    
     // Memory Stage
-  
-
-    // Data Memory 
+   // Data Memory 
     // Data Cache (2-way set-associative, write-through)
     // Backed by the original data_mem inside data_cache
        // Data Cache (2-way set-associative, write-through)
