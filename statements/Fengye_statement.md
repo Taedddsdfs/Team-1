@@ -7,6 +7,8 @@ CID:  02575253
 
 ---
 
+## Single-cycle
+
 ### ALU
 <img width="347" height="273" alt="截屏2025-11-30 20 08 33" src="https://github.com/user-attachments/assets/cb21ff2e-cd1f-4ca9-bd3f-1103e876b551" />
 
@@ -215,7 +217,114 @@ mux4 ResultMux (
         .out(Result)
     );
 ```
-Four choice available in PC writeback.
+Four choices available in PC writeback.
 
 
+
+## Pipeline
+
+### Checking functionality and testbench.
+
+My main job is to do the final examination and refinement of our whole pipelined RISC-V. Therefore I wrote some program to see if all instructions types being supposed to be function work.
+
+Firstly, I checked some basic alu instructions. Addi, Xori, Ori, Andi and especially Lui which takes only high 20 bits and extends.
+
+alu_lui_test
+```
+    .text
+    .globl _start
+_start:
+    addi x1, x0, 5
+    addi x2, x0, 12
+    add x3, x1, x2
+    sub x4, x3, x1
+
+    xor x5, x3, x4
+    or  x6, x3, x4
+    and x7, x3, x4
+    slt x8, x1, x2
+    sltu x9, x2, x1
+
+    andi x11, x6, 0xF     # x11 = 0x1d & 0x0f = 0x0d (13)
+    ori  x12, x0, 0x123   # x12 = 0x00000123
+    xori x13, x11, 0x5    # x13 = 0x0d ^ 0x05 = 0x08
+
+    lui  x14, 0x12345     # x14 = 0x12345_000
+
+    # = 0 + 1 + 0 + 13 + 8 = 22
+    add  x10, x7, x8
+    add  x10, x10, x9
+    add  x10, x10, x11
+    add  x10, x10, x13    # a0 = 22
+
+done:
+    beq x0, x0, done
+```
+
+Second is the most important part of pipeline RISC-V, hazard handling. The first hazard I check is the load/store problem, I would like to see if there is a stall when I implement a load/store command.
+
+load_store_test
+```
+    .text
+    .globl _start
+_start:
+    lui   x1, 0x0
+    addi  x1, x1, 0x300     # base address 0x300
+    addi  x2, x0, 0x55
+    sb    x2, 0(x1)         # mem[0x300] = 0x55
+
+    # Load-Use：
+    lbu   x3, 0(x1)         # load in EX stage
+
+    # 2. bubble
+    addi  x4, x3, 1         # if no stall，value got might be 0 or trash
+
+    addi  x5, x4, 1         # x5 = (0x55 + 1) + 1 = 0x57 if hazard handled
+
+    # assign：a0 = x5
+    add   x10, x5, x0
+
+done:
+    beq x0, x0, done
+
+```
+
+The third one is the forwarding function, RISC-V should forward the data came up to data fetch immediatly since some program may need it, thus no data mistake being made.
+
+forwarding_test
+```
+    .text
+    .globl _start
+_start:
+    # x1 = 1
+    addi x1, x0, 1
+
+    addi x2, x1, 2       # hazard: x1 just written
+
+    addi x3, x2, 3
+
+    # no relation, first instruction go to WB：
+    addi x4, x0, 10
+
+    # MEM/WB → EX forwarding test：
+    # x1 is now in WB:
+    # x5 = x1 + x3 = 1 + (1+2+3) = 7
+    add  x5, x1, x3
+
+    # sum up：
+    # x6 = x5 + x4 = 7 + 10 = 17
+    add  x6, x5, x4
+
+    # assign a0 = x6
+    add  x10, x6, x0     # a0 = 17
+
+done:
+    beq x0, x0, done
+```
+.
+.
+.
+
+Having done these tests, surprisingly we pass all of them!!!
+<img width="481" height="535" alt="截屏2025-12-11 19 31 22" src="https://github.com/user-attachments/assets/d9b4f8e6-ac1f-40e2-acf9-040b33eff712" />
 
