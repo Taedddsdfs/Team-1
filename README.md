@@ -163,6 +163,23 @@ repo/
 
 ### Execution Steps
 
+**macOS: GoogleTest Environment Setup（Optional)**
+
+On macOS, if you installed GoogleTest via Homebrew:
+
+```bash
+brew install googletest
+```
+Must set the following environment variables before running the Verilator tests.
+
+```bash
+GTEST_ROOT=$(brew --prefix googletest)
+
+export CPLUS_INCLUDE_PATH="$GTEST_ROOT/include:$CPLUS_INCLUDE_PATH"
+export LIBRARY_PATH="$GTEST_ROOT/lib:$LIBRARY_PATH"
+export LD_LIBRARY_PATH="$GTEST_ROOT/lib:$LD_LIBRARY_PATH"
+```
+
 **Step 1: Navigate to the Testbench Directory**
 ```bash
 cd repo/tb
