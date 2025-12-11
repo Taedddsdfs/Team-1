@@ -23,11 +23,7 @@ module hazard_unit (
     output logic [1:0] forward_b   
 );
 
-    logic lwStall; // Load-Use Hazard 标志位
-
-    // 00: No Forwarding (use RegFile output)
-    // 01: Forward from WB Stage (ResultW)
-    // 10: Forward from MEM Stage (ALUResultM)
+    logic lwStall; 
     
     always_comb begin
         // Forward A (Rs1)
@@ -65,3 +61,4 @@ module hazard_unit (
 
 
 endmodule
+
