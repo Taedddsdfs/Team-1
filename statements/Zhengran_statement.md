@@ -2,7 +2,8 @@
 
 ---
 
-Zhengran Han         CID: 02583845        
+Zhengran Han          
+CID: 02583845        
 
 ---
 
@@ -211,6 +212,8 @@ I implemented a 2-way set associative data cache that sits in front of our origi
 
 Here are the logic of the design:
 
+---
+
 Address breakdown and cache layout：
 The data memory is still 2**ADDRESS_WIDTH bytes, and the cache size is fixed to 4096 bytes
 
@@ -242,6 +245,8 @@ logic                  cache_valid [WAYS-1:0][SETS-1:0];
 logic                  lru         [SETS-1:0];   // 1-bit LRU per set
 ```
 lru[set] tells me which way is the least recently used (0 or 1), so I can decide where to place a new line on a miss.
+
+---
 
 For Read path Part
 
@@ -282,6 +287,7 @@ unique case (funct3)
     default: RD = word_selected;   // LW
 endcase
 ```
+---
 
 For Write path and policy
 
@@ -325,8 +331,28 @@ lru[index]                   <= ~repl_way;
 So, if we miss in both ways we also allocate from memory into repl_way and update the LRU bit. If we hit, we simply flip the LRU bit to 
 mark the other way as least recently used.
 
+---
+
 Debugging:
 Jingting contributed a lot and the debugging session is in the following link:
 [Debugging for Cache](https://github.com/Taedddsdfs/Team-1/edit/main/statements/Jingting_statement.md)
 
+---
+
+### Reflection-Technical
+Through this project I finally moved from “knowing the theory” of caches to really understanding them. Implementing a 2-way set-associative
+data cache forced me to think carefully about tag/index/offset bits, hit/miss behaviour and LRU updates instead of just copying diagrams 
+from the slides.
+
+### Reflection-Weakness
+I realised I make many mistakes on interface naming and wiring. I often connected the wrong signal or mixed up similar names, which made
+debugging very slow even when the high-level design was correct. In the future I want to be more disciplined with naming conventions and 
+double-check all module ports before running tests.
+
+### Reflection-Teamwork
+Overall the teamwork was quite pleasant, especially debugging together with Jingting. We often sat down with the waveforms and traced 
+signals step-by-step, which helped us catch a lot of corner-case bugs. At the same time, coordinating changes and keeping everyone on the
+same page was harder than I expected and required more communication.
+
+---
 
