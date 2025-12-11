@@ -19,9 +19,8 @@ My main contribution in the group was implementing the datapath and control logi
 * [control_unit](https://github.com/Taedddsdfs/Team-1/blob/main/repo/rtl/controlunit.sv)
 * [PRFD-pipeline](https://github.com/Taedddsdfs/Team-1/blob/main/repo/rtl/PRFD.sv)
 * [PRMW-pipeline](https://github.com/Taedddsdfs/Team-1/blob/main/repo/rtl/PRMW.sv)
-* [top-pipeline]()
+* [top-pipeline](https://github.com/Taedddsdfs/Team-1/blob/pipeline/repo/rtl/top.sv)
 * [cache_memory](https://github.com/Taedddsdfs/Team-1/blob/main/repo/rtl/data_cache.sv)
-* [debug for cache]()
 
 ---
 
