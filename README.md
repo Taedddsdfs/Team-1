@@ -53,28 +53,20 @@ Team21
 |   ├── PREM.sv
 |   ├── PRFD.sv
 |   ├── PRMW.sv
-|   ├── adder.sv
+|   ├── aludec.sv
 |   ├── alu.sv
-|   ├── cache_2way.sv
-|   ├── control_unit.sv
-|   ├── data_memory.sv
-|   ├── data_memory_cache.sv
+|   ├── data_cache.sv
+|   ├── controlunit.sv
+|   ├── data_mem.sv
+|   ├── extend.sv
 |   ├── hazard_unit.sv
 |   ├── instruction_memory.sv
-|   ├── mux.sv
-|   ├── pcmuxsel.sv
-|   ├── programcounter.sv
-|   ├── register.sv
-|   ├── sign_extend.sv
-|   ├── top.sv
-│   └── twobitmux.sv
-├──statements
-|   ├── images
-│   │   └── ...
-|   ├── Anson.md
-|   ├── Callum.md
-|   ├── Peter.md
-│   └── Yikai.md
+|   ├── maindec.sv
+|   ├── mux2.sv
+|   ├── program_counter.sv
+|   ├── reg_file.sv
+|   ├── mux3.sv
+|   └── top.sv
 └──tb
     ├── asm
     |   ├── 1_addi_bne.s
@@ -89,6 +81,10 @@ Team21
     └── tests
         ├── assemble.sh
         ├── compile.sh
-        └── doit.sh
+        ├──doit.sh
+        ├──verify.cpp
+        ├──vbuddy.cpp
+        ├──top_tb.cpp
+        └──gaussian.mem
 ```
 
