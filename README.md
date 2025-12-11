@@ -39,9 +39,9 @@
 | | hazard unit |o| | | |
 | | top |v|o|v|v|
 | | testbench and debug |v| | |o|
-| Cache | cache_mem | |o| | |
+| Cache | cache_mem |v|o| | |
 | | top |o|v|v|v|
-| | testbench and debug |v|o| | |
+| | testbench and debug |o|v| | |
 
 ## Directory Structure
 the structure of the main branch is as follows:
