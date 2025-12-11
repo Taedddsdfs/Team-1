@@ -47,7 +47,7 @@
 the structure of the main branch is as follows:
 
 ```markdown
-Team21
+repo
 ├──rtl
 |   ├── PRDE.sv
 |   ├── PREM.sv
@@ -87,4 +87,36 @@ Team21
         ├──top_tb.cpp
         └──gaussian.mem
 ```
+## Directories
+1. [rtl](): holds all the .sv programs for the module designs
+2. [statements](): holds the personal statements
+3. [tb]():
+    1) [asm](): holds all the assembly code program .s
+    2) [test](): holds all the cpp testbench programs of the modules in rtl
+    3) the shell scripts .sh files
 
+## Evidence of tests passing
+
+### Test programs:
+![Console after running tests]()
+
+To run tests, change data_memory.sv and instruction_memory.sv to .../data.hex and .../program.hex respectively.
+
+### F1:
+
+
+
+link
+
+
+
+To run F1 with Vbuddy, run F1.sh.
+
+### PDF:
+
+
+link
+
+
+
+To run PDF with Vbuddy, run PDF.sh.
