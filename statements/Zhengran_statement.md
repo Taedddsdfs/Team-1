@@ -34,10 +34,10 @@ In this RISC-V processor we divide each instruction into the following stages: F
 Hence we got the following resigters:
 Which gives us 4 different pipeline registers:
 
-- [PRFD]()
-- [PRDE]()
-- [PREM]()
-- [PRMW]()
+- [PRFD](https://github.com/Taedddsdfs/Team-1/blob/main/repo/rtl/PRFD.sv)
+- [PRDE](https://github.com/Taedddsdfs/Team-1/blob/main/repo/rtl/PRDE.sv)
+- [PREM](https://github.com/Taedddsdfs/Team-1/blob/main/repo/rtl/PREM.sv)
+- [PRMW](https://github.com/Taedddsdfs/Team-1/blob/main/repo/rtl/PRMW.sv)
 
 (ps: I did PREM and PRMW)
 
@@ -97,7 +97,7 @@ always_ff @(posedge clk) begin
 end
 ```
 Together, PRFD and PRMW are two pieces of the five-stage pipeline backbone I implemented.
-For [PRFD]() and [PRDE](), they are located in [Jingting_statement](https://github.com/Taedddsdfs/Team-1/edit/main/statements/Jingting_statement.md)
+For [PRFD](https://github.com/Taedddsdfs/Team-1/blob/main/repo/rtl/PRFD.sv) and [PRDE](https://github.com/Taedddsdfs/Team-1/blob/main/repo/rtl/PRDE.sv), they are located in [Jingting_statement](https://github.com/Taedddsdfs/Team-1/edit/main/statements/Jingting_statement.md)
 
 
 
