@@ -95,7 +95,8 @@ always_ff @(posedge clk) begin
     end
 end
 ```
-
+Together, PRFD and PRMW are two pieces of the five-stage pipeline backbone I implemented.
+For [PRFD] and [PRDE], they are located in [Jingting_statement](https://github.com/Taedddsdfs/Team-1/edit/main/statements/Jingting_statement.md)
 
 
 
@@ -206,6 +207,126 @@ end
 
 ### Cache Memory Design
 
+I implemented a 2-way set associative data cache that sits in front of our original byte-addressed data memory. 
 
+Here are the logic of the design:
+
+Address breakdown and cache layout：
+The data memory is still 2**ADDRESS_WIDTH bytes, and the cache size is fixed to 4096 bytes
+
+``` SystemVerilog
+localparam int CACHE_BYTES = 4096;
+localparam int LINE_BYTES  = 4;    // one 32-bit word per line
+localparam int WAYS        = 2;
+localparam int SETS        = CACHE_BYTES / (WAYS * LINE_BYTES);
+```
+
+Each line holds one 32-bit word, so OFFSET_BITS = 2. Hence the rest of the address is split into index and tag:
+
+``` SystemVerilog
+localparam int OFFSET_BITS = 2;
+localparam int INDEX_BITS  = $clog2(SETS);
+localparam int TAG_BITS    = DATA_WIDTH - OFFSET_BITS - INDEX_BITS;
+
+assign byte_off = A[OFFSET_BITS-1:0];
+assign index    = A[OFFSET_BITS+INDEX_BITS-1 : OFFSET_BITS];
+assign tag      = A[DATA_WIDTH-1 : OFFSET_BITS+INDEX_BITS];
+```
+
+Inside the cache I keep tag, data and valid bits for each way and set
+
+``` SystemVerilog
+logic [TAG_BITS-1:0]   cache_tag   [WAYS-1:0][SETS-1:0];
+logic [DATA_WIDTH-1:0] cache_data  [WAYS-1:0][SETS-1:0];
+logic                  cache_valid [WAYS-1:0][SETS-1:0];
+logic                  lru         [SETS-1:0];   // 1-bit LRU per set
+```
+lru[set] tells me which way is the least recently used (0 or 1), so I can decide where to place a new line on a miss.
+
+For Read path Part
+
+On every cycle I first check for a hit in both ways of the indexed set
+
+``` SystemVerilog
+hit0 = cache_valid[0][index] && cache_tag[0][index] == tag;
+hit1 = cache_valid[1][index] && cache_tag[1][index] == tag;
+cache_hit = hit0 | hit1;
+
+if (hit0)      word_from_cache = cache_data[0][index];
+else if (hit1) word_from_cache = cache_data[1][index];
+```
+
+In parallel I also fetch the word from main memory using addr_word_base
+``` SystemVerilog
+word_from_mem = {
+    mem[addr_word_base + 3],
+    mem[addr_word_base + 2],
+    mem[addr_word_base + 1],
+    mem[addr_word_base + 0]
+};
+```
+
+If cache_hit is high, the selected word comes from word_from_cache; otherwise it comes from word_from_mem. Then I decode funct3 to handle
+LBU vs LW
+``` SystemVerilog
+unique case (funct3)
+    3'b100: begin  // LBU
+        unique case (byte_off)
+            2'b00: byte_selected = word_selected[7:0];
+            2'b01: byte_selected = word_selected[15:8];
+            2'b10: byte_selected = word_selected[23:16];
+            2'b11: byte_selected = word_selected[31:24];
+        endcase
+        RD = {24'b0, byte_selected};
+    end
+    default: RD = word_selected;   // LW
+endcase
+```
+
+For Write path and policy
+
+I decided to implement write-through and write-allocate
+Hence, always write the backing memory using the old byte-level logic for SB and SW.
+
+First I compute the “old word” either from the cache or memory
+``` SystemVerilog
+hit_way0 = cache_valid[0][index] && cache_tag[0][index] == tag;
+hit_way1 = cache_valid[1][index] && cache_tag[1][index] == tag;
+
+if (hit_way0)      old_word = cache_data[0][index];
+else if (hit_way1) old_word = cache_data[1][index];
+else               old_word = mem_word_now;
+```
+
+Then merge the incoming data WD according to funct3
+``` SystemVerilog
+unique case (funct3)
+    3'b000: begin  // SB
+        new_word = old_word;
+        case (byte_off)
+            2'b00: new_word[7:0]   = WD[7:0];
+            2'b01: new_word[15:8]  = WD[7:0];
+            2'b10: new_word[23:16] = WD[7:0];
+            2'b11: new_word[31:24] = WD[7:0];
+        endcase
+    end
+    default: new_word = WD; // SW
+endcase
+```
+
+The line is written into either the hit or the LRU way
+``` SystemVerilog
+cache_data [repl_way][index] <= new_word;
+cache_tag  [repl_way][index] <= tag;
+cache_valid[repl_way][index] <= 1'b1;
+lru[index]                   <= ~repl_way;
+```
+
+So, if we miss in both ways we also allocate from memory into repl_way and update the LRU bit. If we hit, we simply flip the LRU bit to 
+mark the other way as least recently used.
+
+Debugging:
+Jingting contributed a lot and the debugging session is in the following link:
+[Debugging for Cache](https://github.com/Taedddsdfs/Team-1/edit/main/statements/Jingting_statement.md)
 
 
