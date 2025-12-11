@@ -24,14 +24,14 @@
 |------|--------|---------|--------|---------|-------|
 | Single cycle | F1 Program |o| | | |
 | | program counter | | |o| |
-| | instruction memory |o| | | |
-| | register file | | | |o|
+| | instruction memory |o| |v| |
+| | register file | | |v|o|
 | | alu |v| | |o|
 | | sign extension | |o| | |
 | | data memory |o| | | |
 | | control unit |v|o| | |
-| | top |v| | |o| 
-| | testbench and debug |v| | |o|
+| | top |v|v|v|o| 
+| | testbench and debug |v| |v|o|
 | Pipeline | PRDE |o|v| | |
 | | PREM |o|v| | |
 | | PRFD |v|o| | |
