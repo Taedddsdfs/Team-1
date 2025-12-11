@@ -21,3 +21,24 @@ My main contribution in the group was implementing the datapath and control logi
 * [top-pipeline]()
 * [cache_memory](https://github.com/Taedddsdfs/Team-1/blob/main/repo/rtl/data_cache.sv)
 * [debug for cache]()
+
+---
+
+### Pipeline Registers (Co-op with Jingting)
+
+The registers can divide different stage of the CPU. 
+
+In this RISC-V processor we divide each instruction into the following stages: Fetch, Decode, Execute, Memory, Writeback.
+
+Hence we got the following resigters:
+Which gives us 4 different pipeline registers:
+
+- [PRFD]()
+- [PRDE]()
+- [PREM]()
+- [PRMW]()
+
+(ps: I did PREM and PRMW)
+
+
+
