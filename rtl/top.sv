@@ -12,7 +12,7 @@ module top #(
     // --- Fetch Stage (F) ---
     logic [DATA_WIDTH-1:0] PCF, PCNextF, PCPlus4F;
     logic [DATA_WIDTH-1:0] InstrF;
-    logic StallF; // 来自 Hazard Unit
+    logic StallF; //  Hazard Unit
 
     // --- Decode Stage (D) ---
     // Right of PRFD
@@ -21,12 +21,12 @@ module top #(
     // Control Unit Outputs
     logic [1:0] ResultSrcD;
     logic       MemWriteD;
-    logic       BranchD, JumpD; // Pipeline中PCSrc通常在E阶段决定
+    logic       BranchD, JumpD; 
     logic [3:0] ALUControlD;
     logic       ALUSrcD, ALUSrcAD; // ALUSrcA is from maindec 
     logic [2:0] ImmSrcD;
     logic       RegWriteD;
-    logic [2:0] Funct3D; // data_mem 需要这个来决定 LB/SB/LW/SW
+    logic [2:0] Funct3D; 
 
     // Data Signals
     logic [DATA_WIDTH-1:0] RD1D, RD2D, ImmExtD;
@@ -51,7 +51,7 @@ module top #(
     logic [DATA_WIDTH-1:0] ALUResultE;
     logic [DATA_WIDTH-1:0] PCTargetE; 
     logic       ZeroE; // ALU Zero Flag
-    logic       PCSrcE; // 最终决定的跳转信号
+    logic       PCSrcE; 
     logic       FlushE; //  Hazard Unit
     logic [1:0] ForwardAE, ForwardBE; // Hazard Unit
 
@@ -71,7 +71,7 @@ module top #(
     logic [1:0] ResultSrcW;
     
     logic [DATA_WIDTH-1:0] ALUResultW, ReadDataW, PCPlus4W;
-    logic [DATA_WIDTH-1:0] ResultW; // 最终写回寄存器的值
+    logic [DATA_WIDTH-1:0] ResultW; 
     logic [4:0] RdW;
 
 
@@ -81,8 +81,8 @@ module top #(
     // Fetch Stage
 
     
-    // PC Mux 
-    // 如果PCSrcE有效，跳到PCTargetE，否则PC+4
+    
+   // PC Mux 
     mux2 #(32) pcmux (
         .d0(PCPlus4F),
         .d1(PCTargetE),
@@ -94,9 +94,9 @@ module top #(
    program_counter pc_inst (
     .clk(clk),
     .rst(rst),
-    .en (~StallF),      // 连接 Stall 信号
-    .next_pc(PCNextF),  // 连接来自 mux 的 next_pc
-    .pc(PCF)            // 输出当前 PC
+    .en (~StallF),      
+    .next_pc(PCNextF),  
+    .pc(PCF)            
 );
     // Instruction Memory 
     instruction_memory #(32, 32, 8) imem (
@@ -185,7 +185,6 @@ module top #(
   
     // Execute Stage
     // Forwarding Muxes (3-to-1)
-    //  MEM 或 WB 
     mux3 #(32) forward_a_mux (
         .d0(RD1E),       // No Forwarding
         .d1(ResultW),    // Forward from WB
@@ -202,7 +201,7 @@ module top #(
         .y(ForwardBE_Val)
     );
 
-    // ALU SrcA Mux ( ALUSrcA，用于 AUIPC/JAL 等)
+    // ALU SrcA Mux ( ALUSrcA)
     // 0: Rs1 (Forwarded), 1: PC
     mux2 #(32) srca_mux (
         .d0(ForwardAE_Val),
@@ -271,9 +270,9 @@ module top #(
        // Data Cache (2-way set-associative, write-through)
     data_cache #(
         .DATA_WIDTH    (32),
-        .ADDRESS_WIDTH (17),   // 注意这里是 ADDRESS_WIDTH
+        .ADDRESS_WIDTH (17),   // ADDRESS_WIDTH
         .BYTE_WIDTH    (8)
-        // CACHE_BYTES 是 localparam，不在这里 override
+        
     ) dcache (
         .clk   (clk),
         .WE    (MemWriteM),
