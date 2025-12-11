@@ -15,7 +15,7 @@ module controlunit (
     output logic       Jump       
 );
     logic [1:0] ALUOp;
-    logic       maindec_ALUSrcA; // 临时信号
+    logic       maindec_ALUSrcA; 
 
     maindec u_maindec (
         .op       (op),
@@ -23,7 +23,7 @@ module controlunit (
         .MemWrite (MemWrite),
         .Branch   (Branch),
         .ALUSrc   (ALUSrc),
-        .ALUSrcA  (maindec_ALUSrcA),  // 接到临时信号
+        .ALUSrcA  (maindec_ALUSrcA),  
         .RegWrite (RegWrite),
         .Jump     (Jump),
         .ImmSrc   (ImmSrc),
