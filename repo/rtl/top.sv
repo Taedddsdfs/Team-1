@@ -8,12 +8,12 @@ module top #(
 );
 
 
-    // --- Fetch Stage (F) ---
+    //Fetch Stage (F)
     logic [DATA_WIDTH-1:0] PCF, PCNextF, PCPlus4F;
     logic [DATA_WIDTH-1:0] InstrF;
     logic StallF; // Hazard Unit
 
-    // --- Decode Stage (D) ---
+    // Decode Stage (D)
     // Right of PRFD
     logic [DATA_WIDTH-1:0] InstrD, PCD, PCPlus4D;
     
@@ -32,7 +32,7 @@ module top #(
     logic [4:0] Rs1D, Rs2D, RdD;
     logic StallD, FlushD; // Hazard Unit
 
-    // --- Execute Stage (E) ---
+    // Execute Stage (E)
     // Right of PRDE
     logic       RegWriteE, MemWriteE, JumpE, BranchE;
     logic [1:0] ResultSrcE;
@@ -54,7 +54,7 @@ module top #(
     logic       FlushE; //  Hazard Unit
     logic [1:0] ForwardAE, ForwardBE; // Hazard Unit
 
-    // --- Memory Stage (M) ---
+    // Memory Stage (M)
     // Right of PREM
     logic       RegWriteM, MemWriteM;
     logic [1:0] ResultSrcM;
@@ -64,7 +64,7 @@ module top #(
     logic [DATA_WIDTH-1:0] ReadDataM;
     logic [4:0] RdM;
 
-    // --- Writeback Stage (W) ---
+    //Writeback Stage (W)
     // Right of PRMW
     logic       RegWriteW;
     logic [1:0] ResultSrcW;
@@ -81,7 +81,6 @@ module top #(
 
     
     // PC Mux 
-    // 如果PCSrcE有效，跳到PCTargetE，否则PC+4
     mux2 #(32) pcmux (
         .d0(PCPlus4F),
         .d1(PCTargetE),
@@ -93,9 +92,9 @@ module top #(
    program_counter pc_inst (
     .clk(clk),
     .rst(rst),
-    .en (~StallF),      // 连接 Stall 信号
-    .next_pc(PCNextF),  // 连接来自 mux 的 next_pc
-    .pc(PCF)            // 输出当前 PC
+    .en (~StallF),      
+    .next_pc(PCNextF),  
+    .pc(PCF)            
 );
     // Instruction Memory 
     instruction_memory #(32, 32, 8) imem (
@@ -184,7 +183,6 @@ module top #(
   
     // Execute Stage
     // Forwarding Muxes (3-to-1)
-    //  MEM 或 WB 
     mux3 #(32) forward_a_mux (
         .d0(RD1E),       // No Forwarding
         .d1(ResultW),    // Forward from WB
@@ -201,7 +199,7 @@ module top #(
         .y(ForwardBE_Val)
     );
 
-    // ALU SrcA Mux ( ALUSrcA，用于 AUIPC/JAL 等)
+    // ALU SrcA Mux 
     // 0: Rs1 (Forwarded), 1: PC
     mux2 #(32) srca_mux (
         .d0(ForwardAE_Val),
@@ -265,7 +263,6 @@ module top #(
   
 
     // Data Memory 
-    //  data_mem 需要 funct3 来判断 LBU/SB 等
     data_mem #(32, 17, 8) dmem (
         .clk(clk),
         .WE(MemWriteM),
