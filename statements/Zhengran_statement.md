@@ -350,9 +350,8 @@ debugging very slow even when the high-level design was correct. In the future I
 double-check all module ports before running tests.
 
 ### Reflection-Teamwork
-Overall the teamwork was quite pleasant, especially debugging together with Jingting. We often sat down with the waveforms and traced 
-signals step-by-step, which helped us catch a lot of corner-case bugs. At the same time, coordinating changes and keeping everyone on the
-same page was harder than I expected and required more communication.
+Overall the teamwork was quite pleasant, especially debugging together with Jingting. We often sat down and worked whole night. At the same 
+time, coordinating changes and keeping everyone on the same page was harder than I expected and required more communication.
 
 ---
 
