@@ -9,31 +9,31 @@ module top #(
 );
 
 
-    // --- Fetch Stage (F) ---
+    //Fetch Stage (F)
     logic [DATA_WIDTH-1:0] PCF, PCNextF, PCPlus4F;
     logic [DATA_WIDTH-1:0] InstrF;
-    logic StallF; // 来自 Hazard Unit
+    logic StallF; //
 
-    // --- Decode Stage (D) ---
+    // Decode Stage 
     // Right of PRFD
     logic [DATA_WIDTH-1:0] InstrD, PCD, PCPlus4D;
     
     // Control Unit Outputs
     logic [1:0] ResultSrcD;
     logic       MemWriteD;
-    logic       BranchD, JumpD; // Pipeline中PCSrc通常在E阶段决定
+    logic       BranchD, JumpD; 
     logic [3:0] ALUControlD;
-    logic       ALUSrcD, ALUSrcAD; // ALUSrcA is from maindec 
+    logic       ALUSrcD, ALUSrcAD; 
     logic [2:0] ImmSrcD;
     logic       RegWriteD;
-    logic [2:0] Funct3D; // data_mem 需要这个来决定 LB/SB/LW/SW
+    logic [2:0] Funct3D; 
 
     // Data Signals
     logic [DATA_WIDTH-1:0] RD1D, RD2D, ImmExtD;
     logic [4:0] Rs1D, Rs2D, RdD;
     logic StallD, FlushD; // Hazard Unit
 
-    // --- Execute Stage (E) ---
+    // Execute Stage (E) 
     // Right of PRDE
     logic       RegWriteE, MemWriteE, JumpE, BranchE;
     logic [1:0] ResultSrcE;
@@ -51,11 +51,11 @@ module top #(
     logic [DATA_WIDTH-1:0] ALUResultE;
     logic [DATA_WIDTH-1:0] PCTargetE; 
     logic       ZeroE; // ALU Zero Flag
-    logic       PCSrcE; // 最终决定的跳转信号
+    logic       PCSrcE; // 
     logic       FlushE; //  Hazard Unit
     logic [1:0] ForwardAE, ForwardBE; // Hazard Unit
 
-    // --- Memory Stage (M) ---
+    //Memory Stage (M)
     // Right of PREM
     logic       RegWriteM, MemWriteM;
     logic [1:0] ResultSrcM;
@@ -65,13 +65,13 @@ module top #(
     logic [DATA_WIDTH-1:0] ReadDataM;
     logic [4:0] RdM;
 
-    // --- Writeback Stage (W) ---
+    // Writeback Stage (W)
     // Right of PRMW
     logic       RegWriteW;
     logic [1:0] ResultSrcW;
     
     logic [DATA_WIDTH-1:0] ALUResultW, ReadDataW, PCPlus4W;
-    logic [DATA_WIDTH-1:0] ResultW; // 最终写回寄存器的值
+    logic [DATA_WIDTH-1:0] ResultW; 
     logic [4:0] RdW;
 
 
