@@ -42,5 +42,4 @@
 | Cache | cache_mem | |o| | |
 | | top |o| | | |
 | | testbench and debug |v|o| | |
----
-(Note: o = Main contributor, v = co-author)
+
