@@ -7,13 +7,13 @@
 ### link to individual statements
 
 ### link to individual statements
-[Jingting's Personal statement](/statements/Anson.md)
+[Jingting's Personal statement](/statements/Jingting_statement.md)
 
-[Zhengran's Personal statement](/statements/Callum.md)
+[Zhengran's Personal statement](/statements/Zhengran_statement.md)
 
-[Tae Hun's Personal statement](/statements/Peter.md)
+[Tae Hun's Personal statement](/statements/Tae_statement.md)
 
-[Fengye's Personal statement](/statements/Yikai.md)
+[Fengye's Personal statement](/statements/Fengye_statement.md)
 
 
 ## Contribution Table
@@ -22,22 +22,25 @@
 
 | Task | Item name |  Jingting | Zhengran | Tae Hun | Fengye |
 |------|--------|---------|--------|---------|-------|
-| Single cycle | F1 Program | | | | |
-| | program counter | | | | |
-| | instruction memory | | | | |
-| | register file | | | | |
-| | alu | | | | |
-| | sign extension | | | | |
-| | data memory | | | | |
-| | control unit | | | | |
-| | testbench and debug | | | | |
-| Pipeline | PRDE | | | | |
-| | PREM | | | | |
-| | PRFD | | | | |
-| | PRMW | | | | |
-| | hazard unit | | | | |
-| | testbench and debug | | | | |
-| Cache | cache_mem | | | | |
-| | top | | | | |
+| Single cycle | F1 Program |o| | | |
+| | program counter | | |o| |
+| | instruction memory |o| | | |
+| | register file | | | |o|
+| | alu | | | |o|
+| | sign extension | |o| | |
+| | data memory |o| | | |
+| | control unit | |o| | |
+| | top | | | |o| 
+| | testbench and debug | | | |o|
+| Pipeline | PRDE |o| | | |
+| | PREM |o| | | |
+| | PRFD | |o| | |
+| | PRMW | |o| | |
+| | hazard unit |o| | | |
+| | top | |o| | |
+| | testbench and debug |o| | | |
+| Cache | cache_mem | |o| | |
+| | top |o| | | |
+| | testbench and debug | |o| | |
 ---
 (Note: o = Main contributor, v = co-author)
