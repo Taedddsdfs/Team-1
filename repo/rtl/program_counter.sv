@@ -1,39 +1,21 @@
-module program_counter (
-    input  logic        clk,     // Clock signal
-    input  logic        rst,     // Reset signal (Active high synchronous reset)
-    input  logic        PCSrc,   // Control signal: 0 for PC+4, 1 for Branch
-    input  logic [31:0] ImmOp,   // Immediate operand (Branch offset from Sign Extend)
-    output logic [31:0] PC       // Current Program Counter (outputs to Instr Mem)
+module program_counter #(
+    parameter WIDTH = 32
+)(
+    input  logic             clk,
+    input  logic             rst,
+    input  logic             en,      // [新增] Enable 信号，连接到 ~StallF
+    input  logic [WIDTH-1:0] next_pc, // [修改] 直接输入下一条地址，逻辑在外部处理
+    output logic [WIDTH-1:0] pc
 );
 
-    // Internal signals
-    logic [31:0] next_PC;    // Next PC value
-    logic [31:0] branch_PC;  // Branch target address
-
-    // ---------------------------------------------------------
-    // 1. Next Address Logic (Combinational)
-    // ---------------------------------------------------------
-    
-    // Calculate branch target: Current PC + ImmOp
-    assign branch_PC = PC + ImmOp;
-
-    // MUX: Select next_PC based on PCSrc.
-    // If PCSrc = 1, choose branch_PC. If PCSrc = 0, choose PC + 4.
-    assign next_PC = (PCSrc) ? branch_PC : (PC + 32'd4);
-
-
-    // ---------------------------------------------------------
-    // 2. PC Register Update (Sequential)
-    // ---------------------------------------------------------
-    
-    // Update PC on the rising edge of the clock.
-    always_ff @(posedge clk or posedge rst) begin
+    always_ff @(posedge clk) begin
         if (rst) begin
-            PC <= 32'd0;    // Reset PC to 0
-        end else begin
-            PC <= next_PC;  // Update PC to the calculated next address
+            pc <= 32'b0; // [修改] 通常复位为 0，原代码 0xBFC00000 也可以，看需求
+        end 
+        else if (en) begin // [新增] 只有在不暂停(Stall=0)时才更新 PC
+            pc <= next_pc;
         end
+        // [注释] 删除了原本内部的 case(PCSrc) 逻辑，移交给了 Top 的 mux
     end
 
 endmodule
-// End of program_counter.sv
