@@ -96,7 +96,7 @@ always_ff @(posedge clk) begin
 end
 ```
 Together, PRFD and PRMW are two pieces of the five-stage pipeline backbone I implemented.
-For [PRFD] and [PRDE], they are located in [Jingting_statement](https://github.com/Taedddsdfs/Team-1/edit/main/statements/Jingting_statement.md)
+For [PRFD]() and [PRDE](), they are located in [Jingting_statement](https://github.com/Taedddsdfs/Team-1/edit/main/statements/Jingting_statement.md)
 
 
 
