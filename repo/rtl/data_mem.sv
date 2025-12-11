@@ -18,7 +18,6 @@ module data_mem #(
     assign addr = A[ADDRESS_WIDTH-1:0];
 
     initial begin
-        // 1. 清零
         for (int i = 0; i < 2**ADDRESS_WIDTH; i++) begin
             mem[i] = 8'b0;
         end
