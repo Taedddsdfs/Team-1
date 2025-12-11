@@ -114,9 +114,15 @@ To run F1 with Vbuddy, run F1.sh.
 
 ### PDF:
 
+Graphs generated after viewing from Vbuddy:
 
-link
+#### Gaussian
+<img width="535" height="319" alt="648907a1d6739317108170d5c5037dc0" src="https://github.com/user-attachments/assets/bdfe2820-0640-4576-85e8-25ee0b519083" />
 
+#### Noisy
+<img width="535" height="319" alt="11c8f53ea9267f8409c92a8df10b684d" src="https://github.com/user-attachments/assets/7e5429df-9e7e-46b2-bd40-6d9c380c9e54" />
 
+#### Triangle
+<img width="535" height="319" alt="222891c765fedada2d7eee3851997c3b" src="https://github.com/user-attachments/assets/7c97293a-e450-45b6-a66a-48b45c955e38" />
 
 To run PDF with Vbuddy, run PDF.sh.
