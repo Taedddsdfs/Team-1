@@ -11,7 +11,7 @@ module top #(
     // --- Fetch Stage (F) ---
     logic [DATA_WIDTH-1:0] PCF, PCNextF, PCPlus4F;
     logic [DATA_WIDTH-1:0] InstrF;
-    logic StallF; // 来自 Hazard Unit
+    logic StallF; // Hazard Unit
 
     // --- Decode Stage (D) ---
     // Right of PRFD
@@ -20,12 +20,12 @@ module top #(
     // Control Unit Outputs
     logic [1:0] ResultSrcD;
     logic       MemWriteD;
-    logic       BranchD, JumpD; // Pipeline中PCSrc通常在E阶段决定
+    logic       BranchD, JumpD; 
     logic [3:0] ALUControlD;
     logic       ALUSrcD, ALUSrcAD; // ALUSrcA is from maindec 
     logic [2:0] ImmSrcD;
     logic       RegWriteD;
-    logic [2:0] Funct3D; // data_mem 需要这个来决定 LB/SB/LW/SW
+    logic [2:0] Funct3D; 
 
     // Data Signals
     logic [DATA_WIDTH-1:0] RD1D, RD2D, ImmExtD;
@@ -50,7 +50,7 @@ module top #(
     logic [DATA_WIDTH-1:0] ALUResultE;
     logic [DATA_WIDTH-1:0] PCTargetE; 
     logic       ZeroE; // ALU Zero Flag
-    logic       PCSrcE; // 最终决定的跳转信号
+    logic       PCSrcE; 
     logic       FlushE; //  Hazard Unit
     logic [1:0] ForwardAE, ForwardBE; // Hazard Unit
 
@@ -70,7 +70,7 @@ module top #(
     logic [1:0] ResultSrcW;
     
     logic [DATA_WIDTH-1:0] ALUResultW, ReadDataW, PCPlus4W;
-    logic [DATA_WIDTH-1:0] ResultW; // 最终写回寄存器的值
+    logic [DATA_WIDTH-1:0] ResultW; 
     logic [4:0] RdW;
 
 
