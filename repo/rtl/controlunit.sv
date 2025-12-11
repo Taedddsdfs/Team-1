@@ -15,7 +15,7 @@ module controlunit (
     output logic       Jump       
 );
     logic [1:0] ALUOp;
-    logic       maindec_ALUSrcA; // 临时信号
+    logic       maindec_ALUSrcA; 
 
     maindec u_maindec (
         .op       (op),
@@ -23,7 +23,7 @@ module controlunit (
         .MemWrite (MemWrite),
         .Branch   (Branch),
         .ALUSrc   (ALUSrc),
-        .ALUSrcA  (maindec_ALUSrcA),  // 接到临时信号
+        .ALUSrcA  (maindec_ALUSrcA),  
         .RegWrite (RegWrite),
         .Jump     (Jump),
         .ImmSrc   (ImmSrc),
@@ -39,11 +39,7 @@ module controlunit (
         .ALUControl(ALUControl)
     );
 
-    
-    // JAL (Opcode 1101111) 需要 PC 作为基址。
-    // 如果 maindec 没有为 JAL 设置 ALUSrcA=1，在这里强制修正。
-    // JALR (Opcode 1100111) 使用 Rs1 (ALUSrcA=0)，保持默认。
-    // AUIPC (0010111) 也需要 PC。
+
     assign ALUSrcA = (op == 7'b1101111) ? 1'b1 : maindec_ALUSrcA;
 
 endmodule
