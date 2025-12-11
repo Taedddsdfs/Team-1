@@ -94,5 +94,57 @@ end
 
 I firstly designed this part and Fengye debug and modify it.
 
+The idea is:
+We split into two parts: maindec and aludec.(The control unit is just a big truth table encoded with case statements)
+
+In maindec I used a case (op) statement. For each RISC-V opcode I hard-coded what the CPU should do: whether to write a register, access 
+memory, where the result comes from, and what kind of immediate we need. 
+
+``` SystemVerilog
+// R-type (ADD/SUB/AND/OR/SLT)
+OPCODE_OP: begin
+    RegWrite = 1'b1;
+    ALUSrc   = 1'b0;     // use rs2
+    ImmSrc   = 3'b000;   // unused
+    ALUOp    = 2'b10;    // let aludec look at funct3/funct7
+end
+
+// LOAD (LW/LBU)
+OPCODE_LOAD: begin
+    RegWrite = 1'b1;
+    MemWrite = 1'b0;
+    ALUSrc   = 1'b1;     // base + imm
+    ResultSrc= 2'b01;    // from data memory
+    ImmSrc   = 3'b000;   // I-type
+    ALUOp    = 2'b00;    // ALU does ADD
+end
+```
+
+aludec is another case on ALUOp.
+
+When ALUOp is 2'b10, it means “R/I-type arithmetic”, so I further check funct3, funct7_5 and op[5] to decide if the ALU should do ADD, SUB,
+MUL, AND, etc. We also added a small special case so that LUI always forces ALUControl to ADD 
+
+``` SystemVerilog
+// R / I type
+2'b10: begin
+    unique case (funct3)
+        3'b000: begin        // ADD / SUB / MUL
+            if (op5 && funct7_5)      ALUControl = ALUCTRL_SUB;
+            else if (op5 && !funct7_5) ALUControl = ALUCTRL_MUL;
+            else                       ALUControl = ALUCTRL_ADD;
+        end
+        3'b111: ALUControl = ALUCTRL_AND;
+        3'b110: ALUControl = ALUCTRL_OR;
+        3'b010: ALUControl = ALUCTRL_SLT;
+        // ...
+    endcase
+end
+```
+---
+
+### Cache Memory Design
+
+
 
 
