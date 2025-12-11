@@ -24,7 +24,7 @@
 |------|--------|---------|--------|---------|-------|
 | Single cycle | F1 Program |o| | | |
 | | program counter | | |o| |
-| | instruction memory |o| |v| |
+| | instruction memory |v| |o| |
 | | register file | | |v|o|
 | | alu |v| | |o|
 | | sign extension | |o| | |
