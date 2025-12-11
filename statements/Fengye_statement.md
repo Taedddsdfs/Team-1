@@ -122,3 +122,100 @@ if (WE && (A >= 32'h0000_1000) && (A <= 32'h0001_FFFF))
         mem[addr] <= WD[7:0];
 ```
 notice that wrting only occurs when there is a rising edge in clk.
+
+### Correction and Enhancement of the rest of RISC-V
+
+Once we combined our design to see if it could work for the program.S. Problems came up immediately.
+
+#### aludec.sv
+
+First, in the aludec.sv, we did not actually implement the I-type instructions decoder. Instead, it is mixed in R-type, with the same ALUop:
+```
+2'b10: begin
+                unique case (funct3)
+                    3'b000: begin
+                        // R-type (ADD / SUB)
+                        if (funct7_5)
+                            ALUControl = ALUCTRL_SUB;
+                        else
+                            ALUControl = ALUCTRL_ADD;
+                    end
+```
+
+However, some bits in R-type is treated as immediate in I-type, so it would be better to separate these two different types with a new ALUop(2'b11)
+```
+2'b11: begin
+                // I-type
+                unique case (funct3)
+                    3'b000: ALUControl = ALUCTRL_ADD; // ADDI
+                    3'b111: ALUControl = ALUCTRL_AND; // ANDI
+                    3'b110: ALUControl = ALUCTRL_OR;  // ORI
+                    3'b010: ALUControl = ALUCTRL_SLT; // SLTI
+                    default: ALUControl = ALUCTRL_ADD;
+                endcase
+            end
+```
+
+#### extend.sv
+
+In extend unit, instructions like LUI and AUIPC are not specified. There is only JAL,
+```
+ 2'b11: begin
+                // J / U mixed
+                unique case (instr[6:0])
+                    7'b1101111: begin
+                    // JAL: J-type
+                    ImmExt = {{11{instr[31]}},
+                              instr[31],
+                              instr[19:12],
+                              instr[20],
+                              instr[30:21],
+                              1'b0};
+                    end
+```
+
+Now LUI and AUIPC added,
+```
+7'b0110111,    // LUI
+                    7'b0010111: begin // AUIPC
+                    // U-type: imm[31:12] << 12
+                    ImmExt = {instr[31:12], 12'b0};
+                    end
+```
+
+#### maindec.sv
+
+Correspondingly, LUI and AUIPC are also defined in main decoder:
+```
+OPCODE_LUI: begin
+                RegWrite  = 1'b1;
+                ALUSrc    = 1'b1;    // rs1(x0) + ImmExt(U-type) = Imm
+                ImmSrc    = 2'b11;   // U-type
+                ALUOp     = 2'b00;
+            end
+
+            // AUIPC
+            OPCODE_AUIPC: begin
+                RegWrite  = 1'b1;
+                ImmSrc    = 2'b11;   // U-type
+                ALUOp     = 2'b00;   // ADD (PC + imm)
+            end
+```
+
+#### mux4 and top
+
+In addition to mux we already have, mux4 should be also implemented in top to achieve JAL.
+```
+mux4 ResultMux (
+        .in0(ALUResult),
+        .in1(ReadData),
+        .in2(PCPlus4),
+        .in3(ImmExt),
+        .sel(ResultSrc),
+        .out(Result)
+    );
+```
+Four choice available in PC writeback.
+
+
+
