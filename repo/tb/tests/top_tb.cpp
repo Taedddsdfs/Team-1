@@ -20,8 +20,6 @@ int main(int argc, char **argv, char **env) {
 
   if (vbdOpen()!=1) return(-1);
 
-  // 1. 设置 LED 模式 (ASCII 协议)
-  // 根据 PDF Task 2，我们需要配合 flag 模式 [cite: 150]
   printf("Setting VBuddy to LED Mode...\n");
   serial.writeString("$y,1\n"); 
   sleep(1); 
@@ -36,19 +34,14 @@ int main(int argc, char **argv, char **env) {
       top->eval ();
     }
 
-    // --- 【关键修改】尝试 ASCII 协议的 vbdBar ---
-    // 之前用的 serial.writeChar('B') 是二进制协议，可能你的固件不支持
-    // 这里我们改用 "$B,数值\n" 的文本格式试试
     char buffer[50];
-    int barValue = top->a0 & 0xFF; // PDF 要求 Mask 0xFF [cite: 163]
+    int barValue = top->a0 & 0xFF; 
     sprintf(buffer, "$B,%d\n", barValue); 
     serial.writeString(buffer);
-    // ------------------------------------------
 
-    // 终端打印
+  
     printf("Cycle: %d, a0: %d\n", simcyc, top->a0);
 
-    // 保持 usleep 延时，确保数据不堵塞
     usleep(500000); 
 
     top->rst = (simcyc < 2);
