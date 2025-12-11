@@ -141,6 +141,9 @@ MUL, AND, etc. We also added a small special case so that LUI always forces ALUC
     endcase
 end
 ```
+
+(ps: I did the initial design and Fengye debug it and implement it, we tested it together)
+
 ---
 
 ### Cache Memory Design
