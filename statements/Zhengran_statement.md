@@ -53,7 +53,7 @@ simply shifts the upper 20 bits left by 12.
 
 I implemented this with a case statement inside always_comb.
 
-```systemverilog
+``` systemverilog
 
 always_comb begin
     unique case (ImmSrc)
@@ -87,6 +87,5 @@ always_comb begin
         default: ImmExt = 32'b0;
     endcase
 end
-
-
+```
 
