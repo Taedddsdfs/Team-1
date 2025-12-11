@@ -43,3 +43,52 @@
 | | top |o|v|v|v|
 | | testbench and debug |v|o| | |
 
+## Directory Structure
+the structure of the main branch is as follows:
+
+```markdown
+Team21
+├──rtl
+|   ├── PRDE.sv
+|   ├── PREM.sv
+|   ├── PRFD.sv
+|   ├── PRMW.sv
+|   ├── adder.sv
+|   ├── alu.sv
+|   ├── cache_2way.sv
+|   ├── control_unit.sv
+|   ├── data_memory.sv
+|   ├── data_memory_cache.sv
+|   ├── hazard_unit.sv
+|   ├── instruction_memory.sv
+|   ├── mux.sv
+|   ├── pcmuxsel.sv
+|   ├── programcounter.sv
+|   ├── register.sv
+|   ├── sign_extend.sv
+|   ├── top.sv
+│   └── twobitmux.sv
+├──statements
+|   ├── images
+│   │   └── ...
+|   ├── Anson.md
+|   ├── Callum.md
+|   ├── Peter.md
+│   └── Yikai.md
+└──tb
+    ├── asm
+    |   ├── 1_addi_bne.s
+    |   ├── 2_li_add.s
+    |   ├── 3_lbu_sb.s
+    |   ├── 4_jal_ret.s
+    |   ├── 5_pdf.s
+    |   ├── f1_light.s
+    |   └── program.s
+    ├── c
+    ├── reference
+    └── tests
+        ├── assemble.sh
+        ├── compile.sh
+        └── doit.sh
+```
+
