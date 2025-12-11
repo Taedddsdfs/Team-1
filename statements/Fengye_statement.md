@@ -204,22 +204,6 @@ OPCODE_LUI: begin
             end
 ```
 
-#### mux4 and top
-
-In addition to mux we already have, mux4 should be also implemented in top to achieve JAL.
-```
-mux4 ResultMux (
-        .in0(ALUResult),
-        .in1(ReadData),
-        .in2(PCPlus4),
-        .in3(ImmExt),
-        .sel(ResultSrc),
-        .out(Result)
-    );
-```
-Four choices available in PC writeback.
-
-
 
 ## Pipeline
 
