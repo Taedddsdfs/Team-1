@@ -43,7 +43,7 @@ Which gives us 4 different pipeline registers:
 
 ---
 
-### sign extension
+### Sign Extension
 
 I wrote the extend module for our CPU. Its job is to take the 32-bit instruction and output a correctly sign-extended immediate value for different instruction types.
 
@@ -88,4 +88,11 @@ always_comb begin
     endcase
 end
 ```
+---
+
+### Control Unit
+
+I firstly designed this part and Fengye debug and modify it.
+
+
 
