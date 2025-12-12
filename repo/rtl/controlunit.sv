@@ -4,7 +4,7 @@ module controlunit (
     input  logic       funct7_5,
     input  logic       Zero,
 
-    output logic [1:0] PCSrc,
+    output logic [1:0] PCSrc, // 00: PC+4, 01: PC+Imm, 10: ALUResult (JALR)
     output logic [1:0] ResultSrc,
     output logic       MemWrite,
     output logic [2:0] ALUControl,
@@ -16,7 +16,7 @@ module controlunit (
     logic [1:0] ALUOp;
     logic       Branch;
     logic       Jump;
-
+// Main Decoder: Generates primary control signals from Opcode
     maindec u_maindec (
         .op       (op),
         .ResultSrc(ResultSrc),
@@ -28,14 +28,14 @@ module controlunit (
         .ImmSrc   (ImmSrc),
         .ALUOp    (ALUOp)
     );
-
+// ALU Decoder: Determines specific ALU operation
     aludec u_aludec (
         .ALUOp     (ALUOp),
         .funct3    (funct3),
         .funct7_5  (funct7_5),
         .ALUControl(ALUControl)
     );
-
+// --- Branch Decision Logic ---
     logic is_beq, is_bne;
     logic branch_taken;
     assign is_beq = (op == 7'b1100011) && (funct3 == 3'b000);
