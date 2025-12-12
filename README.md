@@ -96,7 +96,7 @@ repo
     3) the shell scripts .sh files
 
 
-## RISC-V CPU System Verification & F1 Demo Guide
+## RISC-V CPU System Verification with F1 Demo and Vbuddy Graph Plots
 
 | **Category** | **Details** |
 | :--- | :--- |
