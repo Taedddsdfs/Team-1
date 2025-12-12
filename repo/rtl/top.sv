@@ -11,7 +11,7 @@ module top #(
     logic [31:0] RD2;                     // DataMemory input
     logic [31:0] SrcA, SrcB, ALUResult;   // ALU input & output
     logic [31:0] ReadData;                // DataMemory output
-    logic [31:0] Result_pre;              // previous result
+    logic [31:0] Result_pre;              // previous Result
     logic [31:0] PCPlus4;
     logic [31:0] Result;                  // result of output mux
     logic [1:0] PCSrc;                    // PC mux controls signal
