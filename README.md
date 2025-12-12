@@ -218,7 +218,9 @@ Data Memory: Loaded gaussian.mem from ../rtl/gaussian.mem
 Success! All 5 test(s) passed!
 
 ```
-## 2. F1 Light Sequence DemoObjective: Compile and run the specific F1 starting light assembly program.
+## 2. F1 Light Sequence Demo
+
+Objective: Compile and run the specific F1 starting light assembly program.
 
 **1. Prerequisites**
 
