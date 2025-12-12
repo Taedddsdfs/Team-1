@@ -100,7 +100,7 @@ repo
 
 | **Category** | **Details** |
 | :--- | :--- |
-| **Project** | Team-1 Single Cycle RISC-V CPU |
+| **Project** | Team-1 RISC-V CPU |
 | **Environment** | Linux / WSL (Ubuntu 22.04 recommended) ||
 | **Author** | Jingting|
 
