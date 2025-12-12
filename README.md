@@ -238,10 +238,11 @@ Verify in Linux terminal: ls /dev/ttyUSB* should show the device. (if it is not 
 
 **3. Execution Navigate to the testbench folder and run the driver script:**
 
+make sure u r under tb, by typing `cd Team-1/repo/tb`
+
 **If connect with vBuddy to see the LED, run:**
 ```
 Bash
-cd Team-1/repo/tb
 ./doit.sh tests/top-f1.cpp
 ```
 
