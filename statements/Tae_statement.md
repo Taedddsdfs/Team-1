@@ -1,16 +1,8 @@
 ## 📝 Personal Statement: RISC-V Processor Design
 
 **Author:** Taehun  
-**Role:** Core Module Lead (PC), Co-Author (Register File, Control Unit, Top-Level) & Verification Architect  & Reference
+**Role:** Core Module Lead (PC), Co-Author (Register File, Control Unit, Top-Level) & Verification Architect & Reference & top design for pipeline for RISC-V
 **Module Focus:** Program Counter, Test Infrastructure, Control Flow Logic
-
----
-
-## 📝 Personal Statement: RISC-V Processor Design
-
-**Author:** Taehun  
-**Role:** Core Module Lead (PC), Co-Author (All Modules) & Verification Architect  
-**Module Focus:** Pipelined Datapath, Hazard Resolution, System Integration
 
 ---
 
