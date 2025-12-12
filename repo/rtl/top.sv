@@ -315,7 +315,7 @@ module top #(
         // Outputs
         .stall_f(StallF), .stall_d(StallD),
         .flush_d(FlushD), .flush_e(FlushE),
-        
+        .forward_a(ForwardAE), .forward_b(ForwardBE)
     );
 
 endmodule
