@@ -150,7 +150,7 @@ sudo apt-get install gtkwave
 
 ### 1.2 Verify Directory Structure
 
-Ensure your project root (repo) follows the structure showing above, as the scripts rely on relative paths
+Ensure your project repo follows the structure showing above, as the scripts rely on relative paths
 
 
 ## 1. Automated Regression Test (5 ASM Cases)
@@ -194,7 +194,7 @@ Ubuntu
 ./doit.sh tests/verify.cpp
 ```
 
-✅ Expected Output
+Expected Output
 You should see a green "PASSED" message indicating all tests, including the complex Gaussian PDF calculation, have passed.
 
 ```Plaintext
