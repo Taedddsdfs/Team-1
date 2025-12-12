@@ -41,7 +41,7 @@ Which gives us 4 different pipeline registers:
 (ps: I did PREM and PRMW)
 
 ---
-PRFD
+**PRFD**
 
 Transfer the instruction and PC from the Fetch stage to the Decode stage while handling reset, flush and stall correctly.
 I store three signals: the fetched instruction instr_f, the current PC pc_f, and pcplus4_f. The outputs instr_d, pc_d, and pcplus4_d are
@@ -69,7 +69,7 @@ en is disabled when we stall. In that case the outputs keep their old values, so
 clr is driven by the hazard unit when we need to flush the decode stage 
 
 ---
-PRMW
+**PRMW**
 
 Connects the Memory stage to the Writeback stage.
 PRMW stores both control and data signals:
@@ -332,7 +332,7 @@ mark the other way as least recently used.
 
 ---
 
-Debugging:
+**Debugging:**
 Jingting contributed a lot and the debugging session is in the following link:
 [Debugging for Cache](https://github.com/Taedddsdfs/Team-1/edit/main/statements/Jingting_statement.md)
 
