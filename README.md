@@ -148,25 +148,7 @@ sudo apt-get install gtkwave
 
 ### 1.2 Verify Directory Structure
 
-Ensure your project root (repo) follows this strict structure, as the scripts rely on relative paths:
-
-```
-Plaintext
-
-repo/
-├── rtl/                     # Hardware Source Code
-│   ├── top.sv
-│   ├── ... (other .sv files)
-│          
-├── tb/                      # Testbench & Tools
-│   ├── asm/                 # Assembly Source (1_addi.s ... 5_pdf.s, f1.s)
-│   ├── tests/
-|       |── verify.cpp       # GTest Regression Testbench
-|       |── gaussian.mem     # [CRITICAL] Data file for Test 5 must be here   
-│   ├── doit.sh              # Build Automation Script
-│   └── compile.sh           # Assembly Compiler Script
-
-```
+Ensure your project root (repo) follows the structure showing above, as the scripts rely on relative paths
 
 
 ## 1. Automated Regression Test (5 ASM Cases)
