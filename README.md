@@ -104,7 +104,7 @@ repo
 | **Environment** | Linux / WSL (Ubuntu 22.04 recommended) ||
 | **Author** | Jingting|
 
-> **Overview:** This document outlines the steps to reproduce the automated regression tests (5 Assembly Test Cases) and the F1 Light Sequence demonstration.
+> **Overview:** This document outlines the steps to reproduce the automated regression tests (5 Assembly Test Cases)， the F1 Light Sequence demonstration and vbuddy graph plots.
 
 ---
 
