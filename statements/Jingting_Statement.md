@@ -59,7 +59,8 @@ Robustness: By using `system()` calls with strict return code checking (`if (ret
 I extended the Control Unit to support PC-relative branch and jump calculations, specifically for the JAL (Jump and Link) instruction.
 
 **Architecture Change:** I introduced a conditional override logic on the ALUSrcA control line.
-![alt text](7d4a38237384d644aac6b80c59820526.jpg)
+<img width="1668" height="982" alt="image" src="https://github.com/user-attachments/assets/4bd6b628-2c63-4e81-9b77-c437c6590eea" />
+
 
 **Logic:** By adding a multiplexing condition (op == 7'b1101111) at the Control Unit output, I forced the ALU's first operand to switch from the Register File to the Program Counter (PC) during jump operations.
 
@@ -82,7 +83,8 @@ I implemented the LUI (Load Upper Immediate) instruction logic entirely within t
 
 **Result:** Controlled by the extended 2-bit ResultSrc signal, this allows the Register File to capture the return address, fully enabling function call support (Jump and Link) in the processor.
 
-![alt text](image.png)
+<img width="764" height="457" alt="image" src="https://github.com/user-attachments/assets/7f8bc712-ec8e-45da-94b7-486c98d1e288" />
+
 
 
 
@@ -130,7 +132,8 @@ I resolved a protocol mismatch where the VBuddy LEDs remained unresponsive despi
 
 ## Hazard Unit & Pipeline Registers (PRDE/PREM)
 Role: Main Contributor
-![alt text](db2cd5a4e779cfbd98402f90a566f9d3.png)
+<img width="1562" height="929" alt="6069ed0392114a67e0ccfb6878d3b084" src="https://github.com/user-attachments/assets/b8afeb07-e0a3-4d42-ab58-6a2d2bd926e6" />
+
 
 ### 1. Hazard Unit Design 
 I designed and implemented the hazard_unit, the central control logic responsible for maintaining data integrity and execution flow in the pipelined architecture.
@@ -200,3 +203,4 @@ The transition from ideal memory to a realistic cache introduced significant com
 **Resolution:** I synchronized the cache's behavior with the funct3 control signal. I added logic to explicitly zero-extend the output for LBU operations, ensuring the cache's behavior matched the RISC-V ISA specification and the reference memory model.
 
 To find out more about cache_mem, please refer to my teammate **Zhengran's statement**, he is the main contributor: https://github.com/Taedddsdfs/Team-1/blob/main/statements/Zhengran_statement.md*
+
