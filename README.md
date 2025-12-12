@@ -219,31 +219,55 @@ Success! All 5 test(s) passed!
 
 ```
 ## 2. F1 Light Sequence DemoObjective: Compile and run the specific F1 starting light assembly program.
+
+**1. Prerequisites**
+
+-**Software**: Verilator, RISC-V Toolchain (riscv64-unknown-elf), USBIPD (for WSL users).
+
+-**Hardware**: VBuddy connected via USB.
+
+**2. Setup (Hardware)**
+
+Connect VBuddy.
+
+(WSL Users) Attach USB in PowerShell (Admin): `usbipd attach --wsl --busid <BUSID>`.
+
+Verify in Linux terminal: ls /dev/ttyUSB* should show the device. (if it is not /dev/ttyUSB0, change the content in vbuddy.cfg)
+
+**3. Execution Navigate to the testbench folder and run the driver script:**
+
+**If connect with vBuddy to see the LED, run:**
+```
+Bash
+cd Team-1/repo/tb
+./doit.sh tests/top-f1.cpp
+```
+
+**If u only need the waveform:**
+
+```
+Bash
+./doit.sh tests/top-f1Wave.cpp
+```
    
-**Step 1: Compile the Assembly CodeUse the provided compile.sh script. This handles the RISC-V compilation, memory mapping (offset 0xBFC00000), and Hex formatting.**
-
-```Bash
-# Assuming you are still in the repo/tb/ directory
-./compile.sh asm/f1_light.s
-```
-  ***System Action***: This command generates a program.hex file in the ../rtl/ directory. The CPU's Instruction Memory is hardwired to read this file upon reset.
-
-**Step 2: Run the SimulationExecute the simulation using your top-level testbench (e.g., top_tb.cpp or whichever file you use for VBuddy/Waveforms).**
-
-```Bash
-
-./doit.sh tbSingleCycleF1.cpp
-```
-**Step 3: Verify Results**
+**4: Verify Results**
 
 - Via Waveform (GTKWave):
 
 ```Bash
 gtkwave obj_dir/Vdut.vcd
 ```
+
 Inspect the `a0` output signal. It should match the F1 sequence: `1` (001) $\to$ `3` (011) $\to$ `7` (111) $\to$ ...
 
+![cb55b41c4c94d52068841811881add9f](https://github.com/user-attachments/assets/19d85035-5b3c-49bd-acf1-899bc04db50e)
+
+
  - Via VBuddy (If connected):Ensure the USB device is attached. The LEDs on the VBuddy should increment and then turn off, matching the simulation logic.
+   ***Visual demo*** **@^_^@**
+
+
+![f1](https://github.com/user-attachments/assets/d05414e9-844d-4558-bd76-ae899fe05c2a)
  
 ## 3. Troubleshooting Guide
 
@@ -263,10 +287,7 @@ Inspect the `a0` output signal. It should match the F1 sequence: `1` (001) $\to$
 - **Cause**: The C++ testbench is missing the global tick counter definition required by the header file.
 - **Fix**: Add unsigned int ticks = 0; at the top of your .cpp testbench file.
 
-***Visual demo*** **@^_^@**
 
-
-![f1](https://github.com/user-attachments/assets/d05414e9-844d-4558-bd76-ae899fe05c2a)
 
 
 ## Viewing Waveforms (Debugging)
