@@ -22,7 +22,7 @@
 **Goal:** Implement the Program Counter with built-in flow control.
 * **Evolution:** Initially planned to use separate Adder and Mux modules.
 * **Decision:** Integrated Next-PC logic directly into the `program_counter` module to reduce top-level wiring complexity.
-* **Evidence:** [View Commit ed53660](https://github.com/Taedddsdfs/Team-1/commit/ed53660) (Implemented Role 1: PC with internal flow control logic)
+* **Evidence:** [View Commit ed53660](https://github.selfsdad/Team-1/commit/ed53660) (Implemented Role 1: PC with internal flow control logic)
 
 ### 2.2 Synchronous Reset Implementation
 **Issue:** Initial designs utilizing asynchronous reset caused undefined states (`X`) during simulation startup.
@@ -36,6 +36,7 @@
     2.  **Branch/JAL:** Verified relative jumping.
     3.  **JALR (Critical):** Verified absolute address jumping (`PC = ALUResult`).
 * **Outcome:** Passed all tests including corner cases (Warm-up cycles for reset).
+  ![Test Execution Result](https://github.com/user-attachments/assets/91cd052b-0b3a-40cf-ae83-a3657b3f3d3b)
 
 
 ---
@@ -65,29 +66,49 @@
 
 ---
 
-## Part 5: Pipelined Processor Integration & Cache (Co-Author)
+## Part 5: Verification and Reference Programs
 
-### 5.1 5-Stage Pipelined Datapath Assembly
+### 5.1 Comprehensive Functional Verification
+**Role:** Designed and executed a comprehensive verification suite to test the processor's core functionality and performance under various workloads.
+* **Reference Programs:** Utilized four specific memory reference files to test the processor's capability to correctly handle and compute different data patterns:
+    * `gaussian.mem`: Tested complex arithmetic and data processing integrity.
+    * `noisy.mem`: Tested robustness against varied and potentially extreme input data.
+    * `triangle.mem`: Verified sequential and predictable data handling.
+    * `sine.mem`: Tested floating-point emulation/fixed-point arithmetic (depending on implementation) and periodic data calculations.
+* **Outcome:** Successful execution and verification against known outputs confirmed the functional correctness of the integrated pipeline, hazard unit, and register operations across diverse computational tasks.
+#### Gaussian
+<img width="535" height="319" alt="648907a1d6739317108170d5c5037dc0" src="https://github.com/user-attachments/assets/bdfe2820-0640-4576-85e8-25ee0b519083" />
+
+#### Noisy
+<img width="535" height="319" alt="11c8f53ea9267f8409c92a8df10b684d" src="https://github.com/user-attachments/assets/7e5429df-9e7e-46b2-bd40-6d9c380c9e54" />
+
+#### Triangle
+<img width="535" height="319" alt="222891c765fedada2d7eee3851997c3b" src="https://github.com/user-attachments/assets/7c97293a-e450-45b6-a66a-48b45c955e38" />
+---
+
+## Part 6: Pipelined Processor Integration & Cache (Co-Author)
+
+### 6.1 5-Stage Pipelined Datapath Assembly
 **Role:** Co-authored the top-level integration, establishing the **5-Stage Pipelined Architecture** (IF, ID, EX, MEM, WB).
 * **Core Mechanism:** Connected four pipeline registers (`PRFD`, `PRDE`, `PREM`, `PRMW`) to transfer control and data signals, optimizing for instruction throughput.
-* **Memory Stage Upgrade:** Integrated the **`data_cache`** module in the Memory (M) stage, replacing the simple `data_mem`. This structural change introduced considerations for handling cache hits/misses, demonstrating an understanding of the memory hierarchy.
+* **Memory Stage Upgrade:** Integrated the **`data_cache`** module in the Memory (M) stage, replacing the simple `data_mem`. This structural change introduced considerations for handling cache hits/misses, demonstrating an understanding of the memory hierarchy. 
 
 
-### 5.2 Hazard Resolution Implementation
+### 6.2 Hazard Resolution Implementation
 **Key Contribution:** Integrated and configured the **Hazard Unit** to manage pipeline dependencies.
 * **Data Forwarding:** Implemented **forwarding paths** using 3-to-1 MUXes in the Execute (EX) stage, delivering results (from MEM or WB) to the ALU inputs (`SrcAE`, `SrcBE`) to minimize stalls.
 * **Control Hazard Resolution:** Enabled the Hazard Unit to generate the `FlushD` signal upon a taken branch (`PCSrcE` high), immediately invalidating instructions in the Decode stage.
 
 ---
 
-## Part 6: Reflection
+## Part 7: Reflection
 
 **What I learned:**
 
 1.  **Pipelining Complexity:** Transitioning to pipelined design highlighted that complexity shifts from component logic to **system integration** and **hazard management**. The performance challenge lies in coordinating data flow and timing across the pipeline registers.
 
-2.  **Memory Hierarchy Integration:** Replacing the simple memory with a **cache** (Part 5.1) introduced real-world performance considerations. This demonstrated that optimizing a CPU requires balancing core logic with the speed of external resources (memory access latency).
+2.  **Memory Hierarchy Integration:** Replacing the simple memory with a **cache** (Part 6.1) introduced real-world performance considerations. This demonstrated that optimizing a CPU requires balancing core logic with the speed of external resources (memory access latency).
 
-3.  **Architectural Trade-offs:** The initial decision to encapsulate PC logic (Part 2) simplified the final Top-Level wiring (Part 5), reinforcing the value of **strategic upfront design** even in modular hardware.
+3.  **Architectural Trade-offs:** The initial decision to encapsulate PC logic (Part 2) simplified the final Top-Level wiring (Part 6), reinforcing the value of **strategic upfront design** even in modular hardware.
 
 4.  **Design for Testability (DFT):** The use of the `a0` output port (Part 3) proved invaluable, allowing the team to debug complex, concurrent issues across the five pipeline stages, confirming the importance of designing with the "tester" mindset.
