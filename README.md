@@ -230,7 +230,7 @@ Connect VBuddy.
 
 (WSL Users) Attach USB in PowerShell (Admin): `usbipd attach --wsl --busid <BUSID>`.
 
-Verify in Linux terminal: ls /dev/ttyUSB* should show the device. (if it is not /dev/ttyUSB0, change the content in vbuddy.cfg)
+Verify in Linux terminal: `ls /dev/ttyUSB*` should show the device. (if it is not `/dev/ttyUSB0`, change the content in vbuddy.cfg)
 
 **3. Execution Navigate to the testbench folder and run the driver script:**
 
