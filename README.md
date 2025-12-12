@@ -48,44 +48,56 @@ the structure of the main branch is as follows:
 
 ```markdown
 repo
-├──rtl
-|   ├── PRDE.sv
-|   ├── PREM.sv
-|   ├── PRFD.sv
-|   ├── PRMW.sv
-|   ├── aludec.sv
-|   ├── alu.sv
-|   ├── data_cache.sv
-|   ├── controlunit.sv
-|   ├── data_mem.sv
-|   ├── extend.sv
-|   ├── hazard_unit.sv
-|   ├── instruction_memory.sv
-|   ├── maindec.sv
-|   ├── mux2.sv
-|   ├── program_counter.sv
-|   ├── reg_file.sv
-|   ├── mux3.sv
-|   └── top.sv
-└──tb
+repo
+├── rtl
+│   ├── PRDE.sv
+│   ├── PREM.sv
+│   ├── PRFD.sv
+│   ├── PRMW.sv
+│   ├── aludec.sv
+│   ├── alu.sv
+│   ├── data_cache.sv
+│   ├── controlunit.sv
+│   ├── data_mem.sv
+│   ├── extend.sv
+│   ├── hazard_unit.sv
+│   ├── instruction_memory.sv
+│   ├── maindec.sv
+│   ├── mux2.sv
+│   ├── mux3.sv
+│   ├── program_counter.sv
+│   ├── reg_file.sv
+│   └── top.sv
+│
+└── tb
     ├── asm
-    |   ├── 1_addi_bne.s
-    |   ├── 2_li_add.s
-    |   ├── 3_lbu_sb.s
-    |   ├── 4_jal_ret.s
-    |   ├── 5_pdf.s
-    |   ├── f1_light.s
-    |   └── program.s
+    │   ├── 1_addi_bne.s
+    │   ├── 2_li_add.s
+    │   ├── 3_lbu_sb.s
+    │   ├── 4_jal_ret.s
+    │   ├── 5_pdf.s
+    │   ├── f1_light.s
+    │   └── program.s
+    │
     ├── c
+    │
     ├── reference
-    └── tests
-        ├── assemble.sh
-        ├── compile.sh
-        ├──doit.sh
-        ├──verify.cpp
-        ├──vbuddy.cpp
-        ├──top_tb.cpp
-        └──gaussian.mem
+    │   └── gaussian.mem
+    │
+    ├── tests
+    │   ├── base_testbench.h
+    │   ├── cpu_testbench.h
+    │   ├── testbench.h
+    │   ├── verify.cpp
+    │   ├── vbuddy.cpp
+    │   ├── top-f1
+    │   └── top-f1Wave
+    │
+    ├── assemble.sh
+    ├── compile.sh
+    ├── doit.sh
+    └── vbuddy.cfg
+
 ```
 ## Directories
 1. [rtl](https://github.com/Taedddsdfs/Team-1/tree/main/repo/rtl): holds all the .sv programs for the module designs
