@@ -90,8 +90,9 @@ repo
     │   ├── testbench.h
     │   ├── verify.cpp
     │   ├── vbuddy.cpp
-    │   ├── top-f1
-    │   └── top-f1Wave
+    │   ├── top-f1.cpp
+    |   |—— top-pdfPlot.cpp
+    │   └── top-f1Wave.cpp
     │—— base_testbench.h
     |--- testbench.h
     ├── assemble.sh
