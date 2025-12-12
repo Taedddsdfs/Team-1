@@ -235,7 +235,21 @@ Verify in Linux terminal: `ls /dev/ttyUSB*` should show the device. (if it is no
 
 make sure u r under tb, by typing `cd Team-1/repo/tb`
 
-**If connect with vBuddy to see the LED, run:**
+**wsl: vbuddy Connection Settings**
+
+Run the following command to check the if the vBuddy is attached
+```
+Ubuntu
+ls /dev/ttyUSB*
+```
+**MacOs：vbuddy Connection Setting**
+
+Run the following command in the terminal:
+```
+ls /dev/tty.*
+```
+
+**connect with vBuddy to see the LED, run:**
 ```
 Ubuntu
 ./doit.sh tests/top-f1.cpp
@@ -247,12 +261,7 @@ Ubuntu
 Ubuntu
 ./doit.sh tests/top-f1Wave.cpp
 ```
-**MacOs：vbuddy Connection Setting**
 
-Run the following command in the terminal:
-```
-ls /dev/tty.*
-```
 
 Then Copy the result and paste it in [Vbuddy.cfg](https://github.com/Taedddsdfs/Team-1/blob/main/repo/tb/vbuddy.cfg)
 
