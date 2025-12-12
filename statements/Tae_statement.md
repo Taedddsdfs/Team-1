@@ -1,8 +1,8 @@
-# Personal Statement: RISC-V Processor Design
+## 📝 Personal Statement: RISC-V Processor Design
 
 **Author:** Taehun  
-**Role:** Core Module Lead (PC), Co-Author (Register File) & Verification Architect  
-**Module Focus:** Program Counter, Register File, Test Infrastructure, Control Flow Logic
+**Role:** Core Module Lead (PC), Co-Author (Register File, Control Unit, Top-Level) & Verification Architect  & Reference
+**Module Focus:** Program Counter, Test Infrastructure, Control Flow Logic
 
 ---
 
@@ -25,7 +25,7 @@
 * **Evidence:** [View Commit ed53660](https://github.com/Taedddsdfs/Team-1/commit/ed53660) (Implemented Role 1: PC with internal flow control logic)
 
 ### 2.2 Synchronous Reset Implementation
-**Issue:** Initial designs utilizing asynchronous reset caused undefined states (`X`) during simulation startup.  
+**Issue:** Initial designs utilizing asynchronous reset caused undefined states (`X`) during simulation startup.
 **Fix:** Adopted strict **Synchronous Reset** (`if (rst)` inside `always_ff`).
 * **Result:** The PC reliably initializes to `32'h0`, ensuring deterministic behavior for GTest.
 
@@ -35,8 +35,8 @@
     1.  **Reset & Sequential:** Confirmed PC increments by 4.
     2.  **Branch/JAL:** Verified relative jumping.
     3.  **JALR (Critical):** Verified absolute address jumping (`PC = ALUResult`).
-* **Outcome:** Passed all tests including corner cases (Warm-up cycles for reset).  
-![Test Execution Result](https://github.com/user-attachments/assets/91cd052b-0b3a-40cf-ae83-a3657b3f3d3b)
+* **Outcome:** Passed all tests including corner cases (Warm-up cycles for reset).
+
 
 ---
 
@@ -61,10 +61,25 @@
 **Role:** Collaborated on extending the decoding logic to support complex branching and absolute jumps.
 * **Branch Logic:** Assisted in refining the `branch_taken` signal to support `BNE` (Branch if Not Equal) alongside `BEQ`, enabling the processor to handle `loops` and `conditional statements` correctly.
 * **Indirect Jumps (JALR):** Contributed to the `PCSrc` multiplexing logic, ensuring that `JALR` instructions (`7'b1100111`) correctly bypass the relative adder and load the target address directly from the ALU.
+
+
 ---
 
+## Part 5: Top-Level Integration (Co-Author)
 
-## Part 4: Reflection
+### 5.1 System Integration & Data Path Wiring
+**Role:** Co-assembled the top-level module, interconnecting core components to form the complete single-cycle processor.
+* **Component Instantiation:** Connected the `Program Counter`, `Register File`, `ALU`, and `Memory` modules based on the RISC-V datapath architecture.
+* **Signal Routing:** Managed internal wiring for critical data paths, including `PCPlus4` for sequential execution and `ResultSrc` multiplexing to handle data write-back from Memory, ALU, or PC.
+
+### 5.2 Top-Level Output for Verification
+**Focus:** Ensured observability for the testbench.
+* **Mechanism:** Routed the `a0` output from the Register File through the top module hierarchy, allowing the verification script to capture the processor's final state directly from the `top` module interface.
+
+
+---
+
+## Part 6: Reflection
 
 **What I learned:**
 
