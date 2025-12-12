@@ -38,7 +38,7 @@ Which gives us 4 different pipeline registers:
 - [PREM](https://github.com/Taedddsdfs/Team-1/blob/main/repo/rtl/PREM.sv)
 - [PRMW](https://github.com/Taedddsdfs/Team-1/blob/main/repo/rtl/PRMW.sv)
 
-(ps: I did PREM and PRMW)
+(ps: I did PRFD and PRMW)
 
 ---
 **PRFD**
