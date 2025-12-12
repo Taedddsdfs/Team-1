@@ -6,6 +6,14 @@
 
 ---
 
+## 📝 Personal Statement: RISC-V Processor Design
+
+**Author:** Taehun  
+**Role:** Core Module Lead (PC), Co-Author (All Modules) & Verification Architect  
+**Module Focus:** Pipelined Datapath, Hazard Resolution, System Integration
+
+---
+
 ## Part 1: Infrastructure Setup
 
 ### 1.1 Repository Structure & Automation
@@ -65,17 +73,18 @@
 
 ---
 
-## Part 5: Top-Level Integration (Co-Author)
+## Part 5: Pipelined Processor Integration (Co-Author)
 
-### 5.1 System Integration & Data Path Wiring
-**Role:** Co-assembled the top-level module, interconnecting core components to form the complete single-cycle processor.
-* **Component Instantiation:** Connected the `Program Counter`, `Register File`, `ALU`, and `Memory` modules based on the RISC-V datapath architecture.
-* **Signal Routing:** Managed internal wiring for critical data paths, including `PCPlus4` for sequential execution and `ResultSrc` multiplexing to handle data write-back from Memory, ALU, or PC.
+### 5.1 5-Stage Pipelined Datapath Assembly
+**Role:** Co-authored the top-level integration, successfully transitioning the design to a **5-Stage Pipelined Architecture** (IF, ID, EX, MEM, WB).
+* **Core Mechanism:** Connected four pipeline registers (`PRFD`, `PRDE`, `PREM`, `PRMW`) to transfer control and data signals between adjacent stages, optimizing for instruction throughput.
+* **Integration Focus:** Managed the complex routing of control signals (e.g., `ResultSrcW`, `RegWriteW`) to the Writeback stage and Register File, ensuring data coherency across all pipeline stages.
 
-### 5.2 Top-Level Output for Verification
-**Focus:** Ensured observability for the testbench.
-* **Mechanism:** Routed the `a0` output from the Register File through the top module hierarchy, allowing the verification script to capture the processor's final state directly from the `top` module interface.
 
+### 5.2 Hazard Resolution Implementation
+**Key Contribution:** Integrated and configured the **Hazard Unit** to maintain data integrity and performance.
+* **Data Forwarding:** Implemented **forwarding paths** using 3-to-1 MUXes in the Execute (EX) stage, allowing results from the MEM or WB stage (`ALUResultM`, `ResultW`) to be immediately used by subsequent instructions (`SrcAE`, `SrcBE`), eliminating most data stalls.
+* **Control Hazard Resolution:** Enabled the Hazard Unit to detect taken branches (`PCSrcE` high) and generate the `FlushD` signal, immediately invalidating instructions in the Decode stage to prevent incorrect execution.
 
 ---
 
@@ -83,10 +92,10 @@
 
 **What I learned:**
 
-1.  **Architectural Trade-offs:** I initially attempted a fine-grained modular approach (separating PC, Adder, and Mux), but realized that the complex control paths required for instructions like `JALR` created excessive top-level wiring overhead. This taught me that **strategic encapsulation** often yields cleaner, more maintainable hardware than strict modularity.
+1.  **Pipelining Complexity:** Transitioning to pipelined design highlighted that complexity shifts from component logic to **system integration** and **hazard management**. The performance challenge lies in coordinating data flow and timing across the pipeline registers.
 
-2.  **Verification Reliability:** I gained deep insight into the importance of **synchronous design**. Integrating Google Test demonstrated how **Automated Regression Testing** saves significant debugging time compared to manual waveform inspection.
+2.  **Hazard Unit Importance:** Implementing data forwarding and stalling mechanisms demonstrated the crucial trade-off between **latency (single-cycle)** and **throughput (pipelined)**, proving essential for maximizing the Instruction Per Cycle (IPC) rate.
 
-3.  **Process Efficiency (DevOps):** Setting up the build automation script (`doit.sh`) taught me that **investing in tooling upfront** drastically reduces iteration time. Enabling sub-second testing allowed me to fail fast and fix fast, which was critical for meeting the deadline.
+3.  **Architectural Trade-offs:** The initial decision to encapsulate PC logic (Part 2) simplified the final Top-Level wiring (Part 5), reinforcing the value of **strategic upfront design** even in modular hardware.
 
-4.  **Design for Testability (DFT):** Through the Register File implementation, I learned that hardware design isn't just about functionality but also about **observability**. Adding the `a0` output port seemed redundant for the logic itself but proved critical for the verification pipeline, teaching me to design with the "tester" mindset from day one.
+4.  **Design for Testability (DFT):** The use of the `a0` output port (Part 3) proved invaluable, allowing the team to debug complex, concurrent issues across the five pipeline stages efficiently, confirming the importance of designing with the "tester" mindset.
