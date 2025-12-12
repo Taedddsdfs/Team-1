@@ -254,7 +254,7 @@ Run the following command in the terminal:
 ls /dev/tty.*
 ```
 
-Then Copy the result and paste it in [Vbuddy.cfg]()
+Then Copy the result and paste it in [Vbuddy.cfg](https://github.com/Taedddsdfs/Team-1/blob/main/repo/tb/vbuddy.cfg)
 
 **4: Verify Results**
 
