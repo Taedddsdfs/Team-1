@@ -247,7 +247,7 @@ lru[set] tells me which way is the least recently used (0 or 1), so I can decide
 
 ---
 
-For Read path Part
+**For Read path Part**
 
 On every cycle I first check for a hit in both ways of the indexed set
 
@@ -288,7 +288,7 @@ endcase
 ```
 ---
 
-For Write path and policy
+**For Write path and policy**
 
 I decided to implement write-through and write-allocate
 Hence, always write the backing memory using the old byte-level logic for SB and SW.
