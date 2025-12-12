@@ -27,7 +27,7 @@
 | | alu |v| | |o|
 | | sign extension | |o| | |
 | | data memory |v| | |o |
-| | control unit |v|o| |v|
+| | control unit |v|o|v|v|
 | | top |v|v|v|o| 
 | | testbench and debug |v| |v|o|
 | Pipeline | PRDE |o|v| | |
