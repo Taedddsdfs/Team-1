@@ -247,7 +247,15 @@ Ubuntu
 Ubuntu
 ./doit.sh tests/top-f1Wave.cpp
 ```
-   
+**MacOs：vbuddy Connection Setting**
+
+Run the following command in the terminal:
+```
+ls /dev/tty.*
+```
+
+Then Copy the result and paste it in [Vbuddy.cfg]()
+
 **4: Verify Results**
 
 - Via Waveform (GTKWave):
