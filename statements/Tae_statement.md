@@ -1,8 +1,8 @@
 # Personal Statement: RISC-V Processor Design
 
-**Author:** Taehun
-**Role:** Core Module Lead (PC) & Verification Architect
-**Module Focus:** Program Counter, Test Infrastructure, Control Flow Logic
+**Author:** Taehun  
+**Role:** Core Module Lead (PC), Co-Author (Register File) & Verification Architect  
+**Module Focus:** Program Counter, Register File, Test Infrastructure, Control Flow Logic
 
 ---
 
@@ -25,7 +25,7 @@
 * **Evidence:** [View Commit ed53660](https://github.com/Taedddsdfs/Team-1/commit/ed53660) (Implemented Role 1: PC with internal flow control logic)
 
 ### 2.2 Synchronous Reset Implementation
-**Issue:** Initial designs utilizing asynchronous reset caused undefined states (`X`) during simulation startup.
+**Issue:** Initial designs utilizing asynchronous reset caused undefined states (`X`) during simulation startup.  
 **Fix:** Adopted strict **Synchronous Reset** (`if (rst)` inside `always_ff`).
 * **Result:** The PC reliably initializes to `32'h0`, ensuring deterministic behavior for GTest.
 
@@ -35,15 +35,34 @@
     1.  **Reset & Sequential:** Confirmed PC increments by 4.
     2.  **Branch/JAL:** Verified relative jumping.
     3.  **JALR (Critical):** Verified absolute address jumping (`PC = ALUResult`).
-* **Outcome:** Passed all tests including corner cases (Warm-up cycles for reset).
+* **Outcome:** Passed all tests including corner cases (Warm-up cycles for reset).  
 ![Test Execution Result](https://github.com/user-attachments/assets/91cd052b-0b3a-40cf-ae83-a3657b3f3d3b)
 
 ---
 
-## Part 3: Reflection
+## Part 3: Register File Implementation (Co-Author)
+
+### 3.1 3-Port Architecture & Zero Register Protection
+**Goal:** Design a multi-port memory unit compliant with RISC-V ISA specifications.
+* **Implementation:** Developed a dual-read, single-write (`2R1W`) register file to support standard instruction formats (two source registers `rs1`, `rs2` and one destination `rd`).
+* **Safety Mechanism:** Implemented hardware-level write protection for **Register x0**.
+    * *Logic:* Added a conditional check `if (WE3 && (AD3 != 5'd0))` to ensure writes to address `0` are physically ignored, enforcing the RISC-V requirement that `x0` remains hardwired to zero.
+
+### 3.2 Design for Verification (The 'a0' Port)
+**Decision:** Exposed internal register state for black-box testing.
+* **Action:** Added a dedicated output port `a0` connected to `registers[10]`.
+* **Reasoning:** In RISC-V calling conventions, `x10` (a0) holds function return values. Exposing this port allowed the testbench to verify program execution results immediately at the top level without needing to inspect internal waveforms or memory dumps.
+
+---
+
+## Part 4: Reflection
+
 **What I learned:**
+
 1.  **Architectural Trade-offs:** I initially attempted a fine-grained modular approach (separating PC, Adder, and Mux), but realized that the complex control paths required for instructions like `JALR` created excessive top-level wiring overhead. This taught me that **strategic encapsulation** often yields cleaner, more maintainable hardware than strict modularity.
 
 2.  **Verification Reliability:** I gained deep insight into the importance of **synchronous design**. Integrating Google Test demonstrated how **Automated Regression Testing** saves significant debugging time compared to manual waveform inspection.
 
 3.  **Process Efficiency (DevOps):** Setting up the build automation script (`doit.sh`) taught me that **investing in tooling upfront** drastically reduces iteration time. Enabling sub-second testing allowed me to fail fast and fix fast, which was critical for meeting the deadline.
+
+4.  **Design for Testability (DFT):** Through the Register File implementation, I learned that hardware design isn't just about functionality but also about **observability**. Adding the `a0` output port seemed redundant for the logic itself but proved critical for the verification pipeline, teaching me to design with the "tester" mindset from day one.
