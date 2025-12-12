@@ -308,4 +308,4 @@ Graphs generated after viewing from Vbuddy:
 #### Triangle
 <img width="535" height="319" alt="222891c765fedada2d7eee3851997c3b" src="https://github.com/user-attachments/assets/7c97293a-e450-45b6-a66a-48b45c955e38" />
 
-To run PDF with Vbuddy, run PDF.sh.
+
