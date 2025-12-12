@@ -55,6 +55,15 @@
 
 ---
 
+## Part 4: Control Unit Logic (Co-Author)
+
+### 4.1 Advanced Flow Control Implementation
+**Role:** Collaborated on extending the decoding logic to support complex branching and absolute jumps.
+* **Branch Logic:** Assisted in refining the `branch_taken` signal to support `BNE` (Branch if Not Equal) alongside `BEQ`, enabling the processor to handle `loops` and `conditional statements` correctly.
+* **Indirect Jumps (JALR):** Contributed to the `PCSrc` multiplexing logic, ensuring that `JALR` instructions (`7'b1100111`) correctly bypass the relative adder and load the target address directly from the ALU.
+---
+
+
 ## Part 4: Reflection
 
 **What I learned:**
