@@ -5,8 +5,6 @@
 ### Processor
 
 ### link to individual statements
-
-### link to individual statements
 [Jingting's Personal statement](/statements/Jingting_statement.md)
 
 [Zhengran's Personal statement](/statements/Zhengran_statement.md)
