@@ -181,19 +181,20 @@ export LD_LIBRARY_PATH="$GTEST_ROOT/lib:$LD_LIBRARY_PATH"
 ```
 
 **Step 1: Navigate to the Testbench Directory**
-```bash
+```
+Ubuntu
 cd repo/tb
 ```
 **Step 2: Grant Execution Permissions Ensure the scripts are executable before running them.**
 
-```Bash
-
+```
+Ubuntu
 chmod +x doit.sh compile.sh
 ```
 **Step 3: Run the Verification Script Execute the following command. This script will automatically compile the hardware, link the Google Test library, and run the test cases defined in verify.cpp.**
 
 ```Bash
-
+Ubuntu
 ./doit.sh tests/verify.cpp
 ```
 
@@ -242,14 +243,14 @@ make sure u r under tb, by typing `cd Team-1/repo/tb`
 
 **If connect with vBuddy to see the LED, run:**
 ```
-Bash
+Ubuntu
 ./doit.sh tests/top-f1.cpp
 ```
 
 **If u only need the waveform:**
 
 ```
-Bash
+Ubuntu
 ./doit.sh tests/top-f1Wave.cpp
 ```
    
