@@ -274,24 +274,7 @@ Inspect the `a0` output signal. It should match the F1 sequence: `1` (001) $\to$
 
 ![f1](https://github.com/user-attachments/assets/d05414e9-844d-4558-bd76-ae899fe05c2a)
  
-## 3. Troubleshooting Guide
-
-**1. Test 5 Fails (Got a0 = 808 or 200)**
-
- - **Cause**: The rtl/gaussian.mem data file is missing, corrupted, or contains metadata tags (e.g., [source...]).
- 
- - **Fix**: Ensure gaussian.mem contains only pure hexadecimal numbers and is located strictly in the repo/rtl/ directory.
-
-**2. Verilator Error: "Did not find file"**
- - **Cause**: The script is being run from the wrong directory.
-
- - **Fix**: Always execute commands from inside the repo/tb/ directory.
-
-**3. Linker Error:** "undefined reference to ticks"
-
-- **Cause**: The C++ testbench is missing the global tick counter definition required by the header file.
-- **Fix**: Add unsigned int ticks = 0; at the top of your .cpp testbench file.
-
+## 3.Vbuddy Graph Plots:
 
 
 
