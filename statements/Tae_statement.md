@@ -1,11 +1,3 @@
-## 📝 Personal Statement: RISC-V Processor Design
-
-**Author:** Taehun  
-**Role:** Core Module Lead (PC), Co-Author (Register File, Control Unit, Top-Level) & Verification Architect & Reference & top design for pipeline for RISC-V
-**Module Focus:** Program Counter, Test Infrastructure, Control Flow Logic
-
----
-
 ## Part 1: Infrastructure Setup
 
 ### 1.1 Repository Structure & Automation
@@ -65,18 +57,18 @@
 
 ---
 
-## Part 5: Pipelined Processor Integration (Co-Author)
+## Part 5: Pipelined Processor Integration & Cache (Co-Author)
 
 ### 5.1 5-Stage Pipelined Datapath Assembly
-**Role:** Co-authored the top-level integration, successfully transitioning the design to a **5-Stage Pipelined Architecture** (IF, ID, EX, MEM, WB).
-* **Core Mechanism:** Connected four pipeline registers (`PRFD`, `PRDE`, `PREM`, `PRMW`) to transfer control and data signals between adjacent stages, optimizing for instruction throughput.
-* **Integration Focus:** Managed the complex routing of control signals (e.g., `ResultSrcW`, `RegWriteW`) to the Writeback stage and Register File, ensuring data coherency across all pipeline stages.
+**Role:** Co-authored the top-level integration, establishing the **5-Stage Pipelined Architecture** (IF, ID, EX, MEM, WB).
+* **Core Mechanism:** Connected four pipeline registers (`PRFD`, `PRDE`, `PREM`, `PRMW`) to transfer control and data signals, optimizing for instruction throughput.
+* **Memory Stage Upgrade:** Integrated the **`data_cache`** module in the Memory (M) stage, replacing the simple `data_mem`. This structural change introduced considerations for handling cache hits/misses, demonstrating an understanding of the memory hierarchy.
 
 
 ### 5.2 Hazard Resolution Implementation
-**Key Contribution:** Integrated and configured the **Hazard Unit** to maintain data integrity and performance.
-* **Data Forwarding:** Implemented **forwarding paths** using 3-to-1 MUXes in the Execute (EX) stage, allowing results from the MEM or WB stage (`ALUResultM`, `ResultW`) to be immediately used by subsequent instructions (`SrcAE`, `SrcBE`), eliminating most data stalls.
-* **Control Hazard Resolution:** Enabled the Hazard Unit to detect taken branches (`PCSrcE` high) and generate the `FlushD` signal, immediately invalidating instructions in the Decode stage to prevent incorrect execution.
+**Key Contribution:** Integrated and configured the **Hazard Unit** to manage pipeline dependencies.
+* **Data Forwarding:** Implemented **forwarding paths** using 3-to-1 MUXes in the Execute (EX) stage, delivering results (from MEM or WB) to the ALU inputs (`SrcAE`, `SrcBE`) to minimize stalls.
+* **Control Hazard Resolution:** Enabled the Hazard Unit to generate the `FlushD` signal upon a taken branch (`PCSrcE` high), immediately invalidating instructions in the Decode stage.
 
 ---
 
@@ -86,8 +78,8 @@
 
 1.  **Pipelining Complexity:** Transitioning to pipelined design highlighted that complexity shifts from component logic to **system integration** and **hazard management**. The performance challenge lies in coordinating data flow and timing across the pipeline registers.
 
-2.  **Hazard Unit Importance:** Implementing data forwarding and stalling mechanisms demonstrated the crucial trade-off between **latency (single-cycle)** and **throughput (pipelined)**, proving essential for maximizing the Instruction Per Cycle (IPC) rate.
+2.  **Memory Hierarchy Integration:** Replacing the simple memory with a **cache** (Part 5.1) introduced real-world performance considerations. This demonstrated that optimizing a CPU requires balancing core logic with the speed of external resources (memory access latency).
 
 3.  **Architectural Trade-offs:** The initial decision to encapsulate PC logic (Part 2) simplified the final Top-Level wiring (Part 5), reinforcing the value of **strategic upfront design** even in modular hardware.
 
-4.  **Design for Testability (DFT):** The use of the `a0` output port (Part 3) proved invaluable, allowing the team to debug complex, concurrent issues across the five pipeline stages efficiently, confirming the importance of designing with the "tester" mindset.
+4.  **Design for Testability (DFT):** The use of the `a0` output port (Part 3) proved invaluable, allowing the team to debug complex, concurrent issues across the five pipeline stages, confirming the importance of designing with the "tester" mindset.
