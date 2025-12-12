@@ -258,8 +258,9 @@ Ubuntu
 
 - Via Waveform (GTKWave):
 
-```Bash
-gtkwave obj_dir/Vdut.vcd
+```
+Ubuntu
+gtkwave waveform.vcd
 ```
 
 Inspect the `a0` output signal. It should match the F1 sequence: `1` (001) $\to$ `3` (011) $\to$ `7` (111) $\to$ ...
