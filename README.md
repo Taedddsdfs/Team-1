@@ -278,6 +278,14 @@ sudo apt install gtkwave
 # Open the waveform
 gtkwave waveform.vcd
 ```
+## 3. Plot pdf of gaussian
+
+make sure u r still in `*tb` folder, run:
+
+```bash
+./doit.sh tests/top-pdfPlot.cpp
+```
+**Notice: Always check ` ls /dev/ttyUSB* ` in terminal, to make sure the vbuddy is still connected.**
 
 ## Evidence of tests passing
 
