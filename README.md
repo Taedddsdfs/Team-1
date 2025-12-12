@@ -289,11 +289,6 @@ make sure u r still in `*tb` folder, run:
 
 ## Evidence of tests passing
 
-### Test programs:
-![Console after running tests]()
-
-To run tests, change data_memory.sv and instruction_memory.sv to .../data.hex and .../program.hex respectively.
-
 ### F1:
 ***Visual demo*** **@^_^@**
 
