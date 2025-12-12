@@ -13,7 +13,7 @@
 - **Synchronous Design:** Implemented strict synchronous reset logic to guarantee deterministic startup states for system-level integration.
 
 
-# 🚀 RISC-V CPU System Verification & F1 Demo Guide
+#  RISC-V CPU System Verification & F1 Demo Guide
 
 | **Category** | **Details** |
 | :--- | :--- |
@@ -97,7 +97,7 @@ chmod +x doit.sh compile.sh
 ./doit.sh tests/verify.cpp
 ```
 
-✅ Expected Output
+Expected Output
 You should see a green "PASSED" message indicating all tests, including the complex Gaussian PDF calculation, have passed.
 
 ```Plaintext
@@ -169,7 +169,7 @@ Inspect the `a0` output signal. It should match the F1 sequence: `1` (001) $\to$
 ![f1](https://github.com/user-attachments/assets/d05414e9-844d-4558-bd76-ae899fe05c2a)
 
 
-## 🌊 Viewing Waveforms (Debugging)
+##  Viewing Waveforms (Debugging)
 
 If you enabled tracing in the Verilator command (**Step 2**), a `.vcd` file (usually `waveform.vcd` or similar) will be generated after running the simulation. You can view it using **GTKWave**:
 
