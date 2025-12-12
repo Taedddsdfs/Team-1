@@ -264,13 +264,7 @@ Inspect the `a0` output signal. It should match the F1 sequence: `1` (001) $\to$
 
 
  - Via VBuddy (If connected):Ensure the USB device is attached. The LEDs on the VBuddy should increment and then turn off, matching the simulation logic.
-   ***Visual demo*** **@^_^@**
-
-
-![f1](https://github.com/user-attachments/assets/d05414e9-844d-4558-bd76-ae899fe05c2a)
- 
-## 3.Vbuddy Graph Plots:
-
+   
 
 
 ## Viewing Waveforms (Debugging)
@@ -293,18 +287,17 @@ gtkwave waveform.vcd
 To run tests, change data_memory.sv and instruction_memory.sv to .../data.hex and .../program.hex respectively.
 
 ### F1:
+***Visual demo*** **@^_^@**
 
+![f1](https://github.com/user-attachments/assets/d05414e9-844d-4558-bd76-ae899fe05c2a)
 
-
-link
-
-
-
-To run F1 with Vbuddy, run F1.sh.
 
 ### PDF:
 
 Graphs generated after viewing from Vbuddy:
+
+![gaussian](https://github.com/user-attachments/assets/a5ec61b9-c9bd-4a54-a5d3-1faedd5774f4)
+
 
 #### Gaussian
 <img width="535" height="319" alt="648907a1d6739317108170d5c5037dc0" src="https://github.com/user-attachments/assets/bdfe2820-0640-4576-85e8-25ee0b519083" />
